@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+/*
+汎用的なベースとなるスタイルシート。
+適当に自分が読みやすいvalidなhtmlを書けばそれで
+そこそこ見ることのできるページが書ける。
+といいなあって感じ。
+*/
+
+body {
+  background-color:#efeff0;
+  color:#004624;
+}
+h1,h2,h3,h4,h5,h6 {
+  padding:0.1em;
+  margin:0 0 0 0;
+  width:80%;
+  color: navy;
+}
+h1 {
+  padding-left:1em;
+  margin:0 -1em 10px -1em;
+  width:100%;
+  background-color:#58a;
+  color: white;
+}
+h2 {background-color: #daeafa}
+h3 {margin-left:1em; background-color: #eaeafa}
+h4 {margin-left:2em; background-color: #eaeffd}
+h5 {margin-left:3em; background-color: #f0f0ff}
+p,dl,ul,ol,address,pre,form {
+  margin:1em 7em 1em 2em;
+  line-height:1.5em;
+}
+img {
+  border:0;
+}
+blockquote {
+  margin:0 10% 0 10%;
+  font-style:italic;
+  background-color:#c3fee0;
+}
+dt {
+  font-weight:bold;
+}
+pre {
+  background-color:#dbecff;
+}
+code {
+  background-color:#dbecff;
+}
+
+q {
+  font-style:italic;
+  background-color:#c3fee0;
+}
+cite {
+  background-color:#cfcfff;
+}
+.error {
+  color: red;
+}

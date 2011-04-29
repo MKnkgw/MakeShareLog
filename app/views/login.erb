@@ -1,0 +1,16 @@
+<%=
+  @title = "Login"
+  erb :header
+%>
+
+<form action="/login" method="POST">
+  <input type="text" name="name" />
+  <input type="password" name="pass" />
+  <input type="submit" value="login" />
+</form>
+
+<p>
+<a href="/create">Create New User</a>
+</p>
+
+<%= erb :footer %>
