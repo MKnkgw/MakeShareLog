@@ -3,16 +3,17 @@ require "sinatra/reloader"
 require "erb"
 require "digest/md5"
 
-require "models"
+load "models.rb"
 
 #set :public, File.dirname(__FILE__) + '/public'
 #set :views, File.dirname(__FILE__) + '/views'
 set :port, 80
 set :reload, true
-set :sessions, true
-
 
 class Login < Sinatra::Base
+  set :sessions, true
+  set :reload, true
+  
   get "/login" do
     erb :login
   end
@@ -23,9 +24,10 @@ class Login < Sinatra::Base
     if name and pass then
       user = User.first(:name => name, :pass => pass)
       if user then
-        session[:name] = nbme
+        session[:name] = name
         redirect "/"
       else
+        @error = "ログイン失敗しました。"
         erb :login
       end
     else
@@ -43,26 +45,41 @@ class Login < Sinatra::Base
     if user.save then
       redirect "/login"
     else
-      @error = "hoge"
+      @error = "ユーザ作成に失敗しました。"
       erb :create
     end
-  end
-end
-
-def require_login
-  if !session[:name] then
-    redirect "/login"
-    halt
   end
 end
 
 use Login
 
 before do
-  require_login
+  if !session[:name] then
+    redirect "/login"
+    halt
+  end
 end
 
 get "/" do
   erb :index
 end
 
+get "/*" do
+  erb params[:splat][0].to_sym
+end
+
+post "/setting" do
+  name = session[:name]
+  pass1 = params[:pass1]
+  pass2 = params[:pass2]
+  if pass1 == pass2 then
+    user = User.first(:name => name)
+    user[:pass] = Digest::MD5.hexdigest(pass1)
+    if !user.save then
+      @error = "パスワードの変更に失敗しました"
+    end
+  else
+    @error = "パスワードが違います"
+  end
+  erb :setting
+end

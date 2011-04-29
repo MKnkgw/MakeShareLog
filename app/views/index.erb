@@ -1,8 +1,12 @@
 <%=
   @title = "Top"
-  erb :header
+  erb :"common/header"
 %>
 
-<p>Hello!</p>
+<p>Hello <%= session[:name] %>!</p>
 
-<%= erb :footer %>
+<ul>
+  <li><a href="/setting">my settings</a></li>
+</ul>
+
+<%= erb :"common/footer" %>

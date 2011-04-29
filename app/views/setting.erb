@@ -1,0 +1,16 @@
+<%=
+  @title = "#{session[:name]} Setting"
+  erb :"common/header"
+%>
+
+<form action="/setting" method="POST">
+  <dl>
+    <dt>パスワード変更</dt>
+    <dd><input type="password" name="pass1" /></dd>
+    <dt>パスワード変更（確認）</dt>
+    <dd><input type="password" name="pass2" /></dd>
+  </dl>
+  <input type="submit" value="更新" />
+</form>
+
+<%= erb :"common/footer" %>

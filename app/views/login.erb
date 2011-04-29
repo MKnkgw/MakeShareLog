@@ -1,6 +1,6 @@
 <%=
   @title = "Login"
-  erb :header
+  erb :"common/header"
 %>
 
 <form action="/login" method="POST">
@@ -13,4 +13,4 @@
 <a href="/create">Create New User</a>
 </p>
 
-<%= erb :footer %>
+<%= erb :"common/footer" %>

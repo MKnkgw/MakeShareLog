@@ -1,6 +1,6 @@
 <%=
   @title "Create User"
-  erb :header
+  erb :"common/header"
 %>
 
 <form action="/create" method="POST">
@@ -8,4 +8,5 @@
   <input type="password" name="pass" />
   <input type="submit" value="create" />
 </form>
-<%= erb :footer %>
+
+<%= erb :"common/footer" %>
