@@ -7,10 +7,24 @@
 といいなあって感じ。
 */
 
-body {
-  background-color:#efeff0;
-  color:#004624;
+* { margin : 0 ; padding : 0 ; }
+body { 
+	width : 100% ;
+	background-color : #efeff0 ;
+	color : #3399cc ;
 }
+#my_body { 
+	position : relative ;
+	margin: 0 auto; width : 700px ;
+}
+#my_header { width : 100% ; height : 110px ; }
+#my_footer { width : 100% ; clear : both ; }
+#my_face_photos { float : left ; width : 350px ; }
+#my_cosmetics { float : left ; width : 350px ; }
+
+#photos { float : left ; width : 100px ; }
+#explanation { float : left ; width : 250px ; }
+
 h1,h2,h3,h4,h5,h6 {
   padding:0.1em;
   margin:0 0 0 0;
