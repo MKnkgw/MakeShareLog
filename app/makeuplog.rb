@@ -41,7 +41,7 @@ class Login < Sinatra::Base
   post "/create" do
     name = params[:name]
     pass = Digest::MD5.hexdigest(params[:pass])
-    user = User.new(:name => name, :pass => pass, :created_at => Time.now)
+    user = User.new(:name => name, :pass => pass)
     if user.save then
       redirect "/login"
     else
