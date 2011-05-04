@@ -20,6 +20,7 @@ class User
   property :created_at, DateTime, :default => TimeProc, :allow_nil => false
 
   has n, :photo_sets
+  has n, :own_cosmetics
   belongs_to :user_level
 end
 
@@ -111,6 +112,13 @@ class Rfid
   belongs_to :cosmetic
 end
 
+class OwnCosmetic
+  include DataMapper::Resource
+
+  belongs_to :user, :key => true
+  belongs_to :cosmetic, :key => true
+end
+
 class Cosmetic
   include DataMapper::Resource
 
@@ -123,6 +131,7 @@ class Cosmetic
   has n, :cosmetic_taggings
   has n, :photo_sets, :through => :cosmetic_taggings
   has n, :rfids
+  has n, :own_cosmetics
   belongs_to :part_type
   belongs_to :brand
   belongs_to :color

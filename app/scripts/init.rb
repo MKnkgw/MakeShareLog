@@ -74,6 +74,7 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
     abort("unknown photoset_path #{photoset_path}") 
   end
   user = User.first(:name => $1)
+  user_id = user.id
   year = $2.to_i
   month = $3.to_i
   day = $4.to_i
@@ -87,18 +88,27 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
 
   photoset = PhotoSet.new(
     :created_at => time,
-    :user_id => user.id,
+    :user_id => user_id,
     :user_level_id => level.id
   )
   abort("cannot save #{photoset_path}") if !photoset.save
 
   File.read("#{photoset_path}/tags").split(", ").map{|x| x.to_i}.each{|tag|
     rfid = Rfid.first(:rfid => tag)
+    cosmetic_id = rfid.cosmetic_id
     tagging = CosmeticTagging.new(
       :photo_set_id => photoset.id,
-      :cosmetic_id => rfid.cosmetic_id
+      :cosmetic_id => cosmetic_id
     )
     abort("cannot save cosmetic rfid #{tag}") if !tagging.save
+
+    if !OwnCosmetic.get(user_id, cosmetic_id) then
+      own = OwnCosmetic.new(
+        :user_id => user_id,
+        :cosmetic_id => cosmetic_id
+      )
+      abort("cannot save own cosmetic #{cosmetic_id}") if !own.save
+    end
   }
 
   Dir.glob("#{photoset_path}/*.*").each{|photo_path|
