@@ -21,7 +21,7 @@ body {
 /*.cosmetic-block { float : left ; width : 100px ; }*/
 .cosmetic-block { width : 100px ; }
 .photo { float : left ; width : 100px ; }
-.photo img { width : 100px ; }
+/*.photo img { width : 100px ; }*/
 .explanation { float : left ; width : 250px ; }
 
 .error {

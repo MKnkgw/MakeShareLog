@@ -7,15 +7,15 @@ load "models.rb"
 
 load "conf.rb"
 
-def create_thumb(src, dst)
-  system("#$convert -resize 100x #{src} #{dst}")
+def create_thumb(src, dst, width)
+  system("#$convert -resize #{width}x #{src} #{dst}")
 end
 
-def photo_thumb(prefix, id, photo_path)
+def photo_thumb(prefix, id, photo_path, width)
   ext = File.extname(photo_path)
-  thumb_path = "#$thumbdir/#{prefix}-#{id}-thumb#{ext}"
+  thumb_path = "#$thumbdir/#{prefix}-#{id}-#{width}-thumb#{ext}"
   if !File.exist?(thumb_path) then
-    create_thumb(photo_path, thumb_path)
+    create_thumb(photo_path, thumb_path, width)
   end
   thumb_path
 end
@@ -91,7 +91,7 @@ get "/photo/thumb/:id" do
   photo = Photo.get(params[:id].to_i)
   if photo then
     path = $datadir + "/" + photo.path
-    send_file photo_thumb("photo", photo.id, path)
+    send_file photo_thumb("photo", photo.id, path, $face_thumb_width)
   end
 end
 
@@ -106,7 +106,7 @@ get "/cosme/thumb/:id" do
   cosme = Cosmetic.get(params[:id].to_i)
   if cosme then
     path = $datadir + "/" + cosme.image
-    send_file photo_thumb("cosme", cosme.id, path)
+    send_file photo_thumb("cosme", cosme.id, path, $cosme_thumb_width)
   end
 end
 
