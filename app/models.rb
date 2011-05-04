@@ -40,6 +40,7 @@ class PartType
   property :name, String, :allow_nil => false
 
   has n, :photos
+  has n, :cosmetics
 end
 
 class PhotoSet
@@ -49,6 +50,8 @@ class PhotoSet
   property :created_at, DateTime, :default => TimeProc, :allow_nil => false
 
   has n, :photos
+  has n, :cosmetic_taggings
+  has n, :cosmetics, :through => :cosmetic_taggings
   belongs_to :user
   belongs_to :user_level
 end
@@ -63,6 +66,54 @@ class Photo
   belongs_to :photo_set
   belongs_to :part_type
   belongs_to :user
+end
+
+class Brand
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String, :allow_nil => false
+
+  has n, :cosmetics
+end
+
+class Color
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String, :allow_nil => false
+
+  has n, :cosmetics
+end
+
+class CosmeticTagging
+  include DataMapper::Resource
+
+  belongs_to :cosmetic, :key => true
+  belongs_to :photo_set, :key => true
+end
+
+class Rfid
+  include DataMapper::Resource
+
+  property :rfid, Integer, :key => true, :allow_nil => false
+
+  belongs_to :cosmetic
+end
+
+class Cosmetic
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :jancode, Integer, :allow_nil => false
+  property :name, String, :allow_nil => false
+
+  has n, :cosmetic_taggings
+  has n, :photo_sets, :through => :cosmetic_taggings
+  has n, :rfids
+  belongs_to :part_type
+  belongs_to :brand
+  belongs_to :color
 end
 
 DataMapper.auto_upgrade!

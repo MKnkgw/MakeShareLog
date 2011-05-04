@@ -16,6 +16,10 @@ def new_genuser(name)
   new_user(name, name, false, UserLevel[0].id)
 end
 
+def find_or_create(klass, args)
+  klass.first(args) || klass.create(args)
+end
+
 newbie = UserLevel.create(:name => "Newbie", :value => 0)
 middle = UserLevel.create(:name => "Middle", :value => 1)
 expert = UserLevel.create(:name => "Expert", :value => 2)
@@ -39,12 +43,33 @@ new_genuser("marina")
 new_genuser("kitty_mimmy")
 new_genuser("kisaroom")
 
+cosmetics = File.readlines("../data/cosmetics.csv")
+cosmetics[1...cosmetics.size].each{|line|
+  rfidcode, jan, partname, brandname, name, colorname = line.split(",")
+  part = PartType.first(:name => partname.capitalize)
+  brand = find_or_create(Brand, :name => brandname)
+  color = find_or_create(Color, :name => colorname)
+
+  cosme = Cosmetic.new(
+    :jancode => jan,
+    :part_type_id => part.id,
+    :brand_id => brand.id,
+    :name => name,
+    :color_id => color.id
+  )
+
+  abort("cannot save cosmetic #{name}") if !cosme.save
+
+  rfid = Rfid.new(:rfid => rfidcode.to_i, :cosmetic_id => cosme.id)
+  abort("cannot save rfid #{rfid}") if !rfid.save
+}
+
+
+
 Dir.glob("../data/photo/*/*/*").each{|photoset_path|
   unless photoset_path =~ /\/([^\/]+)\/\d{3}\/(\d{4})(\d{2})(\d{2})-(\w+)$/ then
     abort("unknown photoset_path #{photoset_path}") 
   end
-  #unless Dir.glob("#{photoset_path}/*")[0] =~ /\/([^\/]+)\/\d{3}\/(\d{4})(\d{2})(\d{2})-(\w+)$/ then
-  #end
   user = User.first(:name => $1)
   year = $2.to_i
   month = $3.to_i
@@ -64,7 +89,16 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
   )
   abort("cannot save #{photoset_path}") if !photoset.save
 
-  Dir.glob("#{photoset_path}/*").each{|photo_path|
+  File.read("#{photoset_path}/tags").split(", ").map{|x| x.to_i}.each{|tag|
+    rfid = Rfid.first(:rfid => tag)
+    tagging = CosmeticTagging.new(
+      :photo_set_id => photoset.id,
+      :cosmetic_id => rfid.cosmetic_id
+    )
+    abort("cannot save cosmetic rfid #{tag}") if !tagging.save
+  }
+
+  Dir.glob("#{photoset_path}/*.*").each{|photo_path|
     unless photo_path =~ /(\w+).\w+$/ then
       abort("unknown photo_path #{photo_path}")
     end
