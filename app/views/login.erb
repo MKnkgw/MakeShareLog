@@ -1,16 +1,18 @@
 <%=
-  @title = "Login"
-  erb :"common/header"
+    @title = "Login"
+    erb :"common/header"
 %>
 
-<form action="/login" method="POST">
-  <input type="text" name="name" />
-  <input type="password" name="pass" />
-  <input type="submit" value="login" />
-</form>
+<div id="content-main">
+    <form action="/login" method="POST">
+        <input type="text" name="name" />
+        <input type="password" name="pass" />
+        <input type="submit" value="login" />
+    </form>
 
-<p>
-<a href="/create">Create New User</a>
-</p>
+    <p>
+    <a href="/create">Create New User</a>
+    </p>
 
+</div>
 <%= erb :"common/footer" %>

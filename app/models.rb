@@ -66,6 +66,16 @@ class Photo
   belongs_to :photo_set
   belongs_to :part_type
   belongs_to :user
+
+  def user_name
+    User.get(user_id).name
+  end
+  def user_level
+    UserLevel.get(PhotoSet.get(photo_set_id).user_level_id).name
+  end
+  def date
+    created_at.strftime("%Y/%m/%d")
+  end
 end
 
 class Brand
@@ -105,8 +115,10 @@ class Cosmetic
   include DataMapper::Resource
 
   property :id, Serial
-  property :jancode, Integer, :allow_nil => false
+  property :jancode, String, :allow_nil => false
   property :name, String, :allow_nil => false
+  property :url, String
+  property :image, String
 
   has n, :cosmetic_taggings
   has n, :photo_sets, :through => :cosmetic_taggings
@@ -114,6 +126,10 @@ class Cosmetic
   belongs_to :part_type
   belongs_to :brand
   belongs_to :color
+
+  def part_name
+    PartType.get(part_type_id).name
+  end
 end
 
 DataMapper.auto_upgrade!

@@ -1,0 +1,1 @@
+@irb -rubygems -rmodels

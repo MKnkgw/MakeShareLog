@@ -1,12 +1,42 @@
 <%=
-  @title = "Top"
+  @title = "My Page"
   erb :"common/header"
 %>
 
-<p>Hello <%= session[:name] %>!</p>
+<div id="content-main">
 
-<ul>
-  <li><a href="/setting">my settings</a></li>
-</ul>
+  <div class="photo-list">
+    <% @photo_list.each do|photo| %>
+      <div class="photo-block">
+        <span class="photo">
+          <img src="/photo/thumb/<%= photo.id %>">
+        </span>
+        <div class="explanation">
+          <span class="user-name"><%= photo.user_name %></span>
+          <span class="user-level"><%= photo.user_level %></span>
+          <span class="date"><%= photo.date %></span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="cosmetic-list">
+    <% @cosme_list.each do|cosme| %>
+      <div class="cosmetic-block">
+        <span class="photo">
+          <img src="/cosme/thumb/<%= cosme.id %>">
+        </span>
+        <div class="explanation">
+          <span class="cosme-part"><%= cosme.part_name %></span>
+          <span class="jancode">JAN:<%= cosme.jancode %></span>
+          <span class="cosme-url">
+            <a href="<%= cosme.url %>">Buy now!</a>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>
 
 <%= erb :"common/footer" %>

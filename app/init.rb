@@ -45,7 +45,8 @@ new_genuser("kisaroom")
 
 cosmetics = File.readlines("../data/cosmetics.csv")
 cosmetics[1...cosmetics.size].each{|line|
-  rfidcode, jan, partname, brandname, name, colorname = line.split(",")
+  line.chomp!
+  rfidcode, jan, partname, brandname, name, colorname, url, imgpath = line.split(",")
   part = PartType.first(:name => partname.capitalize)
   brand = find_or_create(Brand, :name => brandname)
   color = find_or_create(Color, :name => colorname)
@@ -55,7 +56,9 @@ cosmetics[1...cosmetics.size].each{|line|
     :part_type_id => part.id,
     :brand_id => brand.id,
     :name => name,
-    :color_id => color.id
+    :color_id => color.id,
+    :url => url,
+    :image => imgpath
   )
 
   abort("cannot save cosmetic #{name}") if !cosme.save
@@ -107,7 +110,7 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
     abort("unknown part type #{part_name}") if !part
 
     photo = Photo.new(
-      :path => photo_path,
+      :path => photo_path.sub(/^..\/data\//, ""),
       :created_at => time,
       :photo_set_id => photoset.id,
       :part_type_id => part.id,
