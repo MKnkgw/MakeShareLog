@@ -5,15 +5,7 @@ require "digest/md5"
 
 load "models.rb"
 
-#set :public, File.dirname(__FILE__) + '/public'
-#set :views, File.dirname(__FILE__) + '/views'
-set :port, 80
-set :reload, true
-
-$thumb_width = 100
-$datadir = "../data"
-$thumbdir = "#$datadir/thumb"
-$convert = "c:/prg/ImageMagick-6.6.8-Q16/convert.exe"
+load "conf.rb"
 
 def create_thumb(src, dst)
   system("#$convert -resize 100x #{src} #{dst}")
