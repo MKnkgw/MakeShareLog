@@ -25,15 +25,15 @@ body {
   color: red;
 }
 
-/** /index **/
-#index-main { 
+#common-main { 
 	position : relative ;
 	margin: 0 auto; width : 700px ;
   padding-right: 20%;
 }
-#index-right { float : left ; width : 350px ; }
-#index-left { float : left ; width : 350px ; }
+#common-right { float : left ; width : 350px ; }
+#common-left { float : left ; width : 350px ; }
 
+/** /index **/
 .photo-list { width : 350px ; }
 .photo-block { clear: both; width : 350px ; padding: 10px;}
 
@@ -60,7 +60,7 @@ body {
 #photoset-mainphoto img { width: 900px;}
 
 #photoset-parts { float: left; width: 100px; }
-#photoset-parts img { width: 100px; }
+#photoset-parts img { width: 100px; padding: 5px; }
 #photoset-description { clear: both; }
 
 .face-cosmetic-block { float: left; width : 250px ; padding: 10px;}

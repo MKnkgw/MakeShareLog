@@ -1,6 +1,8 @@
-# http://host/ or http://host/index
-get %r{^/$|^/index$} do
-  user_id = session[:user_id]
+# http://host/user/MKnkgw/
+get "/user/:user_name" do
+  @user_name = params[:user_name]
+  user = User.first(:name => @user_name)
+  user_id = user.id
   @photo_list = Photo.all(
     :user_id => user_id,
     :part_type_id => PartTypes[:face]
@@ -8,5 +10,5 @@ get %r{^/$|^/index$} do
   @cosme_list = OwnCosmetic.all(:user_id => user_id).map{|own|
     Cosmetic.get(own.cosmetic_id)
   }
-  erb :index
+  erb :user_index
 end

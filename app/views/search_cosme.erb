@@ -3,9 +3,9 @@
   erb :"common/header"
 %>
 
-<div id="index-main">
+<div id="common-main">
 
-<div id="index-left">
+<div id="common-left">
   <div class="photo-list">
     <% @photo_list.each do|photo| %>
       <div class="photo-block">
@@ -28,21 +28,13 @@
   </div>
 </div>
 
-<div id="index-right">
+<div id="common-right">
   <div class="cosmetic-list">
     <div class="cosmetic-block">
-      <span class="photo" style="width: <%= $cosme_thumb_width %>px">
-        <img src="/cosme/thumb/<%= @cosme.id %>">
-      </span>
-      <div class="explanation">
-        <div class="cosme-name"><%= @cosme.name %></div>
-        <div class="cosme-brand"><%= @cosme.brand_name %></div>
-        <div class="cosme-part"><%= @cosme.part_name %></div>
-        <div class="jancode">JAN:<%= @cosme.jancode %></div>
-        <div class="cosme-url">
-          <a href="<%= @cosme.url %>">Buy now!</a>
-        </div>
-      </div>
+      <%=
+        @not_search_cosme_link = true
+        erb :"common/cosmetic_block"
+      %>
     </div>
   </div>
 </div>

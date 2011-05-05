@@ -4,17 +4,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="/css/base.css" media="screen" />
+<script type="text/javascript" src="/js/jquery-1.6.js"></script>
+<% if @scripts then; @scripts.each do|js| %>
+  <script type="text/javascript" src="<%= js %>"></script>
+<% end; end %>
 <title><%= @title %></title>
 </head>
 <body>
-    <div id="header">
-        <img src="/img/COSMEnication.png" width="400" height="150">
-        <% if session[:user_name] then %>
-          <a href="/">HOME</a>
-          <a href="/setting">SETTING</a>
-        <% end %>
-    </div>
+  <div id="header">
+    <img src="/img/COSMEnication.png" width="400" height="150">
+    <% if session[:user_name] then %>
+      <% if @is_home then %>
+        HOME
+      <% else %>
+        <a href="/">HOME</a>
+      <% end %>
+      <% if @is_setting then %>
+        SETTING
+      <% else %>
+        <a href="/setting">SETTING</a>
+      <% end %>
+    <% end %>
+  </div>
 
 <% if @error then %>
-    <pre class="error"><%= @error %></pre>
+  <pre class="error"><%= @error %></pre>
 <% end %>

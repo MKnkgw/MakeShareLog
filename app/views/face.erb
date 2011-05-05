@@ -1,5 +1,6 @@
 <%=
   @title = "#{@photoset.user_name} #{@photoset.date}"
+  @scripts = ["/js/face.js"]
   erb :"common/header"
 %>
 
@@ -7,12 +8,12 @@
   <div id="face-photoset">
     <div id="photoset-photo">
       <div id="photoset-mainphoto">
-        <img src="/photo/<%= @photoset.face.id %>">
+        <img id="photoset-mainphoto-img" src="/photo/<%= @photoset.face.id %>">
       </div>
       <div id="photoset-parts">
         <% @photos.each do|photo| %>
-          <span class="photo">
-            <img src="/photo/thumb/<%= photo.id %>">
+          <span class="photo face-thumb-menu">
+            <img class="face-thumb-menu-img" src="/photo/thumb/<%= photo.id %>">
           </span>
         <% end %>
       </div>
@@ -27,20 +28,20 @@
   <div id="face-cosmetics">
     <% @cosmetics.each do|cosme| %>
       <div class="face-cosmetic-block">
-        <span class="photo" style="width: <%= $cosme_thumb_width %>px">
-          <img src="/cosme/thumb/<%= cosme.id %>">
-        </span>
-        <div class="explanation">
-          <div class="cosme-part"><%= cosme.part_name %></div>
-          <div class="cosme-brand-name"><%= cosme.brand_name %></div>
-          <div class="jancode"><%= cosme.jancode %></div>
-          <div class="cosme-url">
-            <a href="<%= cosme.url %>">Buy now!</a>
-          </div>
-        </div>
+        <%=
+          @cosme = cosme
+          erb :"common/cosmetic_block"
+        %>
       </div>
     <% end %>
   </div>
 </div>
+<script type="text/javascript">
+  $(".face-thumb-menu").mouseover(function() {
+    var thumb_url = $(this).children()[0].src;
+    var origin_url = thumb_url.replace("/thumb", "");
+    $("#photoset-mainphoto-img").attr("src", origin_url);
+  });
+</script>
 
 <%= erb :"common/footer" %>

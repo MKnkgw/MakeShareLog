@@ -1,0 +1,22 @@
+<span class="photo" style="width: <%= $cosme_thumb_width %>px">
+  <% if @not_search_cosme_link then %>
+    <img src="/cosme/thumb/<%= @cosme.id %>">
+  <% else %>
+    <a href="/search/cosme/<%= @cosme.id %>"><img src="/cosme/thumb/<%= @cosme.id %>"></a>
+  <% end %>
+</span>
+<div class="explanation">
+  <div class="cosme-name">
+    <% if @not_search_cosme_link then %>
+      <%= @cosme.name %>
+    <% else %>
+      <a href="/search/cosme/<%= @cosme.id %>"><%= @cosme.name %></a>
+    <% end %>
+  </div>
+  <div class="cosme-brand"><%= @cosme.brand_name %></div>
+  <div class="cosme-part"><%= @cosme.part_name %></div>
+  <div class="jancode">JAN:<%= @cosme.jancode %></div>
+  <div class="cosme-url">
+    <a href="<%= @cosme.url %>">Buy now!</a>
+  </div>
+</div>

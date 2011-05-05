@@ -1,6 +1,5 @@
 <%=
-  @title = "My Page"
-  @is_home = true
+  @title = "#{@user_name} on COSMEnication"
   erb :"common/header"
 %>
 
@@ -31,7 +30,7 @@
           @cosme = cosme
           erb :"common/cosmetic_block"
         %>
-    </div>
+      </div>
     <% end %>
   </div>
 </div>
