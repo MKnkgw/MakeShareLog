@@ -21,7 +21,16 @@ class User
 
   has n, :photo_sets
   has n, :own_cosmetics
+  has n, :public_settings
   belongs_to :user_level
+
+  def public?(part_type_id)
+    PublicSetting.first(
+      :user_id => id,
+      :part_type_id => part_type_id,
+      :public => true
+    )
+  end
 end
 
 class UserLevel
@@ -34,6 +43,16 @@ class UserLevel
   has n, :users
 end
 
+class PublicSetting
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :public, Boolean
+
+  belongs_to :user
+  belongs_to :part_type
+end
+
 class PartType
   include DataMapper::Resource
 
@@ -42,10 +61,8 @@ class PartType
 
   has n, :photos
   has n, :cosmetics
+  has n, :public_settings
 end
-
-PartTypes = {}
-PartType.all.each{|type| PartTypes[type.name.downcase.to_sym] = type.id}
 
 class PhotoSet
   include DataMapper::Resource
@@ -59,23 +76,23 @@ class PhotoSet
   belongs_to :user
   belongs_to :user_level
 
-  def user_name
-    user.name
-  end
   def date
     created_at.strftime("%Y/%m/%d")
   end
+  def photo(part_type_id)
+    Photo.first(:photo_set_id => id, :part_type_id => part_type_id)
+  end
   def eye
-    photos.find{|photo| photo.part_type_id == PartTypes[:eye]}
+    photo($part_types[:eye])
   end
   def cheek
-    photos.find{|photo| photo.part_type_id == PartTypes[:cheek]}
+    photo($part_types[:cheek])
   end
   def lip
-    photos.find{|photo| photo.part_type_id == PartTypes[:lip]}
+    photo($part_types[:lip])
   end
   def face
-    photos.find{|photo| photo.part_type_id == PartTypes[:face]}
+    photo($part_types[:face])
   end
 end
 
@@ -151,16 +168,10 @@ class Cosmetic
   belongs_to :part_type
   belongs_to :brand
   belongs_to :color
-
-  def part_name
-    part_type.name
-  end
-  def brand_name
-    brand.name
-  end
-  def color_name
-    color.name
-  end
 end
 
 DataMapper.auto_upgrade!
+
+$part_types = {}
+PartType.all.each{|type| $part_types[type.name.downcase.to_sym] = type.id}
+

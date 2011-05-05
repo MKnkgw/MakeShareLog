@@ -12,36 +12,36 @@ def new_user(name, pass, admin, level)
   user
 end
 
-def new_genuser(name)
-  new_user(name, name, false, UserLevel[0].id)
-end
-
 def find_or_create(klass, args)
   klass.first(args) || klass.create(args)
 end
 
-newbie = UserLevel.create(:name => "Newbie", :value => 0)
-middle = UserLevel.create(:name => "Middle", :value => 1)
-expert = UserLevel.create(:name => "Expert", :value => 2)
+$levels = {}
+$levels["newbie"] = newbie = UserLevel.create(:name => "Newbie", :value => 0)
+$levels["middle"] = middle = UserLevel.create(:name => "Middle", :value => 1)
+$levels["expert"] = expert = UserLevel.create(:name => "Expert", :value => 2)
 
-eye = PartType.create(:name => "Eye")
-cheek = PartType.create(:name => "Cheek")
-lip = PartType.create(:name => "Lip")
-face = PartType.create(:name => "Face")
+$eye = PartType.create(:name => "Eye")
+$cheek = PartType.create(:name => "Cheek")
+$lip = PartType.create(:name => "Lip")
+$face = PartType.create(:name => "Face")
 
 new_user("hogelog", "hogelog", true, expert.id)
-new_user("MKnkgw", "MKnkgw", true, newbie.id)
-new_genuser("tbyk_and")
-new_genuser("ankorobe")
-new_genuser("chihiroms")
-new_genuser("ch1h0")
-new_genuser("Maolol")
-new_genuser("ihomhom")
-new_genuser("azucado")
-new_genuser("mijink0")
-new_genuser("marina")
-new_genuser("kitty_mimmy")
-new_genuser("kisaroom")
+accounts = File.readlines("../data/account.txt")
+accounts[1...accounts.size].each{|line|
+  line.chomp!
+  name, level, *pubs = line.split(",")
+  user = new_user(name, name, false, $levels[level].id)
+ 
+  pubs.each_with_index{|x, i|
+    pub = PublicSetting.new(
+      :public => x == "1",
+      :user_id => user.id,
+      :part_type_id => [$face, $lip, $eye, $cheek][i].id
+    )
+    abort("cannot save public setting #{user.name}") if !pub.save
+  }
+}
 
 cosmetics = File.readlines("../data/cosmetics.csv")
 cosmetics[1...cosmetics.size].each{|line|

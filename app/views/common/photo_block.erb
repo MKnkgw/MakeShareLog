@@ -1,0 +1,14 @@
+<span class="photo" style="width: <%= $face_thumb_width %>px">
+  <a href="/face/<%= @photo.photo_set_id%>"><img src="/photo/thumb/<%= @photo.id %>" width="<%= $face_thumb_width %>px"></a>
+</span>
+<div class="explanation">
+  <div class="user-name">
+    <% if !@link_photo_user_name || @photo.user.name == session[:user_name] then %>
+      <%= @photo.user.name %>
+    <% else %>
+      <a href="/user/<%= @photo.user.name %>"><%= @photo.user.name %></a>
+    <% end %>
+  </div>
+  <div class="user-level"><%= @photo.photo_set.user_level.name %></div>
+  <div class="date"><%= @photo.date %></div>
+</div>

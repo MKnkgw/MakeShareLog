@@ -6,35 +6,31 @@
 
 <div id="common-main">
 
-<div id="common-left">
-  <div class="photo-list">
-    <% @photo_list.each do|photo| %>
-      <div class="photo-block">
-        <span class="photo" style="width: <%= $face_thumb_width %>px">
-          <a href="/face/<%= photo.photo_set_id%>"><img src="/photo/thumb/<%= photo.id %>" width="<%= $face_thumb_width %>px"></a>
-        </span>
-        <div class="explanation">
-          <div class="user-name"><%= photo.user.name %></div>
-          <div class="user-level"><%= photo.photo_set.user_level.name %></div>
-          <div class="date"><%= photo.date %></div>
+  <div id="common-left">
+    <div class="photo-list">
+      <% @photo_list.each do|photo| %>
+        <div class="photo-block">
+          <%=
+            @photo = photo
+            erb :"common/photo_block"
+          %>
         </div>
-      </div>
-    <% end %>
-  </div>
-</div>
-
-<div id="common-right">
-  <div class="cosmetic-list">
-    <% @cosme_list.each do|cosme| %>
-      <div class="cosmetic-block">
-        <%=
-          @cosme = cosme
-          erb :"common/cosmetic_block"
-        %>
+      <% end %>
     </div>
-    <% end %>
   </div>
-</div>
+  
+  <div id="common-right">
+    <div class="cosmetic-list">
+      <% @cosme_list.each do|cosme| %>
+        <div class="cosmetic-block">
+          <%=
+            @cosme = cosme
+            erb :"common/cosmetic_block"
+          %>
+      </div>
+      <% end %>
+    </div>
+  </div>
 
 </div>
 

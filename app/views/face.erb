@@ -1,5 +1,5 @@
 <%=
-  @title = "#{@photoset.user_name} #{@photoset.date}"
+  @title = "#{@photoset.user.name} #{@photoset.date}"
   @scripts = ["/js/face.js"]
   erb :"common/header"
 %>
@@ -8,7 +8,7 @@
   <div id="face-photoset">
     <div id="photoset-photo">
       <div id="photoset-mainphoto">
-        <img id="photoset-mainphoto-img" src="/photo/<%= @photoset.face.id %>">
+        <img id="photoset-mainphoto-img" src="/photo/<%= @photo.id %>">
       </div>
       <div id="photoset-parts">
         <% @photos.each do|photo| %>
