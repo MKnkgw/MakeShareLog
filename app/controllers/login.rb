@@ -1,11 +1,5 @@
 class Login < Sinatra::Base
   set :sessions, true
-
-  configure(:development) do
-    register Sinatra::Reloader
-    #also_reload "app/models/*.rb"
-    #dont_reload "lib/**/*.rb"
-  end
   
   get "/login" do
     erb :login
