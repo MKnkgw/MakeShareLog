@@ -1,0 +1,52 @@
+<%=
+  @title = "#{@cosme.name} Users"
+  erb :"common/header"
+%>
+
+<div id="index-main">
+
+<div id="index-left">
+  <div class="photo-list">
+    <% @photo_list.each do|photo| %>
+      <div class="photo-block">
+        <span class="photo" style="width: <%= $face_thumb_width %>px">
+          <a href="/face/<%= photo.photo_set_id%>"><img src="/photo/thumb/<%= photo.id %>" width="<%= $face_thumb_width %>px"></a>
+        </span>
+        <div class="explanation">
+          <% if photo.user_name == session[:user_name] then %>
+            <div class="user-name"><%= photo.user_name %></div>
+          <% else %>
+            <div class="user-name">
+              <a href="/user/<%= photo.user_name %>"><%= photo.user_name %></a>
+            </div>
+          <% end %>
+          <div class="user-level"><%= photo.user_level %></div>
+          <div class="date"><%= photo.date %></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div id="index-right">
+  <div class="cosmetic-list">
+    <div class="cosmetic-block">
+      <span class="photo" style="width: <%= $cosme_thumb_width %>px">
+        <img src="/cosme/thumb/<%= @cosme.id %>">
+      </span>
+      <div class="explanation">
+        <div class="cosme-name"><%= @cosme.name %></div>
+        <div class="cosme-brand"><%= @cosme.brand_name %></div>
+        <div class="cosme-part"><%= @cosme.part_name %></div>
+        <div class="jancode">JAN:<%= @cosme.jancode %></div>
+        <div class="cosme-url">
+          <a href="<%= @cosme.url %>">Buy now!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<%= erb :"common/footer" %>

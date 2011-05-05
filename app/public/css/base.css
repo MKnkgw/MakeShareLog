@@ -14,46 +14,53 @@ tag, tag, #id, .class {}
 */
 
 * { margin : 0 ; padding : 0 ; }
-body { 
-	width : 80% ;
-	background-color : #ffffff ;
+body {
 	color : #3399cc ;
 }
-#content-main { 
-	position : relative ;
-	margin: 0 auto; width : 700px ;
-}
-#header { width : 100% ; height : 150px ; margin-bottom: 10px;}
-#footer { width : 100% ; clear : both ; color : #fc0082 ; margin: 10px 50px;}
 
-#right-content { float : left ; width : 350px ; }
-#left-content { float : left ; width : 350px ; }
-
-.photo-list { float : left ; width : 350px ; }
-.cosmetic-list { float : left ; width : 350px ; }
-
-.photo-block { float : left ; width : 350px ; }
-.cosmetic-block { float : left ; width : 350px ; }
-
-.photo { float : left ; width : 100px ; }
-.explanation { float : left ; width : 250px ; }
-
-.user-name { float : left ; width : 250px ; }
-.user-level { float : left ; width : 250px ; }
-.date { float : left ; width : 250px ; }
-
-.cosme-part { float : left ; width : 250px ; }
-.jancode { float : left ; width : 250px ; }
-.cosme-url { float : left ; width : 250px ; }
-
-/*.photo-block { float : left ; width : 100px ; }*/
-.photo-block { width : 100px ; }
-/*.cosmetic-block { float : left ; width : 100px ; }*/
-.cosmetic-block { width : 100px ; }
-.photo { float : left ; width : 100px ; }
-/*.photo img { width : 100px ; }*/
-.explanation { float : left ; width : 250px ; }
+#header { width : 80% ; height : 150px ; margin-bottom: 10px;}
+#footer { width : 80% ; clear : both ; color : #fc0082 ; margin: 10px 50px;}
 
 .error {
   color: red;
 }
+
+/** /index **/
+#index-main { 
+	position : relative ;
+	margin: 0 auto; width : 700px ;
+  padding-right: 20%;
+}
+#index-right { float : left ; width : 350px ; }
+#index-left { float : left ; width : 350px ; }
+
+.photo-list { width : 350px ; }
+.photo-block { clear: both; width : 350px ; padding: 10px;}
+
+.cosmetic-list { width : 350px ; }
+.cosmetic-block { clear: both; width : 350px ; padding: 10px;}
+
+.photo { float : left ; }
+.explanation { float: left; width : 150px ; }
+
+.user-name { }
+.user-level { }
+.date { }
+
+.cosme-part { }
+.jancode {  }
+.cosme-url { }
+
+/** /face/1 **/
+#face-main { 
+	position : relative ;
+	margin: 0 auto; width : 1000px ;
+}
+#photoset-mainphoto { float: left; width: 900px }
+#photoset-mainphoto img { width: 900px;}
+
+#photoset-parts { float: left; width: 100px; }
+#photoset-parts img { width: 100px; }
+#photoset-description { clear: both; }
+
+.face-cosmetic-block { float: left; width : 250px ; padding: 10px;}

@@ -3,12 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="css/base.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/css/base.css" media="screen" />
 <title><%= @title %></title>
 </head>
 <body>
     <div id="header">
-        <img src="img/COSMEnication.png" width="400" height="150">
+        <img src="/img/COSMEnication.png" width="400" height="150">
+        <% if session[:user_name] then %>
+          <a href="/">HOME</a>
+          <a href="/setting">SETTING</a>
+        <% end %>
     </div>
 
 <% if @error then %>

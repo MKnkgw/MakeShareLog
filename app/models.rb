@@ -44,6 +44,9 @@ class PartType
   has n, :cosmetics
 end
 
+PartTypes = {}
+PartType.all.each{|type| PartTypes[type.name.downcase.to_sym] = type.id}
+
 class PhotoSet
   include DataMapper::Resource
 
@@ -55,6 +58,28 @@ class PhotoSet
   has n, :cosmetics, :through => :cosmetic_taggings
   belongs_to :user
   belongs_to :user_level
+
+  def user_name
+    User.get(user_id).name
+  end
+  def user_level
+    UserLevel.get(user_level_id).name
+  end
+  def date
+    created_at.strftime("%Y/%m/%d")
+  end
+  def eye
+    photos.find{|photo| photo.part_type_id == PartTypes[:eye]}
+  end
+  def cheek
+    photos.find{|photo| photo.part_type_id == PartTypes[:cheek]}
+  end
+  def lip
+    photos.find{|photo| photo.part_type_id == PartTypes[:lip]}
+  end
+  def face
+    photos.find{|photo| photo.part_type_id == PartTypes[:face]}
+  end
 end
 
 class Photo
@@ -138,6 +163,9 @@ class Cosmetic
 
   def part_name
     PartType.get(part_type_id).name
+  end
+  def brand_name
+    Brand.get(brand_id).name
   end
 end
 
