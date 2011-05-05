@@ -19,7 +19,11 @@ class Login < Sinatra::Base
       if user then
         session[:user_name] = name
         session[:user_id] = user.id
-        redirect "/"
+        if session[:goto] then
+          redirect session[:goto]
+        else
+          redirect "/"
+        end
       else
         @error = "ƒƒOƒCƒ“Ž¸”s‚µ‚Ü‚µ‚½B"
         erb :login

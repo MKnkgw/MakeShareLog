@@ -167,6 +167,9 @@ class Cosmetic
   def brand_name
     Brand.get(brand_id).name
   end
+  def color_name
+    Color.get(color_id).name
+  end
 end
 
 DataMapper.auto_upgrade!

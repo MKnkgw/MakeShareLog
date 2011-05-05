@@ -26,6 +26,7 @@ use Login
 
 before do
   if !session[:user_name] then
+    session[:goto] = request.url
     redirect "/login"
     halt
   end
