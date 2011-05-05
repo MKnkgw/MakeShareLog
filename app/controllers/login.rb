@@ -20,12 +20,14 @@ class Login < Sinatra::Base
         session[:user_name] = name
         session[:user_id] = user.id
         if session[:goto] then
-          redirect session[:goto]
+          goto = session[:goto]
+          session[:goto] = nil
+          redirect goto
         else
           redirect "/"
         end
       else
-        @error = "ƒƒOƒCƒ“Ž¸”s‚µ‚Ü‚µ‚½B"
+        @error = "ãƒ­ã‚°ã‚¤ãƒ³å¤±æ•—ã—ã¾ã—ãŸã€‚"
         erb :login
       end
     else
@@ -43,7 +45,7 @@ class Login < Sinatra::Base
     if user.save then
       redirect "/login"
     else
-      @error = "ƒ†[ƒUì¬‚ÉŽ¸”s‚µ‚Ü‚µ‚½B"
+      @error = "ãƒ¦ãƒ¼ã‚¶ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
       erb :create
     end
   end

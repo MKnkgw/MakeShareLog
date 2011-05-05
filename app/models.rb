@@ -17,7 +17,7 @@ class User
   property :name, String, :allow_nil => false
   property :pass, String, :allow_nil => false
   property :admin, Boolean, :allow_nil => false, :default => false
-  property :created_at, DateTime, :default => TimeProc, :allow_nil => false
+  property :created_at, Time, :default => TimeProc, :allow_nil => false
 
   has n, :photo_sets
   has n, :own_cosmetics
@@ -68,7 +68,7 @@ class PhotoSet
   include DataMapper::Resource
 
   property :id, Serial
-  property :created_at, DateTime, :default => TimeProc, :allow_nil => false
+  property :created_at, Time, :default => TimeProc, :allow_nil => false
 
   has n, :photos
   has n, :cosmetic_taggings
@@ -101,7 +101,7 @@ class Photo
 
   property :id, Serial
   property :path, String, :allow_nil => false
-  property :created_at, DateTime, :default => TimeProc, :allow_nil => false
+  property :created_at, Time, :default => TimeProc, :allow_nil => false
 
   belongs_to :photo_set
   belongs_to :part_type

@@ -10,10 +10,10 @@ post "/setting" do
     user = User.first(:name => name)
     user[:pass] = Digest::MD5.hexdigest(pass1)
     if !user.save then
-      @error = "ƒpƒXƒ[ƒh‚Ì•ÏX‚É¸”s‚µ‚Ü‚µ‚½"
+      @error = "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸ"
     end
   else
-    @error = "ƒpƒXƒ[ƒh‚ªˆá‚¢‚Ü‚·"
+    @error = "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™"
   end
   erb :setting
 end

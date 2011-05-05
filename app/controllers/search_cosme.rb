@@ -7,10 +7,10 @@ get "/search/cosme/:cosme_id" do
     user = User.get(set.user_id)
     session[:user_id] == user.id || user.public_settings.any?{|pub| pub.public}
   }.sort_by{|set|
-    [-set.user_level.value, set.created_at]
+    [-set.user_level.value, -1*set.created_at.to_i]
   }.map{|set|
     user = User.get(set.user_id)
-    if user.public?($part_types[:face]) then
+    if user.id == session[:user_id] || user.public?($part_types[:face]) then
       set.face
     elsif user.public?(@cosme.part_type_id) then
       set.photo(@cosme.part_type_id)

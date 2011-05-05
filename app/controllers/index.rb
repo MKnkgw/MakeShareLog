@@ -4,8 +4,8 @@ get %r{^/$|^/index$} do
   @photo_list = Photo.all(
     :user_id => user_id,
     :part_type_id => $part_types[:face]
-  ).sort!{|a, b|
-    b.created_at <=> a.created_at
+  ).sort_by{|photo|
+    -photo.created_at.to_i
   }
   @cosme_list = OwnCosmetic.all(:user_id => user_id).map{|own|
     own.cosmetic
