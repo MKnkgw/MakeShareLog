@@ -18,8 +18,14 @@ p {
   margin: 1em;
 }
 body {
-	color : #3399cc ;
+	color : #22bbcc ;
 }
+a {
+  color: #6D84B4;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
 
 #header { width : 80% ; height : 150px ; margin-bottom: 10px;}
 #footer { width : 80% ; clear : both ; color : #fc0082 ; margin: 10px 50px;}
@@ -49,9 +55,9 @@ body {
 .photo { float : left ; }
 .explanation { float: left; width : 150px ; }
 
-.user-name { }
-.user-level { }
-.date { }
+.user-name { font-weight: normal; }
+.user-level { font-size: 80%; }
+.date { color: #999; font-size: 80%; }
 
 .cosme-part { }
 .jancode {  }
@@ -67,6 +73,21 @@ body {
 
 #photoset-parts { float: left; width: 100px; }
 #photoset-parts img { width: 100px; padding: 5px; }
-#photoset-description { clear: both; }
+#photoset-description {
+  clear: both;
+  color: #333;
+  margin-top: 3px;
+  border-bottom: 1px solid #E5EAF1;
+  padding: 5px 5px 4px;
+  background-color: #EDEFF4;
+  width: 500px;
+}
+#photoset-like {cursor: pointer; font-size: 80%; color: #6D84B4; }
+#photoset-like:hover { text-decoration: underline; }
+
+#photoset-like-count {
+  font-size: 80%;
+}
+
 
 .face-cosmetic-block { float: left; width : 250px ; padding: 10px;}

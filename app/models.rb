@@ -73,6 +73,7 @@ class PhotoSet
   has n, :photos
   has n, :cosmetic_taggings
   has n, :cosmetics, :through => :cosmetic_taggings
+  has n, :likes
   belongs_to :user
   belongs_to :user_level
 
@@ -168,6 +169,13 @@ class Cosmetic
   belongs_to :part_type
   belongs_to :brand
   belongs_to :color
+end
+
+class Like
+  include DataMapper::Resource
+
+  belongs_to :user, :key => true
+  belongs_to :photo_set, :key => true
 end
 
 DataMapper.auto_upgrade!

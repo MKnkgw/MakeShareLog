@@ -18,11 +18,27 @@
         <% end %>
       </div>
     </div>
+    <div style="clear: both"> </div>
     <div id="photoset-description">
-      <%= @photoset.user.name %>
-      <%= @photoset.date %>,
-      <%= @photoset.user_level.name %>
-      &nbsp;&nbsp;<a href="#">いいね！</a>
+      <span class="user-name">
+        <% if @photoset.user.id == session[:user_id] then %>
+          <%= @photoset.user.name %>
+        <% else %>
+          <a href="/user/<%= @photoset.user.name %>"><%= @photoset.user.name %></a>
+        <% end %>
+      </span>
+      <span class="date"><%= @photoset.date %></span>
+      <span class="user-level"><%= @photoset.user_level.name %></span>
+      <% if @you_like then %>
+        <span id="photoset-like" title="いいね！を取り消す" name="unlike">いいね！を取り消す</span>
+      <% else %>
+        <span id="photoset-like" title="いいね！" name="like">いいね！</span>
+      <% end %>
+      <% if @likes > 0 %>
+        <span id="photoset-like-count">
+          <%= @likes %>人が「いいね！」と言っています。
+        </span>
+      <% end %>
     </div>
   </div>
   <div id="face-cosmetics">
@@ -41,6 +57,20 @@
     var thumb_url = $(this).children()[0].src;
     var origin_url = thumb_url.replace("/thumb", "");
     $("#photoset-mainphoto-img").attr("src", origin_url);
+  });
+  $("#photoset-like").click(function() {
+    var likespan = $(this);
+    if (likespan.attr("name") == "like") {
+      $.get("/like/<%= @photoset.id%>", function() {
+        likespan.attr("name", "unlike");
+        likespan.text("いいね！を取り消す");
+      });
+    } else {
+      $.get("/unlike/<%= @photoset.id%>", function() {
+        likespan.attr("name", "like");
+        likespan.text("いいね！");
+      });
+    }
   });
 </script>
 
