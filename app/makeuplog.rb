@@ -1,3 +1,5 @@
+#!/usr/bin/ruby -rubygems
+
 require "sinatra"
 require "erb"
 require "digest/md5"
