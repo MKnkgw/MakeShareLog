@@ -60,10 +60,7 @@ class PhotoSet
   belongs_to :user_level
 
   def user_name
-    User.get(user_id).name
-  end
-  def user_level
-    UserLevel.get(user_level_id).name
+    user.name
   end
   def date
     created_at.strftime("%Y/%m/%d")
@@ -93,12 +90,6 @@ class Photo
   belongs_to :part_type
   belongs_to :user
 
-  def user_name
-    User.get(user_id).name
-  end
-  def user_level
-    UserLevel.get(PhotoSet.get(photo_set_id).user_level_id).name
-  end
   def date
     created_at.strftime("%Y/%m/%d")
   end
@@ -162,13 +153,13 @@ class Cosmetic
   belongs_to :color
 
   def part_name
-    PartType.get(part_type_id).name
+    part_type.name
   end
   def brand_name
-    Brand.get(brand_id).name
+    brand.name
   end
   def color_name
-    Color.get(color_id).name
+    color.name
   end
 end
 

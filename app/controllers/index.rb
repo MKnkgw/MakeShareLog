@@ -4,9 +4,9 @@ get %r{^/$|^/index$} do
   @photo_list = Photo.all(
     :user_id => user_id,
     :part_type_id => PartTypes[:face]
-  )
+  ).sort{|a, b| -1*(a.created_at <=> b.created_at)}
   @cosme_list = OwnCosmetic.all(:user_id => user_id).map{|own|
-    Cosmetic.get(own.cosmetic_id)
+    own.cosmetic
   }
   erb :index
 end

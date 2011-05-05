@@ -13,14 +13,14 @@
           <a href="/face/<%= photo.photo_set_id%>"><img src="/photo/thumb/<%= photo.id %>" width="<%= $face_thumb_width %>px"></a>
         </span>
         <div class="explanation">
-          <% if photo.user_name == session[:user_name] then %>
-            <div class="user-name"><%= photo.user_name %></div>
+          <% if photo.user.name == session[:user_name] then %>
+            <div class="user-name"><%= photo.user.name %></div>
           <% else %>
             <div class="user-name">
-              <a href="/user/<%= photo.user_name %>"><%= photo.user_name %></a>
+              <a href="/user/<%= photo.user.name %>"><%= photo.user.name %></a>
             </div>
           <% end %>
-          <div class="user-level"><%= photo.user_level %></div>
+          <div class="user-level"><%= photo.photo_set.user_level.name %></div>
           <div class="date"><%= photo.date %></div>
         </div>
       </div>
