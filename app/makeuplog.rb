@@ -1,5 +1,4 @@
 require "sinatra"
-require "sinatra/reloader"
 require "erb"
 require "digest/md5"
 
