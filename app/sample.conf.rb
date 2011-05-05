@@ -1,6 +1,9 @@
-set :port, 80
-set :reload, true
+require "sinatra/reloader"
 
+set :port, 80
+set :reload, true if development?
+
+$appname = "COSMEnication"
 $face_thumb_width = 200
 $cosme_thumb_width = 100
 $datadir = "../data"
