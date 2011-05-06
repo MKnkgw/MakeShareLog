@@ -1,0 +1,54 @@
+<%=
+  @title = "#{@cosme.name}"
+  erb :"common/header"
+%>
+
+<div id="common-main">
+  <form action="/cosme/edit/<%= @cosme.jancode %>" method="POST" enctype="multipart/form-data">
+    <table>
+      <tr class="cosme-photo">
+        <td>
+          <label for="cosme_photo_file" class="cosme-edit-label">
+            <div>商品写真</div>
+            <div><img width="<%= $cosme_thumb_width %>px" src="/cosme/thumb/<%= @cosme.id %>"></div>
+          </label>
+        </td>
+        <td><input id="cosme_photo_file" type="file" name="cosme_photo_file"></td>
+      </tr>
+      <tr class="cosme-name">
+        <td><label for="cosme_name" class="cosme-edit-label">商品名</label></td>
+        <td><input id="cosme_name" type="text" name="cosme_name" size="40" value="<%= @cosme.name %>"></td>
+      </tr>
+      <tr class="cosme-brand">
+        <td><label for="cosme_brand" class="cosme-edit-label">ブランド</label></td>
+        <td><input id="cosme_brand" type="text" name="cosme_brand" size="40" value="<%= @cosme.brand.name %>"></td>
+      </tr>
+      <tr class="cosme-part">
+        <td><label for="cosme_part" class="cosme-edit-label">パーツ</label></td>
+        <td>
+          <select id="cosme_part" name="cosme_part">
+            <% PartType.all.each do|part| %>
+              <% if part.id == @cosme.part_type_id then %>
+                <option value="<%= part.id %>" selected><%= part.name %></option>
+              <% else %>
+                <option value="<%= part.id %>"><%= part.name %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr class="cosme-color">
+        <td><label for="cosme_color" class="cosme-edit-label">色</label></td>
+        <td><input id="cosme_color" type="text" name="cosme_color" size="40" value="<%= @cosme.color.name %>"></td>
+      </tr>
+      <tr class="cosme-url">
+        <td><label for="cosme_url" class="cosme-edit-label">URL</label></td>
+        <td><input id="cosme_url" type="text" name="cosme_url" size="40" value="<%= @cosme.url %>"></td>
+      </tr>
+    </table>
+    <input type="submit" value="更新">
+  </form>
+
+</div>
+
+<%= erb :"common/footer" %>

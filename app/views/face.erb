@@ -8,7 +8,7 @@
   <div id="face-photoset">
     <div id="photoset-photo">
       <div id="photoset-mainphoto">
-        <img id="photoset-mainphoto-img" src="/photo/<%= @photo.id %>">
+        <img width="<%= $face_mainphoto_width %>" id="photoset-mainphoto-img" src="/photo/thumb/<%= @photo.id %>w<%= $face_mainphoto_width %>">
       </div>
       <div id="photoset-parts">
         <% @photos.each do|photo| %>
@@ -55,7 +55,7 @@
 <script type="text/javascript">
   $(".face-thumb-menu").mouseover(function() {
     var thumb_url = $(this).children()[0].src;
-    var origin_url = thumb_url.replace("/thumb", "");
+    var origin_url = thumb_url+"w"+<%= $face_mainphoto_width %>;
     $("#photoset-mainphoto-img").attr("src", origin_url);
   });
   $("#photoset-like").click(function() {

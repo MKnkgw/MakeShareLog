@@ -12,11 +12,11 @@ def create_thumb(src, dst, width)
   system("#$convert -resize #{width}x #{src} #{dst}")
 end
 
-def photo_thumb(prefix, id, photo_path, width)
-  ext = File.extname(photo_path)
+def photo_thumb(id, path, prefix, width)
+  ext = File.extname(path)
   thumb_path = "#$thumbdir/#{prefix}-#{id}-#{width}-thumb#{ext}"
-  if !File.exist?(thumb_path) then
-    create_thumb(photo_path, thumb_path, width)
+  if !File.exist?(thumb_path) || File.mtime(thumb_path) < File.mtime(path) then
+    create_thumb(path, thumb_path, width)
   end
   thumb_path
 end
@@ -24,6 +24,8 @@ end
 Dir.glob("controllers/*.rb").each{|rb| load(rb) }
 
 use Login
+use CosmeEdit
+use Thumbnail
 
 before do
   if !session[:user_name] then

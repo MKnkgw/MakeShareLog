@@ -59,9 +59,14 @@ a:hover { text-decoration: underline; }
 .user-level { font-size: 80%; }
 .date { color: #999; font-size: 80%; }
 
-.cosme-part { }
-.jancode {  }
-.cosme-url { }
+.cosme-photo { font-size: 80%; }
+.cosme-name { font-size: 80%; }
+.cosme-brand { font-size: 80%; }
+.cosme-part { font-size: 80%; }
+.jancode { font-size: 80%; }
+.cosme-color { font-size: 80%; }
+.cosme-url { font-size: 80%; }
+.cosme-edit { font-size: 80%; }
 
 /** /face/1 **/
 #face-main { 
@@ -89,5 +94,9 @@ a:hover { text-decoration: underline; }
   font-size: 80%;
 }
 
-
 .face-cosmetic-block { float: left; width : 250px ; padding: 10px;}
+
+.cosme-edit-label { 
+  float: left;
+  font-size: 125%;
+}

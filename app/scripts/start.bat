@@ -1,3 +1,3 @@
 @cd ..
-ruby -rubygems makeuplog.rb
+ruby makeuplog.rb
 @pause

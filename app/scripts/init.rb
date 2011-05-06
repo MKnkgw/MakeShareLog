@@ -12,10 +12,6 @@ def new_user(name, pass, admin, level)
   user
 end
 
-def find_or_create(klass, args)
-  klass.first(args) || klass.create(args)
-end
-
 $levels = {}
 $levels["newbie"] = newbie = UserLevel.create(:name => "Newbie", :value => 0)
 $levels["middle"] = middle = UserLevel.create(:name => "Middle", :value => 1)

@@ -157,7 +157,7 @@ class Cosmetic
   include DataMapper::Resource
 
   property :id, Serial
-  property :jancode, String, :allow_nil => false
+  property :jancode, String, :allow_nil => false, :unique => true
   property :name, String, :allow_nil => false
   property :url, String
   property :image, String
@@ -183,3 +183,6 @@ DataMapper.auto_upgrade!
 $part_types = {}
 PartType.all.each{|type| $part_types[type.name.downcase.to_sym] = type.id}
 
+def find_or_create(klass, args)
+  klass.first(args) || klass.create(args)
+end
