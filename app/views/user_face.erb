@@ -8,12 +8,12 @@
   <div id="face-photoset">
     <div id="photoset-photo">
       <div id="photoset-mainphoto">
-        <img width="<%= $face_mainphoto_width %>" id="photoset-mainphoto-img" src="/photo/thumb/<%= @photo.id %>w<%= $face_mainphoto_width %>">
+        <img width="<%= $face_mainphoto_width %>" id="photoset-mainphoto-img" src="/face/thumb/<%= @photo.id %>w<%= $face_mainphoto_width %>">
       </div>
       <div id="photoset-parts">
-        <% @photos.each do|photo| %>
+        <% @photos.each do|part| %>
           <span class="photo face-thumb-menu">
-            <img class="face-thumb-menu-img" src="/photo/thumb/<%= photo.id %>">
+            <img class="face-thumb-menu-img" src="/face/thumb/<%= part.photo.id %>">
           </span>
         <% end %>
       </div>
@@ -36,7 +36,11 @@
       <% end %>
       <% if @likes > 0 %>
         <span id="photoset-like-count">
-          <%= @likes %>人が「いいね！」と言っています。
+          <span id="photoset-like-count-number"><%= @likes %></span>人が「いいね！」と言っています。
+        </span>
+      <% else %>
+        <span id="photoset-like-count" style="display: none">
+          <span id="photoset-like-count-number"><%= @likes %></span>人が「いいね！」と言っています。
         </span>
       <% end %>
     </div>
@@ -53,6 +57,7 @@
   </div>
 </div>
 <script type="text/javascript">
+  var likes = <%= @likes %>
   $(".face-thumb-menu").mouseover(function() {
     var thumb_url = $(this).children()[0].src;
     var origin_url = thumb_url+"w"+<%= $face_mainphoto_width %>;
@@ -60,15 +65,22 @@
   });
   $("#photoset-like").click(function() {
     var likespan = $(this);
+    var likecount = $("#photoset-like-count");
+    var likenum = $("#photoset-like-count-number");
     if (likespan.attr("name") == "like") {
       $.get("/like/<%= @photoset.id%>", function() {
         likespan.attr("name", "unlike");
         likespan.text("いいね！を取り消す");
+        likecount.css("display", "inline");
+        likenum.text(likes += 1);
       });
     } else {
       $.get("/unlike/<%= @photoset.id%>", function() {
         likespan.attr("name", "like");
         likespan.text("いいね！");
+        likenum.text(likes -= 1);
+        if (likes == 0)
+          likecount.css("display", "none");
       });
     }
   });

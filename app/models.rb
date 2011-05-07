@@ -59,7 +59,7 @@ class PartType
   property :id, Serial
   property :name, String, :allow_nil => false
 
-  has n, :photos
+  has n, :face_photos
   has n, :cosmetics
   has n, :public_settings
 end
@@ -70,7 +70,7 @@ class PhotoSet
   property :id, Serial
   property :created_at, Time, :default => TimeProc, :allow_nil => false
 
-  has n, :photos
+  has n, :face_photos
   has n, :cosmetic_taggings
   has n, :cosmetics, :through => :cosmetic_taggings
   has n, :likes
@@ -81,7 +81,7 @@ class PhotoSet
     created_at.strftime("%Y/%m/%d")
   end
   def photo(part_type_id)
-    Photo.first(:photo_set_id => id, :part_type_id => part_type_id)
+    FacePhoto.first(:photo_set_id => id, :part_type_id => part_type_id)
   end
   def eye
     photo($part_types[:eye])
@@ -104,13 +104,25 @@ class Photo
   property :path, String, :allow_nil => false
   property :created_at, Time, :default => TimeProc, :allow_nil => false
 
+  def Photo.last_insert_id
+    instance = last
+    if instance then
+      instance.id
+    else
+      0
+    end
+  end
+end
+
+class FacePhoto
+  include DataMapper::Resource
+
+  property :id, Serial
+
+  belongs_to :photo
   belongs_to :photo_set
   belongs_to :part_type
   belongs_to :user
-
-  def date
-    created_at.strftime("%Y/%m/%d")
-  end
 end
 
 class Brand
@@ -160,7 +172,6 @@ class Cosmetic
   property :jancode, String, :allow_nil => false, :unique => true
   property :name, String, :allow_nil => false
   property :url, String
-  property :image, String
 
   has n, :cosmetic_taggings
   has n, :photo_sets, :through => :cosmetic_taggings
@@ -169,6 +180,7 @@ class Cosmetic
   belongs_to :part_type
   belongs_to :brand
   belongs_to :color
+  belongs_to :photo
 end
 
 class Like

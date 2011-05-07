@@ -17,8 +17,7 @@ class CosmeEdit < Sinatra::Base
     part = params[:cosme_part].to_i
     color = params[:cosme_color]
     url = params[:cosme_url]
-  
-    @cosme = Cosmetic.first(:jancode => params[:jancode])
+    jancode = params[:jancode]
 
     data = {
       :name => name,
@@ -28,21 +27,19 @@ class CosmeEdit < Sinatra::Base
       :url => url,
     }
 
-    unless @cosme then
-      data[:jancode] = params[:jancode]
+    if photo_file then
+      new_id = Photo.last_insert_id + 1
+      name = "cosme_photo/cosme-upload-#{new_id}-#{photo_file[:filename]}"
+      photo = upload_photo_file(photo_file[:tempfile], name)
+      data[:photo_id] = photo.id
+    end
+
+    if @cosme = Cosmetic.first(:jancode => params[:jancode]) then
+      @cosme.update(data)
+    else
       @cosme = Cosmetic.create(data)
     end
 
-    if photo_file then
-      tempfile = photo_file[:tempfile]
-      name = "cosme_photo/cosme-upload-#{@cosme.id}-#{photo_file[:filename]}"
-      path = "#$datadir/#{name}"
-      File.open(path, "wb"){|file|
-        file.write(tempfile.read)
-      }
-      data[:image] = name
-    end
-    @cosme.update(data)
     if session[:user_name] && session[:cosme_edit_before] then
       redirect session[:cosme_edit_before]
     else

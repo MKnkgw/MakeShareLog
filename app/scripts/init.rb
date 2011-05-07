@@ -47,6 +47,10 @@ cosmetics[1...cosmetics.size].each{|line|
   brand = find_or_create(Brand, :name => brandname)
   color = find_or_create(Color, :name => colorname)
 
+  unless photo = find_or_create(Photo, :path => imgpath) then
+    abort("cannot save cosmetic photo #{imgpath}")
+  end
+
   cosme = Cosmetic.new(
     :jancode => jan,
     :part_type_id => part.id,
@@ -54,7 +58,7 @@ cosmetics[1...cosmetics.size].each{|line|
     :name => name,
     :color_id => color.id,
     :url => url,
-    :image => imgpath
+    :photo_id => photo.id
   )
 
   abort("cannot save cosmetic #{name}") if !cosme.save
@@ -117,11 +121,15 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
 
     photo = Photo.new(
       :path => photo_path.sub(/^..\/data\//, ""),
-      :created_at => time,
+      :created_at => time
+    )
+    abort("cannot save photo #{photo_path}") if !photo.save
+    face = FacePhoto.new(
+      :photo_id => photo.id,
       :photo_set_id => photoset.id,
       :part_type_id => part.id,
       :user_id => user.id
     )
-    abort("cannot save #{photo_path}") if !photo.save
+    abort("cannot save face photo #{photo_path}") if !face.save
   }
 }

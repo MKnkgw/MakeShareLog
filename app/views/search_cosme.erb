@@ -7,10 +7,10 @@
 
 <div id="common-left">
   <div class="photo-list">
-    <% @photo_list.each do|photo| %>
+    <% @photo_list.each do|face| %>
       <div class="photo-block">
         <%=
-          @photo = photo
+          @face = face
           @link_photo_user_name = true
           erb :"common/photo_block"
         %>

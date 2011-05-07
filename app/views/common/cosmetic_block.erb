@@ -1,8 +1,8 @@
 <span class="photo" style="width: <%= $cosme_thumb_width %>px">
   <% if @not_search_cosme_link then %>
-    <img src="/cosme/thumb/<%= @cosme.id %>">
+    <img src="/cosme/thumb/<%= @cosme.photo.id %>">
   <% else %>
-    <a href="/search/cosme/<%= @cosme.id %>"><img src="/cosme/thumb/<%= @cosme.id %>"></a>
+    <a href="/search/cosme/<%= @cosme.id %>"><img src="/cosme/thumb/<%= @cosme.photo.id %>"></a>
   <% end %>
 </span>
 <div class="explanation">
