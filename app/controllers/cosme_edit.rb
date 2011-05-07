@@ -1,7 +1,11 @@
 class CosmeEdit < Sinatra::Base
   get "/cosme/new/:jancode" do
     @jancode = params[:jancode]
-    erb :cosme_new
+    if Cosmetic.first(:jancode => @jancode) then
+      redirect "/cosme/edit/#{@jancode}"
+    else
+      erb :cosme_new
+    end
   end
 
   get "/cosme/edit/:jancode" do
