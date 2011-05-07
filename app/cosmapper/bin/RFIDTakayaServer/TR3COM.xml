@@ -1,0 +1,2863 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TR3COM</name>
+    </assembly>
+    <members>
+        <member name="T:TR3COM.RFIDControl">
+            <summary>TR3シリーズを制御します。
+            </summary>
+            <summary>TR3シリーズを制御するためのクラスです。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_waittime">
+            <summary>コマンドの応答を待機する時間です。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_portNumber">
+            <summary>デフォルトのポート番号です。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_baudrate">
+            <summary>デフォルトの通信速度です。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_flgWaitingResponse">
+            <summary>レスポンスを待機しているかどうかのフラグです。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_UseDoEvents">
+            <summary>DoEventを実行するかどうかのフラグです。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_blockSize">
+            <summary>1ブロックあたりのバイト数です。書き込み時に使用します。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_blockSizeForMyd">
+            <summary>Mydの1ブロックあたりのバイト数です。書き込み時に使用します。</summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory(TR3COM.ISO15693Option)">
+            <summary>タグのUIDを取得します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>タグのUIDを取得します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory2(TR3COM.ISO15693Option,System.Boolean)">
+            <summary>アンチコリジョン対応のインベントリコマンドを送信して、タグの数とUIDを取得します。
+            <para>また、Inventory2の結果を後から取得するにはGetUIDCountメソッド,GetUIDメソッドを使用してください。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="needUIDResponse">コマンドの応答と同時にUIDを取得する場合はtrueを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory2(TR3COM.ISO15693Option,System.Boolean,System.Byte[])">
+            <summary>アンチコリジョン対応のインベントリコマンドを送信して、タグの数とUIDを取得します。
+            <para>また、Inventory2の結果を後から取得するにはGetUIDCountメソッド,GetUIDメソッドを使用してください。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="needUIDResponse">コマンドの応答と同時にUIDを取得する場合はtrueを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StayQuiet(TR3COM.ISO15693Option)">
+            <summary>タグをQuiet状態に遷移させます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StayQuiet(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>タグをQuiet状態に遷移させます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentException">UIDの指定が無効だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ResetToReady(TR3COM.ISO15693Option)">
+            <summary>タグをReady状態に遷移させます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ResetToReady(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>タグをReady状態に遷移させます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SelectTag(TR3COM.ISO15693Option)">
+            <summary>タグを選択します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SelectTag(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>タグを選択します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Kill(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>
+            タグの機能を無効化して、二度と読めなくします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Kill(TR3COM.ISO15693Option,System.Byte[],System.Byte[])">
+            <summary>
+            タグの機能を無効化して、二度と読めなくします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadSingleBlock(TR3COM.ISO15693ReadOption,System.Byte)">
+            <summary>タグ上の指定したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、Myd_Readを使用してください</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadSingleBlock(TR3COM.ISO15693ReadOption,System.Byte,System.Byte[])">
+            <summary>タグ上の指定したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、Myd_Readを使用してください</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadMultiBlock(TR3COM.ISO15693ReadOption,System.Byte,System.Byte)">
+            <summary>タグ上の連続したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、NAKを返します。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadMultiBlock(TR3COM.ISO15693ReadOption,System.Byte,System.Byte,System.Byte[])">
+            <summary>タグ上の連続したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、NAKを返します。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Read(TR3COM.ISO15693ReadOption,System.Byte)">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックのデータを読取ります。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Read(TR3COM.ISO15693ReadOption,System.Byte,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックのデータを読取ります。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadBytes(TR3COM.ISO15693ReadOption,System.Byte,System.Byte)">
+            <summary>指定ブロックから、指定バイト数のデータを読取ります。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取データ数を1から指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">lengthが有効範囲外の場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadBytes(TR3COM.ISO15693ReadOption,System.Byte,System.Byte,System.Byte[])">
+            <summary>指定ブロックから、指定バイト数のデータを読取ります。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取データ数を1から指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">lengthが有効範囲外の場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ISO15693_RDLOOPCmd(TR3COM.RDLOOPCmdOption,System.Byte,System.Byte)">
+            <summary>
+            RDLOOPモードと同様の読み取りを行います。
+            </summary>
+            <param name="rdoption">ISO15693_RDLOOPCmdコマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">読取り開始ブロックを指定します。</param>
+            <param name="length">読取るバイト数を指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ISO15693_RDLOOPCmd(TR3COM.RDLOOPCmdOption,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            RDLOOPモードと同様の読み取りを行います。
+            </summary>
+            <param name="rdoption">ISO15693_RDLOOPCmdコマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">読取り開始ブロックを指定します。</param>
+            <param name="length">読取るバイト数を指定します。</param>
+            <param name="afiValue">AFI 値を指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ISO15693_RDLOOPCmd(TR3COM.RDLOOPCmdOption,System.Byte,System.Byte,System.Boolean,System.Byte)">
+            <summary>
+            RDLOOPモードと同様の読み取りを行います。(内部処理用)
+            </summary>
+            <param name="rdoption">ISO15693_RDLOOPCmdコマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">読取り開始ブロックを指定します。</param>
+            <param name="length">読取るバイト数を指定します。</param>
+            <param name="checkAfi">AFI値を指定する倍はtrueを指定します。</param>
+            <param name="afiValue">AFI 値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(TR3COM.ISO15693WriteOption,System.Byte,System.String)">
+            <summary>WriteSingleBlockを送信します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[])">
+            <summary>WriteSingleBlockを送信します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(TR3COM.ISO15693WriteOption,System.Byte,System.String,System.Byte[])">
+            <summary>WriteSingleBlockを送信します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[],System.Byte[])">
+            <summary>WriteSingleBlockを送信します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.String)">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.Byte[])">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.String,System.Byte[])">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.Byte[],System.Byte[])">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteAFI(TR3COM.ISO15693WriteOption,System.Byte)">
+            <summary>タグのAFI値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="afi">AFI値を指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteAFI(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[])">
+            <summary>タグのAFI値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="afi">AFI値を指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteDSFID(TR3COM.ISO15693WriteOption,System.Byte)">
+            <summary>タグのDSFID値を変更します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="dsfid">DSFID値を指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteDSFID(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[])">
+            <summary>タグのDSFID値を変更します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="dsfid">DSFID値を指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(TR3COM.ISO15693WriteOption,System.Byte,System.String)">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(TR3COM.ISO15693WriteOption,System.Byte,System.String,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[],System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.String)">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むデータ長を1から指定します。</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.Byte[])">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むデータ長を1から指定します。</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.String,System.Byte[])">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むデータ長を1から指定します。</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(TR3COM.ISO15693WriteOption,System.Byte,System.Byte,System.Byte[],System.Byte[])">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むデータ長を1から指定します。</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlockPwd(TR3COM.ISO15693WriteOption,System.Byte,System.String,System.Byte[])">
+            <summary>
+            ロックされたブロックへ書込みを行います。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。</param>
+            <param name="writeData">書込みを行う文字列を指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlockPwd(TR3COM.ISO15693WriteOption,System.Byte,System.String,System.Byte[],System.Byte[])">
+            <summary>
+            ロックされたブロックへ書込みを行います。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。</param>
+            <param name="writeData">書込みを行う文字列を指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlockPwd(TR3COM.ISO15693Option,System.Byte,System.Byte[],System.Byte[])">
+            <summary>
+            ロックされたブロックへ書込みを行います。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。</param>
+            <param name="writeData">書込みを行う文字列を指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlockPwd(TR3COM.ISO15693Option,System.Byte,System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            ロックされたブロックへ書込みを行います。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">書込み対象のブロック番号を指定します。</param>
+            <param name="writeData">書込みを行う文字列を指定します。</param>
+            <param name="password">パスワードを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockBlock(TR3COM.ISO15693WriteOption,System.Byte)">
+            <summary>タグ上の指定したブロックをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">ロック対象のブロック番号を指定します。(0～)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockBlock(TR3COM.ISO15693WriteOption,System.Byte,System.Byte[])">
+            <summary>タグ上の指定したブロックをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="blockNo">ロック対象のブロック番号を指定します。(0～)</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockAFI(TR3COM.ISO15693WriteOption)">
+            <summary>タグのAFIをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockAFI(TR3COM.ISO15693WriteOption,System.Byte[])">
+            <summary>タグのAFIをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockDSFID(TR3COM.ISO15693WriteOption)">
+            <summary>タグのDSFIDをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockDSFID(TR3COM.ISO15693WriteOption,System.Byte[])">
+            <summary>タグのDSFIDをロックし、読取り専用にします。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetSystemInfo(TR3COM.ISO15693Option)">
+            <summary>タグ上のシステム情報を取得します。
+            <para>取得する情報は、AFI,DSFID,UID,カードメモリサイズ情報、IC基準情報です。</para>
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetSystemInfo(TR3COM.ISO15693Option,System.Byte[])">
+            <summary>タグ上のシステム情報を取得します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetMBlockSecSt(TR3COM.ISO15693Option,System.Byte,System.Byte)">
+            <summary>タグ上の連続した複数のブロックのセキュリティステータスを取得します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetMBlockSecSt(TR3COM.ISO15693Option,System.Byte,System.Byte,System.Byte[])">
+            <summary>タグ上の連続した複数のブロックのセキュリティステータスを取得します。
+            </summary>
+            <param name="option">ISO15693対応コマンド用のオプションを指定します。</param>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SimpleRead">
+            <summary>シンプルリードコマンドを送信します。
+            <para>R/Wはこのコマンドを受信すると、オートスキャンモードでタグを1度読みます。</para>
+            <para>タグの複数枚読み取り、連続読み取り等のオプションは動作モード設定時のオプションが使用されます。</para>
+            </summary>
+            <returns>0:送信成功 1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SimpleWrite(System.String)">
+            <summary>タグに可変長のデータを書き込みます。
+            <para>オートスキャンモード、SimpleReadで読み込むことができます。</para>
+            </summary>
+            <param name="writeData">送信するデータ</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SimpleWrite(System.Byte[])">
+            <summary>タグに可変長のデータを書き込みます。
+            <para>オートスキャンモード、SimpleReadで読み込むことができます。</para>
+            </summary>
+            <param name="writeData">送信するデータ</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SendData(System.Byte[])">
+            <summary>バイナリデータを直接、R/Wへ送信します。
+            応答を待機しません。
+            </summary>
+            <param name="data">送信するデータ</param>
+            <returns>0:送信成功 -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ValidateUID(System.Byte[])">
+            <summary>渡されたのUIDの妥当性を検査します。
+            検査するのは、UIDがnullではないか、UID長が異常でないか、の2点です。
+            <para>ISO15693対応コマンドでUIDを指定する際の妥当性検査でのみ使用します。</para>
+            </summary>
+            <param name="UID">対象のUID</param>
+            <exception cref="T:System.ArgumentException">UIDがnullの場合、UIDのデータ長が異なる場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CreateISO15693_RDLOOPCmdOption(TR3COM.RDLOOPCmdOption)">
+            <summary>
+            RDLOOP用のオプションを生成します。
+            </summary>
+            <param name="rdoption">RDLOOPCmd 用オプションを指定します。</param>
+            <returns>RDLOOP用のオプション（バイト）</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CreateByteArray(System.Byte[],System.Int32)">
+            <summary>
+            バイト配列を指定の長さに切り詰めます。
+            sourceArrayが指定の長さより短い場合は、defaultvalueで埋めます。
+            </summary>
+            <param name="sourceArray">対象バイト配列を指定します。</param>
+            <param name="newlength">新たに取得したい配列の長さを指定します。</param>
+            <returns>指定の長さのバイト配列</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Connect">
+            <summary>ポートをオープンします。
+            通信速度38400bpsはファームバージョン1.21以降の場合に使用できます。
+            </summary>
+            <returns>ポートのオープンに成功した場合はtrueを返します<br/>
+            また、すでにポートがオープンされている場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Connect(System.Int32)">
+            <summary>ポートをオープンします。
+            通信速度38400bpsはファームバージョン1.21以降の場合に使用できます。
+            </summary>
+            <param name="portNo">ポート番号</param>
+            <returns>ポートのオープンに成功した場合はtrueを返します<br/>
+            また、すでにポートがオープンされている場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Connect(System.Int32,TR3COM.RFID_BaudRate)">
+            <summary>ポートをオープンします。
+            通信速度38400bpsはファームバージョン1.21以降の場合に使用できます。
+            </summary>
+            <param name="portNo">ポート番号　を指定します。</param>
+            <param name="baudRate">通信速度を指定します。</param>
+            <returns>ポートのオープンに成功した場合はtrueを返します<br/>
+            また、すでにポートがオープンされている場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Disconnect">
+            <summary>ポートをクローズします。
+            </summary>
+            <returns>ポートのクローズに成功した場合はtrueを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ClearInputBuffer">
+            <summary>受信バッファからデータを破棄します。
+            </summary>
+            <returns>破棄に成功した場合はtrue,失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ClearOutputBuffer">
+            <summary>送信バッファからデータを破棄します。
+            </summary>
+            <returns>破棄に成功した場合はtrue,失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_connecter">
+            <summary>R/W接続用オブジェクト。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_readdata">
+            <summary>レスポンスを格納するためのボックス。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.eventRaised">
+            <summary>レスポンスを受信してからイベントが起こるまで待機するのに使用するインスタンスです。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.readThread">
+            <summary>データ受信用スレッド。Connectメソッド内で起動します。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.isDataReading">
+            <summary>データ受信用スレッドの起動状態を示します。(true:起動)</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_waiter">
+            <summary>レスポンス待機用のオブジェクトです。</summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.m_isReading">
+            <summary>STXを読取った時にtrueになり、ETXまで受信するとfalseになります。</summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.#ctor">
+            <summary>RFIDControlを初期化します。
+            </summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SendCommand(Takaya.TR3.Common.Communication.TR3SendCommand)">
+            <summary>コマンドをR/Wへ送信し、応答を待機します。
+            <para>SDKを社内用に拡張するとき、継承できるようアクセシビリティはinternalを指定しています。</para>
+            </summary>
+            <param name="com">送信するコマンド</param>
+            <returns>送信に成功した場合はtrue,失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SendCommand(Takaya.TR3.Common.Communication.TR3SendCommand,System.Boolean)">
+            <summary>コマンドをR/Wへ送信します。
+            </summary>
+            <param name="com">送信するコマンド</param>
+            <param name="waitResponse">応答を待機する場合はtrueを指定します。</param>
+            <para>SDKを社内用に拡張するとき、継承できるようアクセシビリティはinternalを指定しています。</para>
+            <returns>送信に成功した場合はtrue,失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StartDataReadThread">
+            <summary>データ受信用スレッドを起動します。
+            </summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StopDataReadThread">
+            <summary>データ受信用スレッドを停止します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.isStopped">
+            <summary>受信バッファを監視するスレッド用のメソッドです。Connect時に開始されます。
+            </summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ParseReceivedData(System.Byte[])">
+            <summary>受信したデータを解析し、TR3Responseオブジェクトを生成し、
+            生成されたレスポンスに応じて、イベントを起こします。
+            </summary>
+            <param name="read">読取ったデータ</param>
+        </member>
+        <member name="M:TR3COM.RFIDControl.RaiseResponseRFIDEvent(Takaya.TR3.Common.Communication.TR3Response)">
+            <summary>レスポンスに応じたイベントを起こします。
+            </summary>
+            <param name="response">レスポンスを指定します。</param>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Dispose">
+            <summary>リソースを破棄します。<para>ポートがオープンされている場合は、ポートをクローズします。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFIDControl.pencShift_JIS">
+            <summary>エンコードを表すインスタンス。ConvertToText,ConvertToBinaryで使用</summary>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Connect(System.Int32,System.Int32)">
+            <summary>ポートをオープンします。
+            通信速度38400bpsはファームバージョン1.21以降の場合に使用できます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="portNo">ポート番号を指定します。</param>
+            <param name="baudRate">通信速度を指定します。</param>
+            <returns>ポートのオープンに成功した場合はtrueを返します<br/>
+            また、すでにポートがオープンされている場合はfalseを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.DisConnect">
+            <summary>ポートをクローズします。
+            <para>この関数は下位バージョンとの互換性のために存在します</para>
+            </summary>
+            <returns>ポートのクローズに成功した場合はtrueを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.PortClose">
+            <summary>ポートをクローズします。
+            <para>この関数は下位バージョンとの互換性のために存在します</para>
+            </summary>
+            <returns>ポートのクローズに成功した場合はtrueを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ConvertToBinary(System.String)">
+            <summary>シフトJISの文字列をバイトシーケンスに変換します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="sourceString">変換対象の文字列を指定します。</param>
+            <returns>変換後のバイトシーケンスを返します。変換に失敗した場合はnullを返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ConvertToText(System.Byte[],System.Int32,System.Int32)">
+            <summary>バイトシーケンスをシフトJISの文字列へ変換します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="sourceByte">変換元のバイトシーケンスを指定します。</param>
+            <param name="startindex">開始位置を指定します。</param>
+            <param name="length">変換するバイト数を指定します。</param>
+            <returns>変換後の文字列を返します。変換に失敗した場合は空文字列を返します。</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetActionMode(TR3COM.RFID_ScanMode,TR3COM.RFID_BaudRate,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Boolean)">
+            <summary>R/Wの動作モードを設定します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="mode">動作モードを指定します。</param>
+            <param name="baudrate">通信速度を指定します。</param>
+            <param name="antiColision">アンチコリジョンの有無を指定します。</param>
+            <param name="includeUid">ユーザデータ読取りと同時にUIDを取得する場合はtrueを指定します。</param>
+            <param name="readContinue">連続読取の場合はtrueを指定します。</param>
+            <param name="useBuzzer">ブザーを鳴らす場合はtrueを指定します。</param>
+            <param name="polingTime">ポーリングモード時のポーリング時間を指定します。</param>
+            <param name="writeEEPROM">EEPROMに保存する場合はtruを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetTagSetting(TR3COM.RFID_TagMode,TR3COM.RFID_Protocol,TR3COM.RFID_Modulation,TR3COM.RFID_Subcarrier,System.Boolean)">
+            <summary>タグ動作モードを設定します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CallBuzzer(System.Int32)">
+            <summary>R/Wのブザーを一度鳴らします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="buzzerType">ブザー音を指定します。有効範囲は0～8です。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">buzzerTypeが無効な値だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CallBuzzer(System.Int32,System.Boolean)">
+            <summary>R/Wのブザーを一度鳴らします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="buzzerType">ブザー音を指定します。有効範囲は0～8です。</param>
+            <param name="needResponse">応答を発生させるかを指定します。falseの場合、R/Wは上位端末に応答を返しません。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">buzzerTypeが無効な値だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory(System.Boolean,System.Boolean)">
+            <summary>
+            タグのUIDを取得します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="antiColision">アンチコリジョンを有効にする場合はtrueを指定します。</param>
+            <param name="afiFlg">R/Wと同じAFI値をもつタグのみ応答させる場合はtrueを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Inventory2(System.Boolean)">
+            <summary>アンチコリジョン対応のインベントリコマンドを送信して、タグの数とUIDを取得します。
+            <para>また、Inventory2の結果を後から取得するにはGetUIDCountメソッド,GetUIDメソッドを使用してください。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="needUIDResponse">コマンドの応答と同時にUIDを取得する場合はtrueを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StayQuiet(TR3COM.RFID_UIDOption)">
+            <summary>タグをQuiet状態に遷移させます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.StayQuiet(TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>タグをQuiet状態に遷移させます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ResetToReady(TR3COM.RFID_UIDOption)">
+            <summary>タグをReady状態に遷移させます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ResetToReady(TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>タグをReady状態に遷移させます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SelectTag(System.Byte[])">
+            <summary>タグを選択します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadSingleBlock(System.Int32,TR3COM.RFID_UIDOption,System.Boolean)">
+            <summary>タグ上の指定したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、Myd_Readを使用してください</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="needSecureState">ブロックセキュリティステータスが必要な場合はtrueを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadSingleBlock(System.Int32,TR3COM.RFID_UIDOption,System.Boolean,System.Byte[])">
+            <summary>タグ上の指定したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、Myd_Readを使用してください</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="needSecureState">ブロックセキュリティステータスが必要な場合はtrueを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadMultiBlock(System.Int32,System.Int32,TR3COM.RFID_UIDOption,System.Boolean)">
+            <summary>タグ上の連続したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、NAKを返します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="needSecureState">ブロックセキュリティステータスが必要な場合はtrueを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadMultiBlock(System.Int32,System.Int32,TR3COM.RFID_UIDOption,System.Boolean,System.Byte[])">
+            <summary>タグ上の連続したブロックのデータを読取ります。
+            <para>対象のタグがインフィニオン社製のMy-dタグの場合は、NAKを返します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="needSecureState">ブロックセキュリティステータスが必要な場合はtrueを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Read(System.Int32,TR3COM.RFID_UIDOption)">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックのデータを読取ります。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Read(System.Int32,TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックのデータを読取ります。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadBytes(System.Int32,System.Int32,TR3COM.RFID_UIDOption)">
+            <summary>指定ブロックから、指定バイト数のデータを読取ります。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取データ数を1から指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.ReadBytes(System.Int32,System.Int32,TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>指定ブロックから、指定バイト数のデータを読取ります。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取データ数を1から指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(System.Int32,System.String,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>WriteSingleBlockを送信します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(System.Int32,System.String,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>WriteSingleBlockを送信します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(System.Int32,System.Byte[],TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>WriteSingleBlockを送信します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteSingleBlock(System.Int32,System.Byte[],TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>WriteSingleBlockを送信します。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(System.Int32,System.Int32,System.String,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">タグへ書き込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(System.Int32,System.Int32,System.String,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">タグへ書き込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(System.Int32,System.Int32,System.Byte[],TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">タグへ書き込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteMultiBlock(System.Int32,System.Int32,System.Byte[],TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグ上の指定したブロックにデータを書き込みます。
+            <para>現在このコマンドに対応しているタグはありません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="startBlockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="length">書き込むブロック数を0から指定します。(例えば1ブロック書き込む場合は、0を指定します。)</param>
+            <param name="writeData">タグへ書き込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteAFI(System.Byte,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグのAFI値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="afi">AFI値を指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteAFI(System.Byte,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグのAFI値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="afi">AFI値を指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteDSFID(System.Byte,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグのDSFID値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="dsfid">DSFID値を指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteDSFID(System.Byte,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグのDSFID値を変更します。
+            <para>R/WのAFI値を設定するには、SetAFIメソッドを使用します。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="dsfid">DSFID値を指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(System.Int32,System.String,TR3COM.RFID_UIDOption)">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(System.Int32,System.String,TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(System.Int32,System.Byte[],TR3COM.RFID_UIDOption)">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Myd_Write(System.Int32,System.Byte[],TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>インフィニオン社製のMy-dタグの指定したブロックにデータを書き込みます。
+            <para>My-dタグは0～2ブロックは読取り専用のため(システム情報が格納されている)、書込めません。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み対象のブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(System.Int32,System.String,TR3COM.RFID_UIDOption)">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(System.Int32,System.String,TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(System.Int32,System.Byte[],TR3COM.RFID_UIDOption)">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.WriteBytes(System.Int32,System.Byte[],TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>指定ブロックから、指定データ長分のデータを書き込みます。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">書込み開始ブロック番号を指定します。(0～)</param>
+            <param name="writeData">書込むデータを指定します。</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockBlock(System.Int32,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグ上の指定したブロックをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">ロック対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockBlock(System.Int32,TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグ上の指定したブロックをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="blockNo">ロック対象のブロック番号を指定します。(0～)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockAFI(TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグのAFIをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockAFI(TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグのAFIをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockDSFID(TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption)">
+            <summary>タグのDSFIDをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.LockDSFID(TR3COM.RFID_UIDOption,TR3COM.RFID_TagOption,System.Byte[])">
+            <summary>タグのDSFIDをロックし、読取り専用にします。
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="tagOption">対象のタグを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetSystemInfo(TR3COM.RFID_UIDOption)">
+            <summary>タグ上のシステム情報を取得します。
+            <para>取得する情報は、AFI,DSFID,UID,カードメモリサイズ情報、IC基準情報です。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetSystemInfo(TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>タグ上のシステム情報を取得します。
+            <para>取得する情報は、AFI,DSFID,UID,カードメモリサイズ情報、IC基準情報です。</para>
+            <para>この関数は下位バージョンとの互換性のために存在します。</para>
+            </summary>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetMBlockSecSt(System.Int32,System.Int32,TR3COM.RFID_UIDOption)">
+            <summary>タグ上の連続した複数のブロックのセキュリティステータスを取得します。
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetMBlockSecSt(System.Int32,System.Int32,TR3COM.RFID_UIDOption,System.Byte[])">
+            <summary>タグ上の連続した複数のブロックのセキュリティステータスを取得します。
+            </summary>
+            <param name="startBlockNo">対象のブロック番号を指定します。(0～)</param>
+            <param name="length">読取ブロック数を0から指定します。(例えば、1ブロック読取場合は0を指定します)</param>
+            <param name="uidOption">UIDに関するオプションを指定します。</param>
+            <param name="UID">コマンドに応答させるタグのUIDを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetActionMode">
+            <summary>GetActionModeを送信します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetActionMode(TR3COM.RFID_ScanMode,TR3COM.ActionModeOption,System.Int32,System.Boolean)">
+            <summary>R/Wの動作モードを設定します。
+            </summary>
+            <param name="mode">動作モードを指定します。</param>
+            <param name="option">動作モード設定のオプションを指定します。</param>
+            <param name="polingTime">ポーリングモード時のポーリング時間を指定します。</param>
+            <param name="writeEEPROM">EEPROMに保存する場合はtruを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">polingTimeが無効な値だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetROMVersion">
+            <summary>R/WのROMバージョンを取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetTagSetting">
+            <summary>タグ動作モードを取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetTagSetting(TR3COM.TagSettingModeOption,System.Boolean)">
+            <summary>タグ動作モードを設定します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetError">
+            <summary>R/W内部のエラーを取得します。
+            <para>R/Wが応答しなかった場合に、そのエラー原因を調査するために使用してください。</para>
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetTransmitSignal(System.Boolean)">
+            <summary>送信信号のOn/Offを切り替えます。
+            </summary>
+            <param name="isOn">送信信号をOnにする場合はtrue、Offにする場合はfalseを指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetRFPower">
+            <summary>R/Wのパワー状態を取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetPowerDownMode">
+            <summary>R/Wをパワーダウンモードに設定します。
+            この機能はデフォルトでは無効になっています。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetLEDSetting(TR3COM.RFID_LEDColor,TR3COM.RFID_LEDMode,System.Byte)">
+            <summary>LEDの制御を行います。
+            </summary>
+            <param name="color">LEDランプの発行色を指定します。</param>
+            <param name="mode">LEDの点灯モードを指定します。</param>
+            <param name="setting">
+            指定時間Onまたは点滅制御の場合、setting×50msの間LEDが点灯します。
+            <para>常時On/Off設定の場合は、0でOff、0以外でOnとなります。</para>
+            </param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CallBuzzer(System.Byte)">
+            <summary>R/Wのブザーを一度鳴らします。
+            </summary>
+            <param name="buzzerType">ブザー音を指定します。有効範囲は0～8です。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">buzzerTypeが無効な値だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CallBuzzer(System.Byte,System.Boolean)">
+            <summary>R/Wのブザーを一度鳴らします。
+            </summary>
+            <param name="buzzerType">ブザー音を指定します。有効範囲は0～8です。</param>
+            <param name="needResponse">応答を発生させるかを指定します。falseの場合、R/Wは上位端末に応答を返しません。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">buzzerTypeが無効な値だった場合に発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetUIDCount">
+            <summary>Inventory2で取得したUIDの数を取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetUID(System.Byte)">
+            <summary>Inventory2で取得したUIDを取得します。
+            </summary>
+            <param name="number">取得するUIDの番号(1～)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">numberが無効な値の場合発生します。</exception>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetAFI">
+            <summary>R/W内部のAFI値を取得します
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetAFI(System.Byte)">
+            <summary>R/W内部のAFI値を設定します
+            </summary>
+            <param name="afi">設定するAFI値</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetSelectAntenna">
+            <summary>現在選択しているアンテナの番号(0～)を取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetSelectAntenna(System.Byte)">
+            <summary>アンテナを選択します。
+            </summary>
+            <param name="antennaNo">選択するアンテナの番号(0～)</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetGeneralIOPortState">
+            <summary>汎用入出力ポートの状態を取得します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetGeneralIOPortState(System.Boolean[],System.Boolean[])">
+            <summary>汎用入出力ポートを設定します。<para>isChangeがtrueの箇所のみ設定を変更します。</para>
+            </summary>
+            <param name="newvalue">新しく設定する値</param>
+            <param name="isChange">newvalueの値に設定するかどうか</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.CallLEDBuzzer(System.Byte,TR3COM.RFID_LEDMode,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            LEDとブザーの同時制御コマンド用の汎用入出力ポートを制御します。
+            </summary>
+            <param name="portNo">制御するIOポートの番号を指定します。</param>
+            <param name="mode">LEDの点灯モードを指定します。</param>
+            <param name="setting">
+            指定時間Onまたは点滅制御の場合、setting×50msの間LEDが点灯します。
+            <para>常時On/Off設定の場合は、0でOff、0以外でOnとなります。</para>
+            </param>
+            <param name="buzzertype">ブザー音を指定します。有効範囲は0～8または0xFFです。</param>
+            <param name="rumblingTime">buzzerTypeで0xFFを指定している場合は、ブザーを鳴動させる時間を指定します。</param>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.Restart">
+            <summary>R/Wを再起動します。
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.GetExtendsIOPortState">
+            <summary>拡張入出力のポート状態の取得(TR3-L301用)
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="M:TR3COM.RFIDControl.SetExtendsIOPortState(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>拡張入出力のポート状態の設定(TR3-L301用)
+            </summary>
+            <returns>0:ACK応答 1:NAK応答 2:タイムアウト -1:コマンド送信失敗</returns>
+        </member>
+        <member name="P:TR3COM.RFIDControl.Timeout">
+            <summary>コマンドの応答を待機する時間をミリ秒単位で取得または設定します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.PortState">
+            <summary>ポートオープンの状態を取得します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.IsOpen">
+            <summary>ポートオープンの状態を取得します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.PortNumber">
+            <summary>現在のデフォルトポート番号を取得または設定します。
+            <para>このプロパティは、Connectメソッドでポート番号を指定しなかった場合に使用されます。</para>
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.BaudRate">
+            <summary>現在のデフォルト通信速度を取得または設定します。
+            <para>このプロパティは、Connectメソッドで通信速度を指定しなかった場合に使用されます。</para>
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.InputBufferSize">
+            <summary>ポートの入力バッファのサイズを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.OutputBufferSize">
+            <summary>ポートの出力バッファのサイズを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.InputBufferByteCount">
+            <summary>受信バッファ内のデータのバイト数を取得します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.OutputBufferByteCount">
+            <summary>送信バッファ内のデータのバイト数を取得します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.BlockSize">
+            <summary>1ブロックあたりのバイト数です。書き込み時に使用します。
+            </summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.UseDoEvent">
+            <summary>応答待機ループ内でDoEventsを実行するかどうかのフラグを取得または設定します。</summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.ComTimeout">
+            <summary>COMポートとの通信のタイムアウト時間をミリ秒単位で取得または設定します。</summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.IsWaitingResponse">
+            <summary>レスポンス待機中はtrueを返します。</summary>
+        </member>
+        <member name="P:TR3COM.RFIDControl.BlockSizeForMyd">
+            <summary>Mydの1ブロックあたりのバイト数です。書き込み時に使用します。
+            </summary>
+        </member>
+        <member name="E:TR3COM.RFIDControl.ResponseRFID">
+            <summary>レスポンス受信時に発生します。</summary>
+        </member>
+        <member name="T:TR3COM.RFIDControl.InputEventHandler">
+            <summary>レスポンス受信イベントのハンドラです。</summary>
+            <param name="sender">このインスタンスがセットされます。</param>
+            <param name="e">応答の詳細なデータがセットされます。</param>
+        </member>
+        <member name="T:TR3COM.RFIDControl.MethodResult">
+            <summary>関数の戻り値を定義します。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.Connecter">
+            <summary>
+            .NET 2003SDKより抜粋したコード
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.Open(System.String,System.Int32)">
+            <summary>R/Wへ接続します。
+            </summary>
+            <returns>接続に成功した場合はtrueを返します。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.Close">
+            <summary>R/Wから切断します。
+            </summary>
+            <returns>接続されていない場合、切断に失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.Write(System.Byte[])">
+            <summary>ポートへデータを書き込みます。
+            </summary>
+            <param name="writedata">書き込むデータ</param>
+            <returns></returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.Read">
+            <summary>
+            受信バッファよりデータを取得します。
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.UnauthorizedAccessException">ポートがクローズされています。</exception>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.ClearInputBuffer">
+            <summary>シリアルドライバの受信バッファからデータを破棄します。
+            </summary>
+            <returns>破棄に成功した場合はtrue、失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.Connecter.ClearOutputBuffer">
+            <summary>シリアルドライバの送信バッファからデータを破棄します。
+            </summary>
+            <returns>破棄に成功した場合はtrue、失敗した場合はfalseを返します。</returns>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.IsOpen">
+            <summary>ポートの開閉状態を示す値を取得します。。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.WriteTimeout">
+            <summary>書込み操作が完了していないときにタイムアウトになるまでの時間を
+            ミリ秒単位で取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.ReadTimeout">
+            <summary>読取り操作が完了していないときにタイムアウトになるまでの時間を
+            ミリ秒単位で取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.InputBufferSize">
+            <summary>ポートの入力バッファのサイズを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.OutputBufferSize">
+            <summary>ポートの出力バッファのサイズを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.BytesToRead">
+            <summary>受信バッファ内のデータのバイト数を取得します。
+            <para>接続がクローズしている場合は-1を返します</para>
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.BytesToWrite">
+            <summary>送信バッファ内のデータのバイト数を取得します。
+            <para>接続がクローズしている場合は-1を返します</para>
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.TimeOut">
+            <summary>書込み、読込み操作が完了していないときに、
+            タイムアウトになるまでのミリ秒単位取得または設定します。
+            <para>取得に失敗した場合は-1を返します。</para>
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.Parity">
+            <summary>パリティチェックプロトコルを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.DataBits">
+            <summary>バイトごとのデータビットの標準の長さを取得または設定します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.Connecter.StopBits">
+            <summary>バイトごとのストップビットの標準の数を取得または設定します。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.Connecter.Win32API">
+            <summary>
+            Win32SDKからインポートしているAPIです。
+            </summary>
+        </member>
+        <member name="T:TR3COM.InputEventArgs">
+            <summary>コマンドの応答に関するデータを表すクラスです。</summary>
+        </member>
+        <member name="F:TR3COM.InputEventArgs.SendCommand">
+            <summary>送信したコマンドの種類です。</summary>
+        </member>
+        <member name="F:TR3COM.InputEventArgs.InputData">
+            <summary>受信したデータです。</summary>
+        </member>
+        <member name="F:TR3COM.InputEventArgs.UID">
+            <summary>受信したUIDです。UIDを取得できなかった場合はnullになります。</summary>
+        </member>
+        <member name="F:TR3COM.InputEventArgs.TextData">
+            <summary>受信したユーザーデータをShift-JISに変換したものです。取得できなかった場合は""になります。</summary>
+        </member>
+        <member name="F:TR3COM.InputEventArgs.BinaryData">
+            <summary>受信したユーザーデータです。取得できなかった場合は""になります。</summary>
+        </member>
+        <member name="M:TR3COM.InputEventArgs.#ctor">
+            <summary>インスタンスを初期化します。
+            </summary>
+        </member>
+        <member name="M:TR3COM.InputEventArgs.#ctor(System.Byte[])">
+            <summary>初期値を指定してインスタンスを初期化します。
+            </summary>
+            <param name="InputData">InputDataの初期値</param>
+        </member>
+        <member name="T:TR3COM.RFID_BaudRate">
+            <summary>通信速度を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_BaudRate.BaudRate19200">
+            <summary>19200bpsです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_BaudRate.BaudRate9600">
+            <summary>9600bpsです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_BaudRate.BaudRate38400">
+            <summary>38400bpsです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_Modulation">
+            <summary>タグ動作モード設定用に変調率を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Modulation.Percent10">
+            <summary>変調は10%です。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Modulation.Percent100">
+            <summary>変調は100%です。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_DataRate">
+            <summary>タグ動作モード設定用にデータ率を定義します。
+            <para>外部には公開しません。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_DataRate.LOW">
+            <summary>データ率はLOWです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_DataRate.HIGH">
+            <summary>データ率はHIGHです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_Protocol">
+            <summary>タグ動作モード設定用にタグの種類を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Protocol.ISO15693_1_4">
+            <summary>ISO15693 1/4です。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Protocol.ISO15693_1_256">
+            <summary>ISO15693 1/256です。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_Subcarrier">
+            <summary>タグ動作モード設定用に変調方式を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Subcarrier.FSK">
+            <summary>変調方式はFSKです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_Subcarrier.AM">
+            <summary>変調方式はAMです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_TagMode">
+            <summary>タグ動作モード設定用にタグの動作モードを定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_TagMode.NormalMode">
+            <summary>通常モードです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_UIDOption">
+            <summary>ISO15693規格対応のコマンドのUIDの指定に関するフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_UIDOption.UIDNo">
+            <summary>UIDを指定しません。(NoUIDと同じ値です)</summary>
+        </member>
+        <member name="F:TR3COM.RFID_UIDOption.NoUID">
+            <summary>UIDを指定しません。(UIDNoと同じ値です)</summary>
+        </member>
+        <member name="F:TR3COM.RFID_UIDOption.SpecificationUID">
+            <summary>UIDを指定します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_UIDOption.CurrentUID">
+            <summary>R/Wが内部にもつUIDを指定します。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_AFIValue">
+            <summary>ISO15693規格対応のコマンドのAFI値の指定に関するフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_AFIValue.Unavailable">
+            <summary>すべてのタグが応答します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_AFIValue.Available">
+            <summary>R/WのAFI値と同じAFI値のタグのみ応答します。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_NBSlot">
+            <summary>ISO15693規格対応のコマンドのNBSlotに関するフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_NBSlot.Slot16">
+            <summary>NBSlot16です。(アンチコリジョンが有効)</summary>
+        </member>
+        <member name="F:TR3COM.RFID_NBSlot.Slot1">
+            <summary>NBSlot1です。(アンチコリジョンは無効)</summary>
+        </member>
+        <member name="T:TR3COM.RFID_SelectTag">
+            <summary>ISO15693規格対応のコマンドのSelect状態のタグの扱いに関するフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_SelectTag.Unavailable">
+            <summary>すべてのタグが応答します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SelectTag.Available">
+            <summary>選択状態のタグのみ応答します。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_ReadOption">
+            <summary>タグデータの読取り時のオプションを定義します。
+            <para>Read系のコマンド(ReadSingleBlock等)の送信時に使用します。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_ReadOption.DataOnly">
+            <summary>データのみ取得します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ReadOption.WithBlockSecurity">
+            <summary>データとブロックセキュリティを取得します。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_TagOption">
+            <summary>タグへ書込みを行う対象タグの種類を定義します。
+            <para>Write系のコマンド(WriteSigleBlock等),Lock系のコマンド(LockSingleBlock等)で使用します。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_TagOption.Other">
+            <summary>Tag-It以外のタグです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_TagOption.TAG_IT">
+            <summary>タグはTag-Itです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_ElseOption">
+            <summary>ISO15693コマンドのその他のフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_ElseOption.d0">
+            <summary>0です。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ElseOption.d1">
+            <summary>1です。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_ScanMode">
+            <summary>スキャンモードを定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.CommandScanMode">
+            <summary>コマンドモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.AutoScanMode">
+            <summary>オートスキャンモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.TriggerScanMode">
+            <summary>トリガーモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.PollingScanMode">
+            <summary>ポーリングモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.InventoryContinue">
+            <summary>連続インベントリモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.RDLOOPMode">
+            <summary>RDLOOPモードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ScanMode.EASMode">
+            <summary>EASモードです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_ReadContinue">
+            <summary>二度読み防止に関するフラグを定義します。
+            <para>R/Wの動作モード設定で使用します。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_ReadContinue.Single">
+            <summary>シングル読取りです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_ReadContinue.Continue">
+            <summary>連続読取りです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_UseBuzzer">
+            <summary>ブザーの鳴動に関するフラグを定義します。 
+            <para>R/Wの動作モード設定で使用します。</para>
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_UseBuzzer.Unuse">
+            <summary>ブザーを鳴動させません。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_UseBuzzer.Use">
+            <summary>タグ読取り時、ブザーを鳴動させます。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_IncludeUID">
+            <summary>UID取得に関するフラグを定義します。
+            <para>R/Wの動作モード設定で使用します。</para>
+             </summary>
+        </member>
+        <member name="F:TR3COM.RFID_IncludeUID.DataOnly">
+            <summary>オートスキャンモード時、データのみ取得します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_IncludeUID.WithUID">
+            <summary>オートスキャンモード時、データとUIDを取得します。
+            </summary>
+        </member>
+        <member name="T:TR3COM.RFID_AntiColision">
+            <summary>アンチコリジョンに関するフラグを定義します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_AntiColision.Unavailable">
+            <summary>アンチコリジョンは無効です。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_AntiColision.Available">
+            <summary>アンチコリジョンは有効です。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_LEDColor">
+            <summary>LEDの色を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_LEDColor.Green">
+            <summary>緑色のLEDです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_LEDColor.Red">
+            <summary>赤色のLEDです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_LEDMode">
+            <summary>LEDの点灯状態を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_LEDMode.AppointTime">
+            <summary>指定時間点灯モードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_LEDMode.Blink">
+            <summary>点滅モードです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_LEDMode.Always">
+            <summary>常時点灯モードです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_PortControl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TR3COM.RFID_PortControl.NonPortControl">
+            <summary></summary>
+        </member>
+        <member name="F:TR3COM.RFID_PortControl.Port1Control">
+            <summary></summary>
+        </member>
+        <member name="F:TR3COM.RFID_PortControl.Port3Control">
+            <summary></summary>
+        </member>
+        <member name="T:TR3COM.RFID_PowerState">
+            <summary> R/Wのパワー状態を定義します。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_PowerState.Off">
+            <summary>パワーダウンモードはOffです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_PowerState.S6700PowerDown">
+            <summary>パワーダウンモードはS6700PowerDownです。</summary>
+        </member>
+        <member name="T:TR3COM.RFID_SendCommand">
+            <summary>コマンドの種類を定義します。 
+            <para>ResponseRFIDイベントのSendCommandプロパティにはこの値がセットされます。</para>
+            </summary>
+            CommonのCommonEnumにも同じ定義があります。
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Other">
+            <summary>不明なコマンドです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetActionMode">
+            <summary>GetActionModeです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetError">
+            <summary>GetErrorです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetTagSetting">
+            <summary>GetTagSettingです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetRFPower">
+            <summary>GetRFPowerです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetROMVersion">
+            <summary>GetROMVersionです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetUIDCount">
+            <summary>GetUIDCountです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetUID">
+            <summary>GetUIDです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetActionMode">
+            <summary>SetActionModeです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetTagSetting">
+            <summary>SetTagSettingです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetTransmitSignal">
+            <summary>SetTransmitSignalです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetPowerDownMode">
+            <summary>SetPowerDownModeです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetLEDSetting">
+            <summary>SetLEDSettingです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Inventory">
+            <summary>Inventoryです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.StayQuiet">
+            <summary>StayQuietです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ReadSingleBlock">
+            <summary>ReadSingleBlockです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteSingleBlock">
+            <summary>WriteSingleBlockです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.LockBlock">
+            <summary>LockBlockです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ReadMultiBlock">
+            <summary>ReadMultiBlockです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteMultiBlock">
+            <summary>WriteMultiBlockです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SelectTag">
+            <summary>SelectTagです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ResetToReady">
+            <summary>ResetToReadyです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ReadAFI">
+            <summary>ReadAFIです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteAFI">
+            <summary>WriteAFIです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.LockAFI">
+            <summary>LockAFIです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteDSFID">
+            <summary>WriteDSFIDです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.LockDSFID">
+            <summary>LockDSFIDです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetSystemInfo">
+            <summary>GetSystemInfoです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetMBlockSecSt">
+            <summary>GetMBlockSecStです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Myd_Write">
+            <summary>Myd_Writeです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Myd_Read">
+            <summary>Myd_Readです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Inventory2">
+            <summary>Inventory2です。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SimpleRead">
+            <summary>SimpleReadです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SimpleWrite">
+            <summary>SimpleWriteです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetAFI">
+            <summary>SetAFIです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetAFI">
+            <summary>GetAFIです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ReadBytes">
+            <summary>ReadBytesです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteBytes">
+            <summary>WriteBytesです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetGeneralIOPortState">
+            <summary>GetGeneralIOPortStateです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetGeneralIOPortState">
+            <summary>SetGeneralIOPortStateです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.CallBuzzer">
+            <summary>CallBuzzerです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.NAK">
+            <summary>NAKです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetSelectAntenna">
+            <summary>GetSelectAntennaです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetSelectAntenna">
+            <summary>SetSelectAntennaです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.CallLEDBuzzer">
+            <summary>CallLEDBuzzerです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.RDLOOP">
+            <summary>RDLOOPです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.Kill">
+            <summary>Killです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.WriteSingleBlockPwd">
+            <summary>WriteSingleBlockPwdです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.ISO15693_RDLOOPCmd">
+            <summary>ISO15693_RDLOOPCmdです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.GetExtendsIOPortState">
+            <summary>GetExtendsIOPortStateです。</summary>
+        </member>
+        <member name="F:TR3COM.RFID_SendCommand.SetExtendsIOPortState">
+            <summary>SetExtendsIOPortStateです。</summary>
+        </member>
+        <member name="T:TR3COM.ISO15693Option">
+            <summary>
+            ISO15693対応コマンド用のオプションを指定します。
+            </summary>
+        </member>
+        <member name="F:TR3COM.ISO15693Option.UIDOption">
+            <summary>UIDの指定関するオプションを指定します。</summary>
+        </member>
+        <member name="F:TR3COM.ISO15693Option.SelectTag">
+            <summary>Select状態のタグの扱いを指定します。</summary>
+        </member>
+        <member name="F:TR3COM.ISO15693Option.AFIValue">
+            <summary>指定AFI値のタグのみ応答させるかどうかを指定します。</summary>
+        </member>
+        <member name="F:TR3COM.ISO15693Option.NBSlot">
+            <summary>アンチコリジョンの有効・無効を指定します。</summary>
+        </member>
+        <member name="F:TR3COM.ISO15693Option.ElseOption">
+            <summary>その他のオプションを指定します。(このプロパティは現在は無効です。) </summary>
+        </member>
+        <member name="M:TR3COM.ISO15693Option.ToByte">
+            <summary>このインスタンスのバイト表現を返します。</summary>
+        </member>
+        <member name="M:TR3COM.ISO15693Option.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="T:TR3COM.ISO15693ReadOption">
+            <summary>ISO15693対応コマンドの引数に使用する構造体です。
+            </summary>
+        </member>
+        <member name="F:TR3COM.ISO15693ReadOption.ReadOption">
+            <summary>ブロックセキュリティステータスに関する設定を取得または設定します。</summary>
+        </member>
+        <member name="M:TR3COM.ISO15693ReadOption.ToByte">
+            <summary>このインスタンスのバイト表現を返します。</summary>
+        </member>
+        <member name="M:TR3COM.ISO15693ReadOption.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="M:TR3COM.ISO15693ReadOption.#ctor(TR3COM.ISO15693Option)">
+            <summary>渡された構造体のUIDOption,SelectTag,AFIValue,AntiColisionをコピーして初期化します。
+            </summary>
+            <param name="option">初期化に使用する構造体</param>
+        </member>
+        <member name="T:TR3COM.ISO15693WriteOption">
+            <summary>ISO15693対応コマンドの引数に使用する構造体です。
+            </summary>
+        </member>
+        <member name="F:TR3COM.ISO15693WriteOption.TagOption">
+            <summary>書込み対象のタグを取得または設定します。</summary>
+        </member>
+        <member name="M:TR3COM.ISO15693WriteOption.ToByte">
+            <summary>このインスタンスのバイト表現を返します。</summary>
+        </member>
+        <member name="M:TR3COM.ISO15693WriteOption.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="M:TR3COM.ISO15693WriteOption.#ctor(TR3COM.ISO15693Option)">
+            <summary>渡された構造体のUIDOption,SelectTag,AFIValue,AntiColisionをコピーして初期化します。
+            </summary>
+            <param name="option">初期化に使用する構造体</param>
+        </member>
+        <member name="T:TR3COM.ActionModeOption">
+            <summary>R/Wの動作モード設定時の引数に使用する構造体です。
+            </summary>
+        </member>
+        <member name="F:TR3COM.ActionModeOption.AntiColision">
+            <summary>アンチコリジョンの有効・無効を指定します。</summary>
+        </member>
+        <member name="F:TR3COM.ActionModeOption.ReadContinue">
+            <summary>二度読み防止処理の有無を取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.ActionModeOption.UseBuzzer">
+            <summary>ブザー鳴動の有無を取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.ActionModeOption.IncludeUID">
+            <summary>UID取得に関するオプションを取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.ActionModeOption.BaudRate">
+            <summary>通信速度を取得または設定します。</summary>
+        </member>
+        <member name="M:TR3COM.ActionModeOption.ToByte">
+            <summary>このインスタンスのバイト表現を返します。</summary>
+        </member>
+        <member name="M:TR3COM.ActionModeOption.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="M:TR3COM.ActionModeOption.#ctor(System.Byte)">
+            <summary>初期値を指定して構造体を初期化します。
+            </summary>
+            <param name="bdata"></param>
+        </member>
+        <member name="T:TR3COM.TagSettingModeOption">
+            <summary>タグ動作モード設定時の引数に使用する構造体です。
+            </summary>
+        </member>
+        <member name="F:TR3COM.TagSettingModeOption.TagMode">
+            <summary>タグ動作モードを取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.TagSettingModeOption.Protocol">
+            <summary>タグの種類を取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.TagSettingModeOption.Modulation">
+            <summary>変調率を取得または設定します。</summary>
+        </member>
+        <member name="F:TR3COM.TagSettingModeOption.Subcarrier">
+            <summary>変調方式を取得または設定します。</summary>
+        </member>
+        <member name="M:TR3COM.TagSettingModeOption.ToByte">
+            <summary>このインスタンスのバイト表現を返します。</summary>
+        </member>
+        <member name="M:TR3COM.TagSettingModeOption.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="M:TR3COM.TagSettingModeOption.#ctor(System.Byte)">
+            <summary>初期値を指定して構造体を初期化します。
+            </summary>
+            <param name="bdata"></param>
+        </member>
+        <member name="T:TR3COM.RDLOOPCmdOption">
+            <summary>ISO15963_RDLOOPCmdコマンドの引数に使用する構造体です。
+            </summary>
+        </member>
+        <member name="F:TR3COM.RDLOOPCmdOption.DoOnce">
+            <summary>True の場合、１度タグの読取りを試行した後、コマンドモードに遷移します。</summary>
+        </member>
+        <member name="F:TR3COM.RDLOOPCmdOption.WithNackResponse">
+            <summary>True の場合、タグが存在する場合にNAKを返します。</summary>
+        </member>
+        <member name="F:TR3COM.RDLOOPCmdOption.UseGreenLED">
+            <summary>True の場合、タグ読取り時に、緑色LEDを点灯します。</summary>
+        </member>
+        <member name="F:TR3COM.RDLOOPCmdOption.UseRedLED">
+            <summary>True の場合、タグ未読取り時に、赤色LEDを点灯します。</summary>
+        </member>
+        <member name="F:TR3COM.RDLOOPCmdOption.ExBuzzer">
+            <summary>True の場合、タグ読取り時に、ブザーを鳴動します。</summary>
+        </member>
+        <member name="M:TR3COM.RDLOOPCmdOption.#ctor">
+            <summary>初期値を指定せずにインスタンスを初期化します。 </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.ResponseWaiter">
+            <summary>
+            応答を待機するためのクラスです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.m_lastresult">
+            <summary>最新の応答結果です。
+            <para>Waitメソッドはこの値を見て応答があったか判断します。</para>
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.m_command">
+            <summary>送信元のコマンドです。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.ResponseWaiter.#ctor(Takaya.TR3.Common.Communication.TR3SendCommand)">
+            <summary>待機する対象のコマンドを指定してインスタンスを作成します。
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.ResponseWaiter.Notify(Takaya.TR3.Common.Communication.TR3Response)">
+            <summary>レスポンスを処理します。
+            <para>レスポンスがあった場合は、ResponseオブジェクトのSendMessageプロパティを更新します。</para>
+            </summary>
+            <param name="response">レスポンス</param>
+            <returns>対象コマンドのレスポンスが返った場合はtrueを返します。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.ResponseWaiter.Wait(System.Int32)">
+            <summary>指定時間待機します。
+            <para>応答があった場合は、ResponseオブジェクトのSendMessageプロパティを更新されています。</para>
+            </summary>
+            <param name="waittime">待機する時間をミリ秒単位で指定します。-1で無期限に待機します。</param>
+            <returns>コマンドのレスポンスです。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.ResponseWaiter.Stop">
+            <summary>待機状態を解除します。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.ResponseWaiter.WaitResult">
+            <summary>Waitメソッドの戻り値を宣言します。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.WaitResult.Ack">
+            <summary>ACK応答です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.WaitResult.Nack">
+            <summary>NACK応答です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.WaitResult.Timeover">
+            <summary>指定時間内に応答がありませんでした。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.ResponseWaiter.Response">
+            <summary>レスポンスの種類を定義します。(Notiryメソッド内でのみ使用)</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.Response.None">
+            <summary>レスポンスがありません。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.Response.Ack">
+            <summary>ACK応答です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.ResponseWaiter.Response.Nack">
+            <summary>NACK応答です。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.TR3Command">
+            <summary>
+            TR3との通信プロトコルを表すクラスです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Command.m_rowdata">
+            <summary>このコマンドのソースデータです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Command.m_databody">
+            <summary>データ長からETXまでの部分です。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Command.#ctor">
+            <summary>インスタンスを初期化します。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Command.ToByteArray">
+            <summary>このオブジェクトをbyte表現を返します。
+            </summary>
+            <returns>このオブジェクトのbyte配列表現。</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Command.Dispose">
+            <summary>リソースを解放します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.STX">
+            <summary>STX部を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.Command">
+            <summary>コマンドを取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.Address">
+            <summary>アドレス部を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.DataLength">
+            <summary>データ長を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.DetailCommand">
+            <summary>詳細コマンドを取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.Data">
+            <summary>データ長からETXまでのデータ部分を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.ETX">
+            <summary>ETX部です。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.SUM">
+            <summary>チェックサム値を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.CR">
+            <summary>CR部を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Command.Length">
+            <summary>コマンド全体のデータ長を取得します。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.TR3Response">
+            <summary>
+            応答を表すクラスです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Response.m_sendcommand">
+            <summary>送信元コマンドです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Response.m_uid">
+            <summary>UIDプロパティ用のbyte配列です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Response.m_textdata">
+            <summary>TextDataプロパティ用の文字列です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3Response.m_binarydata">
+            <summary>BinaryDataプロパティ用の配列です。</summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.#ctor(System.Byte[])">
+            <summary>このクラスのインスタンスを生成します。</summary>
+            <param name="response">TryParseをクリアした正しいレスポンスでのみ渡されます。</param>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.TryParse(System.Byte[])">
+            <summary>バイトシーケンスを解析してTR3Responseのインスタンスを作成します。
+            </summary>
+            <param name="readdata">解析対象のバイトシーケンス</param>
+            <returns>TR3Responseのオブジェクト</returns>
+            <exception cref="T:System.ArgumentException">無効なデータが渡された場合にスローされます。</exception>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.UpdateSendCommand(Takaya.TR3.Common.Communication.TR3SendCommand)">
+            <summary>レスポンスの元コマンドを判別して、sendcommandを更新します。
+            すでにsendcommandにOther以外のコマンドがセットされている場合は、何もしません。
+            <para>データ長が0のコマンド、詳細コマンドがACkのコマンドはここで処理します。</para>
+            </summary>
+            <param name="com"></param>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.UpdateExtendsParameter">
+            <summary>
+            レスポンスデータからUIDとタグのデータを抜き出しプロパティにセットします。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.ConvertToSendCommand(Takaya.TR3.Common.CommonDefine.CmdKind)">
+            <summary>レスポンスのコマンド部より、SendCommandを判別します。<para>ACK応答の場合は、応答処理時に判別します。</para>
+            </summary>
+            <param name="cmd">コマンド部を指定します。</param>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.ConvertAckResponseToSendCommand(Takaya.TR3.Common.Communication.TR3SendCommand)">
+            <summary>コマンドがACKの場合の詳細コマンドを変換して、RFID_SendCommandに変換します。
+            CommandがACKではないコマンドオブジェクトは渡さないこと。
+            </summary>
+            <param name="sentCommand">レスポンスの送信元コマンド</param>
+            <returns>変換後のRFID_SendCommand</returns>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.ConvertToSendCommand(Takaya.TR3.Common.Communication.TR3SendCommand)">
+            <summary>レスポンスの送信元コマンドより、SendCommandを判別します。
+            Waiterがレスポンスを処理したタイミングでコールしてください。(Notifyメソッド参照)
+            <para>データ長が0で何のコマンドのレスポンスか判別できないものは、ここでSendCommandをセットします。</para>
+            </summary>
+            <param name="com">送信元コマンドを指定します。</param>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.SetUID">
+            <summary>現在のインスタンスのRowDataよりUIDを取得し、m_uidへセットします。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.SetTextDataAndBinaryData">
+            <summary>現在のインスタンスのRowDataよりユーザデータを取得し、
+            Unicode(UTF-16)の文字列を変換し、m_textdataへセットします。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3Response.GetCheckSum(System.Byte[],System.Int32,System.Int32)">
+            <summary>配列の指定範囲のサム値を算出します。
+            </summary>
+            <param name="sourcedata">計算対象データを指定します。</param>
+            <param name="startindex">対象の範囲(開始位置)を指定します。</param>
+            <param name="endindex">対象の範囲(終了位置)を開始します。</param>
+            <returns>算出したサム値を返します。</returns>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.RowData">
+            <summary>生データを取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.TextData">
+            <summary>データ部を設定文字コードでデコードされた文字列を取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.BinaryData">
+            <summary>データ部をそのまま取得します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.UID">
+            <summary>UIDを取得します。レスポンスにUIDが存在しない場合はnullを返します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.SendCommand">
+            <summary>SendCommandを取得します。未処理時はOtherを返します。
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3Response.DetailCommand">
+            <summary>詳細コマンド部を取得します。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Communication.TR3SendCommand">
+            <summary>
+            送信コマンドを表すクラスです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.Communication.TR3SendCommand.m_flgFreeHandData">
+            <summary>SendDataであることを示すフラグです。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3SendCommand.#ctor(Takaya.TR3.Common.CommonDefine.CmdKind,System.Byte[])">
+            <summary>送信するデータを指定してオブジェクトを作成します。
+            </summary>
+            <param name="command">コマンドを指定します。</param>
+            <param name="databody">送信するデータを詳細コマンドを除いて指定します。</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">databodyが有効範囲外の場合にスローされます。</exception>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3SendCommand.#ctor(Takaya.TR3.Common.CommonDefine.CmdKind,Takaya.TR3.Common.CommonDefine.DetailCmdKind,System.Byte[])">
+            <summary>送信するデータを指定してオブジェクトを作成します。
+            </summary>
+            <param name="command">コマンドを指定します。</param>
+            <param name="detailcommand">詳細コマンドを指定します。</param>
+            <param name="databody">送信するデータを、詳細コマンドを除いて指定します。</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">databodyが有効範囲外の場合にスローされます。</exception>
+        </member>
+        <member name="M:Takaya.TR3.Common.Communication.TR3SendCommand.#ctor(System.Byte[])">
+            <summary>送信するデータを指定してオブジェクトを作成します。
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">databodyが有効範囲外の場合にスローされます。</exception>
+            <param name="alldata">コマンドをバイト配列で指定します。</param>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3SendCommand.IsFreeHandData">
+            <summary>このインスタンスが手入力のデータより作成されているかを取得します。
+            <para>trueの場合、このインスタンスがSendData関数で作成されたことを意味します。</para>
+            </summary>
+        </member>
+        <member name="P:Takaya.TR3.Common.Communication.TR3SendCommand.DetailCommand">
+            <summary>詳細コマンドを取得します。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.CommonDefine">
+            <summary>
+            このアセンブリで共通の定数を宣言しているクラスです。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.STX">
+            <summary>STXです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.ETX">
+            <summary>ETXです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CR">
+            <summary>CRです。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.CommonDefine.CmdKind">
+            <summary>コマンドを定義します。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.Ack">
+            <summary>ACKです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.Nack">
+            <summary>NACKです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_X">
+            <summary>ISO15693対応コマンドです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.ISO15693">
+            <summary>ISO15693対応コマンドです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_I">
+            <summary>UIDの送信コマンドです。
+            Inventory2でUIDを取得する場合、応答にはこのコマンドがセットされます。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SendUID">
+            <summary>UIDの送信コマンドです。
+            Inventory2でUIDを取得する場合、応答にはこのコマンドがセットされます。
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_J">
+            <summary>SimpleWriteです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SimpleWrite">
+            <summary>SimpleWriteです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_D">
+            <summary>SimpleReadです。(ユーザデータ) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SimpleRead">
+            <summary>SimpleReadです。(ユーザデータ) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_d">
+            <summary>SimpleReadです。(UID+ユーザデータ) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SimpleReadWithUID">
+            <summary>SimpleReadです。(UID+ユーザデータ) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SimpleReadForSend">
+            <summary>送信用のSimpleReadです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_B">
+            <summary>ブザーの鳴動コマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.CallBuzzer">
+            <summary>ブザーの鳴動コマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_L">
+            <summary>RDLOOPです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.RDLOOP">
+            <summary>RDLOOPです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_O">
+            <summary>パラメータ変数取得用コマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.GetParameter">
+            <summary>パラメータ変数取得用コマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.cmd_N">
+            <summary>パラメータ変数設定用コマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.CmdKind.SetParameter">
+            <summary>パラメータ変数設定用コマンドです。 </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.CommonDefine.DetailCmdKind">
+            <summary>詳細コマンドを定義します。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.NULL">
+            <summary>コマンドがありません。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Ack">
+            <summary>ACKです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Inventory">
+            <summary>Inventoryです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.StayQuiet">
+            <summary>StayQuietです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ReadSingleBlock">
+            <summary>ReadSingleBlockです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteSingleBlock">
+            <summary>WriteSingleBlockです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.LockBlock">
+            <summary>LockBlockです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ReadMultiBlock">
+            <summary>ReadMultiBlockです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteMultiBlock">
+            <summary>WriteMultiBlockです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SelectTag">
+            <summary>SelectTagです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ResetToReady">
+            <summary>ResetToReadyです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteAFI">
+            <summary>WriteAFIです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.LockAFI">
+            <summary>LockAFIです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteDSFID">
+            <summary>WriteDSFIDです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.LockDSFID">
+            <summary>LockDSFIDです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetSystemInfo">
+            <summary>GetSystemInfoです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetMBlockSecSt">
+            <summary>GetMBlockSecStです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Write2Blocks">
+            <summary>Write2Blocksです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Lock2Blocks">
+            <summary>Lock2Blocksです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Kill">
+            <summary>Killです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteSingleBlockPwd">
+            <summary>WriteSingleBlockPwdです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Myd_Read">
+            <summary>Myd_Readです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Myd_Write">
+            <summary>Myd_Writeです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Inventory2">
+            <summary>Inventory2です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ReadBytes">
+            <summary>ReadBytesです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.WriteBytes">
+            <summary>WriteBytesです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ISO15693_RDLOOPCmd">
+            <summary>ISO15693_RDLOOPCmdです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetActionMode">
+            <summary>動作モードの問い合わせです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetTagMode">
+            <summary>タグ動作モードの問い合わせです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetCurrentUID">
+            <summary>カレントUIDの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetAFI">
+            <summary>AFIの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetRFPower">
+            <summary>RF部のパワー状態の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetUIDCount">
+            <summary>UID数の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetUID">
+            <summary>UIDデータの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetEEPROMData">
+            <summary>EEPROMデータの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetError">
+            <summary>エラー情報の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetROMVersion">
+            <summary>ROMバージョンの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetSelectAnttena">
+            <summary>選択アンテナの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetTrasmitSignal">
+            <summary>送信キャリアOn/Offの取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetGeneralIOPortState">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetExtendsIOPortState">
+            <summary> 拡張入出力ポート値の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetActionMode">
+            <summary>動作モードの設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetActionModeWithEEPROM">
+            <summary>動作モードの設定せです。(EEPROM書込み有) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetTagMode">
+            <summary>タグ動作モードの設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetTagModeWithEEPROM">
+            <summary>タグ動作モードの設定です。(EEPROM書込み有) </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetCurrentUID">
+            <summary>カレントUIDの設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetAFI">
+            <summary>AFIの設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetRFPower">
+            <summary>RF部のパワー状態の設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetLEDSetting">
+            <summary>LEDの制御です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.CallLEDBuzzer">
+            <summary>ブザー鳴動とLEDの制御です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetEEPROMData">
+            <summary>EEPROMデータの書込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.ClearEEPROM">
+            <summary>EEPROMの初期化です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetSelectAnttena">
+            <summary>選択アンテナの設定のコマンドです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetTransmitSignal">
+            <summary>送信キャリアOn/Offの設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetGeneralIOPortState">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetExtendsIOPortState">
+            <summary> 拡張入出力ポート値の設定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.Restart">
+            <summary>リスタートの指定です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetAFIID">
+            <summary>AFIのIDの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetRWID">
+            <summary>R/WのIDの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetMemorySwitch1">
+            <summary>メモリスイッチ1の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetMemorySwitch2">
+            <summary>メモリスイッチ2の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetRetryCount">
+            <summary>リトライ回数の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetDataCheckBytesLength">
+            <summary>データチェック有効バイト数の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetLEDBlickTime">
+            <summary>LEDの点灯時間です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetTriggerDetectingTime">
+            <summary>トリガの検出時間の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetAvoidReadTwice">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetMemorySwitch3">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetBlockLength">
+            <summary>1ブロックのバイト数の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.GetBlockLength_Myd">
+            <summary>(Mu_d専用)1ブロックのバイト数の取得です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetAFIID">
+            <summary>AFIのIDの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetRWID">
+            <summary>R/WのIDの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetMemorySwitch1">
+            <summary>メモリスイッチ1の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetMemorySwitch2">
+            <summary>メモリスイッチ2の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetRetryCount">
+            <summary>リトライ回数の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetDataCheckBytesLength">
+            <summary>データチェック有効バイト数の読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetLEDBlickTime">
+            <summary>LEDの点灯時間です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetTriggerDetectingTime">
+            <summary>トリガの検出時間の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetAvoidReadTwice">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetMemorySwitch3">
+            <summary>汎用入出力ポートの読込みです。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetBlockLength">
+            <summary>1ブロックのバイト数の取得です。 </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.CommonDefine.DetailCmdKind.SetBlockLength_Myd">
+            <summary>(Mu_d専用)1ブロックのバイト数の取得です。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.CommonDefine.CmdSequence">
+            <summary>コマンドのバイトシーケンスの位置を定義します。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.CommonDefine.CmdSequenceRev">
+             <summary>コマンドのバイトシーケンスの位置を後方から定義します。 
+            <para>使用例)バイト配列[配列長-ETX</para>
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.RFID_SendCommand">
+            <summary>コマンドの種類を定義します。 
+            <para>ResponseRFIDイベントのSendCommandプロパティにはこの値がセットされます。
+            
+            #2006/10/15 外部からの見た目を変更せずに、共通部分を分離したため、ここと、各アセンブリごとに必要になった。
+            
+            #2006/11/20 
+               新規コマンドの追加 (ISO15693_RDLOOPCmd, Kill, WriteSingleBlockPwd, 
+            	                 GetExtendsIOPortState, SetExtendsIOPortState)
+            
+            </para>
+            </summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Other">
+            <summary>不明なコマンドです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetActionMode">
+            <summary>GetActionModeです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetError">
+            <summary>GetErrorです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetTagSetting">
+            <summary>GetTagSettingです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetRFPower">
+            <summary>GetRFPowerです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetROMVersion">
+            <summary>GetROMVersionです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetUIDCount">
+            <summary>GetUIDCountです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetUID">
+            <summary>GetUIDです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetActionMode">
+            <summary>SetActionModeです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetTagSetting">
+            <summary>SetTagSettingです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetTransmitSignal">
+            <summary>SetTransmitSignalです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetPowerDownMode">
+            <summary>SetPowerDownModeです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetLEDSetting">
+            <summary>SetLEDSettingです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Inventory">
+            <summary>Inventoryです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.StayQuiet">
+            <summary>StayQuietです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ReadSingleBlock">
+            <summary>ReadSingleBlockです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteSingleBlock">
+            <summary>WriteSingleBlockです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.LockBlock">
+            <summary>LockBlockです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ReadMultiBlock">
+            <summary>ReadMultiBlockです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteMultiBlock">
+            <summary>WriteMultiBlockです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SelectTag">
+            <summary>SelectTagです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ResetToReady">
+            <summary>ResetToReadyです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ReadAFI">
+            <summary>ReadAFIです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteAFI">
+            <summary>WriteAFIです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.LockAFI">
+            <summary>LockAFIです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteDSFID">
+            <summary>WriteDSFIDです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.LockDSFID">
+            <summary>LockDSFIDです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetSystemInfo">
+            <summary>GetSystemInfoです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetMBlockSecSt">
+            <summary>GetMBlockSecStです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Myd_Write">
+            <summary>Myd_Writeです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Myd_Read">
+            <summary>Myd_Readです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Inventory2">
+            <summary>Inventory2です。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SimpleRead">
+            <summary>SimpleReadです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SimpleWrite">
+            <summary>SimpleWriteです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetAFI">
+            <summary>SetAFIです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetAFI">
+            <summary>GetAFIです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ReadBytes">
+            <summary>ReadBytesです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteBytes">
+            <summary>WriteBytesです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetGeneralIOPortState">
+            <summary>GetGeneralIOPortStateです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetGeneralIOPortState">
+            <summary>SetGeneralIOPortStateです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.CallBuzzer">
+            <summary>CallBuzzerです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.NAK">
+            <summary>NAKです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetSelectAntenna">
+            <summary>GetSelectAntennaです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetSelectAntenna">
+            <summary>SetSelectAntennaです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.CallLEDBuzzer">
+            <summary>CallLEDBuzzerです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.RDLOOP">
+            <summary>RDLOOPです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.Kill">
+            <summary>Killです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.WriteSingleBlockPwd">
+            <summary>WriteSingleBlockPwdです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.ISO15693_RDLOOPCmd">
+            <summary>ISO15693_RDLOOPCmdです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.GetExtendsIOPortState">
+            <summary>GetExtendsIOPortStateです。</summary>
+        </member>
+        <member name="F:Takaya.TR3.Common.RFID_SendCommand.SetExtendsIOPortState">
+            <summary>SetExtendsIOPortStateです。</summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.Config">
+            <summary>
+            このアセンブリで共通の変更可能な設定を宣言しているクラスです。
+            </summary>
+        </member>
+        <member name="T:Takaya.TR3.Common.ExceptionHandler">
+            <summary>
+            例外を制御するためのクラスです。
+            </summary>
+        </member>
+        <member name="M:Takaya.TR3.Common.ExceptionHandler.Output(System.Exception)">
+            <summary>Config.OutputExceptionがtrueの場合、Exceptionの内容を出力します。
+            </summary>
+            <param name="e">出力するExceptionオブジェクト</param>
+        </member>
+    </members>
+</doc>
