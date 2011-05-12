@@ -12,7 +12,7 @@ import cv
 storage = cv.CreateMemStorage()
 
 # 「目検出」のための教師データの読み込み
-hc = cv.Load("C:/OpenCV2.2/data/haarcascades/haarcascade_eye.xml")
+hc = cv.Load("C:/OpenCV2.2/data/haarcascades/haarcascade_mcs_mouth.xml")
 
 num = 1
 while num < 13:
@@ -22,7 +22,7 @@ while num < 13:
 
 # 顔認識（速度のため適当にパラメータ）
 #faces = cv.HaarDetectObjects(img, hc, storage)
-  faces = cv.HaarDetectObjects(img, hc, storage, 1.1, 100, 0, (100, 100))
+  faces = cv.HaarDetectObjects(img, hc, storage, 1.1, 100, 0, (300, 100))
 
 # (R, G, B)
   color = (255, 255, 255)
@@ -30,12 +30,12 @@ while num < 13:
 # 検出したパーツそれぞれの領域を
 # 四角で囲む
   for (x, y, w, h), n in faces:
-    p1 = (x - w / 3, y - w / 3)
-    p2 = (x + w + w / 2, y + h)
+    p1 = (x-w/5, y-h/5)
+    p2 = (x + w + w/4, y + h)
     cv.Rectangle(img, p1, p2, color)
 
 # 四角を描いた画像を保存
-  cv.SaveImage("faces_detected_eye/" + str(num) + ".jpg", img)
+  cv.SaveImage("faces_detected_mouth/" + str(num) + ".jpg", img)
   print num
   num += 1
 print "End"

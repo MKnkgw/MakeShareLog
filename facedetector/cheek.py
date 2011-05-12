@@ -27,15 +27,15 @@ while num < 13:
 # (R, G, B)
   color = (255, 255, 255)
 
-# 検出したパーツそれぞれの領域を
+# 検出した目のパーツから，頬の位置を切り取る
 # 四角で囲む
   for (x, y, w, h), n in faces:
-    p1 = (x - w / 3, y - w / 3)
-    p2 = (x + w + w / 2, y + h)
+    p1 = (x - w / 3, y + 4 * h / 5)
+    p2 = (x + w + w / 2, y + h + 4 * h / 3)
     cv.Rectangle(img, p1, p2, color)
 
 # 四角を描いた画像を保存
-  cv.SaveImage("faces_detected_eye/" + str(num) + ".jpg", img)
+  cv.SaveImage("faces_detected_cheek/" + str(num) + ".jpg", img)
   print num
   num += 1
 print "End"
