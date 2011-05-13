@@ -22,17 +22,17 @@ while num < 13:
 
 # 顔認識（速度のため適当にパラメータ）
 #faces = cv.HaarDetectObjects(img, hc, storage)
-  faces = cv.HaarDetectObjects(img, hc, storage, 1.1, 100, 0, (300, 100))
+  mouth = cv.HaarDetectObjects(img, hc, storage, 1.1, 100, 0, (300, 100))
 
 # (R, G, B)
   color = (255, 255, 255)
 
 # 検出したパーツそれぞれの領域を
 # 四角で囲む
-  for (x, y, w, h), n in faces:
-    p1 = (x-w/5, y-h/5)
-    p2 = (x + w + w/4, y + h)
-    cv.Rectangle(img, p1, p2, color)
+  (x, y, w, h), n = mouth[0]
+  p1 = (x-w/5, y)
+  p2 = (x + w + w/5, y + h)
+  cv.Rectangle(img, p1, p2, color)
 
 # 四角を描いた画像を保存
   cv.SaveImage("faces_detected_mouth/" + str(num) + ".jpg", img)
