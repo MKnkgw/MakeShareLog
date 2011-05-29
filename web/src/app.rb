@@ -1,13 +1,13 @@
 #!/usr/bin/ruby -rubygems
 
 require "sinatra"
-require "rack"
+#require "rack"
 require "erb"
 require "digest/md5"
 
 load "models.rb"
 
-load "conf.rb"
+#load "conf.rb"
 
 def create_thumb(src, dst, width)
   system("#$convert -resize #{width}x #{src} #{dst}")
@@ -33,21 +33,4 @@ def upload_photo_file(tempfile, name)
   photo.save ? photo : nil
 end
 
-
-Dir.glob("controllers/*.rb").each{|rb| load(rb) }
-
-use Login
-use CosmeEdit
-use Thumbnail
-
-before do
-  if !session[:user_name] then
-    session[:goto] = request.url
-    redirect "/login"
-    halt
-  end
-end
-
-#get "/*" do
-#  erb params[:splat][0].to_sym
-#end
+load "controllers/core.rb"
