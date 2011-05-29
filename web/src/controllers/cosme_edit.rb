@@ -1,4 +1,9 @@
 class CosmeEdit < Sinatra::Base
+  configure(:development) do
+    register Sinatra::Reloader
+    also_reload "app.rb"
+  end
+
   get "/cosme/new/:jancode" do
     @jancode = params[:jancode]
     if Cosmetic.first(:jancode => @jancode) then

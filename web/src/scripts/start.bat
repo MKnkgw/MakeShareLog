@@ -1,3 +1,3 @@
 @cd ..
-ruby makeuplog.rb
+ruby app.rb
 @pause

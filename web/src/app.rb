@@ -33,6 +33,7 @@ def upload_photo_file(tempfile, name)
   photo.save ? photo : nil
 end
 
+
 Dir.glob("controllers/*.rb").each{|rb| load(rb) }
 
 use Login

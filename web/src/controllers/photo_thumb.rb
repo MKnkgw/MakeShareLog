@@ -1,4 +1,9 @@
 class Thumbnail < Sinatra::Base
+  configure(:development) do
+    register Sinatra::Reloader
+    also_reload "app.rb"
+  end
+
   get %r{/face/thumb/(\d+)(?:w(\d+))?} do|id, w|
     width = w ? w : $face_thumb_width
     photo = Photo.get(id.to_i)
