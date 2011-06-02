@@ -1,3 +1,3 @@
 @cd ..
-ruby app.rb
+rackup -p 80
 @pause

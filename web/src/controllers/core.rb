@@ -22,6 +22,7 @@ end
 
 class MakeupCore < Sinatra::Base
   set :sessions, true
+  set :public, File.dirname(File.dirname(__FILE__)) + "/public"
 
   configure(:development) do
     register Sinatra::Reloader
