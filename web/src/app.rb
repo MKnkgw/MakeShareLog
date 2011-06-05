@@ -1,13 +1,13 @@
 #!/usr/bin/ruby -rubygems
 
 require "sinatra"
-#require "rack"
+require "sinatra/reloader"
 require "erb"
 require "digest/md5"
+require "json"
+require "msgpack"
 
 load "models.rb"
-
-#load "conf.rb"
 
 def create_thumb(src, dst, width)
   system("#$convert -resize #{width}x #{src} #{dst}")

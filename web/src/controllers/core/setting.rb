@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   get "/setting" do
     erb :setting
   end

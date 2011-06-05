@@ -1,3 +1,3 @@
 @cd ..
-rackup -p 80
+ruby config.ru
 @pause

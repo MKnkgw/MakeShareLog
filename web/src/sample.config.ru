@@ -1,7 +1,5 @@
 #!/usr/bin/ruby -rubygems
 
-require "sinatra/reloader"
-
 require "app.rb"
 
 $port = 80
@@ -15,4 +13,4 @@ $datadir = "../data"
 $thumbdir = "#$datadir/thumb"
 $convert = "c:/prg/ImageMagick-6.6.8-Q16/convert.exe"
 
-MakeupCore.run! :port => $port
+Core.run! :port => $port

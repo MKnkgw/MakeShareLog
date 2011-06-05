@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   get "/search/cosme/:cosme_id" do
     cosme_id = params[:cosme_id].to_i
     @cosme = Cosmetic.get(cosme_id)

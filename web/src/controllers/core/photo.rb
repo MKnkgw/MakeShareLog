@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   get "/face/:id" do
     photo = Photo.get(params[:id].to_i)
     if photo then

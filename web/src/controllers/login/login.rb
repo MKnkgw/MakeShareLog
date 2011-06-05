@@ -1,4 +1,4 @@
-class Login < Sinatra::Base
+class Login
   get "/login" do
     erb :login
   end
@@ -19,7 +19,7 @@ class Login < Sinatra::Base
           redirect "/"
         end
       else
-        @error = "ƒƒOƒCƒ“¸”s‚µ‚Ü‚µ‚½B"
+        @error = "ãƒ­ã‚°ã‚¤ãƒ³å¤±æ•—ã—ã¾ã—ãŸã€‚"
         erb :login
       end
     else
@@ -34,11 +34,18 @@ class Login < Sinatra::Base
     name = params[:name]
     pass = Digest::MD5.hexdigest(params[:pass])
     user = User.new(:name => name, :pass => pass)
-    if user.save then
+    if save = user.save then
       redirect "/login"
     else
-      @error = "ƒ†[ƒUì¬‚É¸”s‚µ‚Ü‚µ‚½B"
+      @error = "ãƒ¦ãƒ¼ã‚¶ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
       erb :create
     end
+  end
+
+  get "/logout" do
+    session.each_key{|key|
+      session[key] = nil
+    }
+    redirect "/login"
   end
 end

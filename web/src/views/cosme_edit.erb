@@ -15,6 +15,10 @@
         </td>
         <td><input id="cosme_photo_file" type="file" name="cosme_photo_file"></td>
       </tr>
+      <tr class="cosme-jancode">
+        <td>JANコード</td>
+        <td><%= @cosme.jancode %></td>
+      </tr>
       <tr class="cosme-name">
         <td><label for="cosme_name" class="cosme-edit-label">商品名</label></td>
         <td><input id="cosme_name" type="text" name="cosme_name" size="40" value="<%= @cosme.name %>"></td>
@@ -23,19 +27,9 @@
         <td><label for="cosme_brand" class="cosme-edit-label">ブランド</label></td>
         <td><input id="cosme_brand" type="text" name="cosme_brand" size="40" value="<%= @cosme.brand.name %>"></td>
       </tr>
-      <tr class="cosme-part">
-        <td><label for="cosme_part" class="cosme-edit-label">パーツ</label></td>
-        <td>
-          <select id="cosme_part" name="cosme_part">
-            <% PartType.all.each do|part| %>
-              <% if part.id == @cosme.part_type_id then %>
-                <option value="<%= part.id %>" selected><%= part.name %></option>
-              <% else %>
-                <option value="<%= part.id %>"><%= part.name %></option>
-              <% end %>
-            <% end %>
-          </select>
-        </td>
+      <tr class="cosme-description">
+        <td><label for="cosme_description" class="cosme-edit-label">パーツ</label></td>
+        <td><input id="cosme_description" type="text" name="cosme_description" size="40" value="<%= @cosme.description %>"></td>
       </tr>
       <tr class="cosme-color">
         <td><label for="cosme_color" class="cosme-edit-label">色</label></td>

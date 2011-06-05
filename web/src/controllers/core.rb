@@ -1,39 +1,38 @@
-class Login < Sinatra::Base
+class MakeupBase < Sinatra::Base
+  def self.controller_path
+    "controllers/#{self.to_s.downcase}/*.rb"
+  end
+  def self.configure_default
+    configure(:development) do
+      register Sinatra::Reloader
+      also_reload "app.rb"
+      also_reload controller_path
+    end
+
+    Dir.glob(controller_path).each{|rb|
+      load(rb)
+    }
+  end
+end
+
+class Login < MakeupBase
   set :sessions, true
 
-  configure(:development) do
-    register Sinatra::Reloader
-    also_reload "app.rb"
-    also_reload "controllers/login/*.rb"
-  end
-
-  Dir.glob("controllers/login/*.rb").each{|rb| load(rb) }
+  configure_default
 end
 
-class Thumbnail < Sinatra::Base
-  configure(:development) do
-    register Sinatra::Reloader
-    also_reload "app.rb"
-    also_reload "controllers/thumbnail/*.rb"
-  end
-
-  Dir.glob("controllers/thumbnail/*.rb").each{|rb| load(rb) }
+class NoLogin < MakeupBase
+  configure_default
 end
 
-class MakeupCore < Sinatra::Base
+class Core < MakeupBase
   set :sessions, true
   set :public, File.dirname(File.dirname(__FILE__)) + "/public"
 
-  configure(:development) do
-    register Sinatra::Reloader
-    also_reload "app.rb"
-    also_reload "controllers/core/*.rb"
-  end
-
-  Dir.glob("controllers/core/*.rb").each{|rb| load(rb) }
+  configure_default
 
   use Login
-  use Thumbnail
+  use NoLogin
 
   before do
     if !session[:user_name] then

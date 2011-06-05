@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   # http://host/user/MKnkgw/
   get "/user/:user_name" do
     @user_name = params[:user_name]

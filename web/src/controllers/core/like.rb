@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   get "/like/:photoset_id" do
     me = User.get(session[:user_id])
     photo_set_id = params[:photoset_id].to_i

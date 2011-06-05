@@ -1,4 +1,4 @@
-class MakeupCore < Sinatra::Base
+class Core
   get "/user/face/:photoset_id" do
     @photoset = PhotoSet.get(params[:photoset_id].to_i)
     user = @photoset.user
