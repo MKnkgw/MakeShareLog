@@ -1,6 +1,7 @@
 require "dm-core"
 require "dm-migrations"
 require "dm-types"
+require "dm-serializer"
 #require "dm-validations"
 
 DataMapper.setup(:default, {
