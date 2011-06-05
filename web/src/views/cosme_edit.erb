@@ -10,7 +10,7 @@
         <td>
           <label for="cosme_photo_file" class="cosme-edit-label">
             <div>商品写真</div>
-            <div><img width="<%= $cosme_thumb_width %>px" src="/thumb/<%= @cosme.photo.id %>w<%= $cosme_thumb_width %>"></div>
+            <div><img width="<%= $cosme_thumb_width %>px" src="/thumb/cosme/<%= @cosme.photo.id %>"></div>
           </label>
         </td>
         <td><input id="cosme_photo_file" type="file" name="cosme_photo_file"></td>
@@ -28,7 +28,7 @@
         <td><input id="cosme_brand" type="text" name="cosme_brand" size="40" value="<%= @cosme.brand.name %>"></td>
       </tr>
       <tr class="cosme-description">
-        <td><label for="cosme_description" class="cosme-edit-label">パーツ</label></td>
+        <td><label for="cosme_description" class="cosme-edit-label">説明</label></td>
         <td><input id="cosme_description" type="text" name="cosme_description" size="40" value="<%= @cosme.description %>"></td>
       </tr>
       <tr class="cosme-color">

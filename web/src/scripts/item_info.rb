@@ -73,9 +73,13 @@ class RakutenSearch
     product = product_detail(keyword)
 
     info["name"] = product["productName"]
-    info["brand"] = product["brandName"].normalize
     info["image"] = product["mediumImageUrl"]
     info["url"] = product["productUrlPC"]
+
+    brand = product["brandName"]
+    name = product["productName"]
+    info["name"] = name.sub!(/^#{brand} */, "")
+    info["brand"] = brand.normalize
 
     caption = product["productCaption"]
     genre_id = product["genreId"]
