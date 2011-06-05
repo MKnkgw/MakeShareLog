@@ -1,0 +1,16 @@
+* やってもらうこと
+** 実装
+- split_eye.py
+- split_mouth.py
+- split_cheek.py
+
+それぞれ
+ > python split_cheek.py face.jpg cheek.jpg
+とかすると face.jpg からほほを切り出して cheek.jpg に
+書きだしてくれるスクリプトの実装
+
+一番大きいものとか一番似てるものとかを一個だけ。
+
+** ディレクトリ整理
+ディレクトリ内にある古いファイルとかはgitの履歴に
+残ってるから気にせず削除。
