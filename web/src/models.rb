@@ -17,6 +17,7 @@ module DMUtil
   def find_or_create(args)
     first(args) || create(args)
   end
+
   def last_insert_id
     last_record = last
     if last_record then
@@ -114,6 +115,19 @@ class Photo
   property :path, String, :allow_nil => false
   property :created_at, Time, :default => TimeProc, :allow_nil => false
   property :content_type, String
+
+  has n, :thumbnails
+end
+
+class Thumbnail
+  include DataMapper::Resource
+  extend DMUtil
+
+  property :id, Serial
+  property :path, String, :allow_nil => false
+  property :width, Integer, :allow_nil => false
+
+  belongs_to :photo
 end
 
 class FacePhoto

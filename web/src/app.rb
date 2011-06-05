@@ -9,18 +9,12 @@ require "msgpack"
 
 load "models.rb"
 
-def create_thumb(src, dst, width)
-  system("#$convert -resize #{width}x #{src} #{dst}")
-end
+def create_thumbnail(photo, width)
+  photo_path = "#{$datadir}/#{photo.path}" 
+  thumb_path = "#$thumbdir/#{Thumbnail.last_insert_id}"
+  system("#$convert -resize #{width}x #{photo_path} #{thumb_path}")
 
-def photo_thumb(photo, prefix, width)
-  path = $datadir + "/" + photo.path
-  ext = File.extname(path)
-  thumb_path = "#$thumbdir/#{prefix}-#{photo.id}-#{width}-thumb#{ext}"
-  if !File.exist?(thumb_path) || File.mtime(thumb_path) < File.mtime(path) then
-    create_thumb(path, thumb_path, width)
-  end
-  thumb_path
+  Thumbnail.create(:path => thumb_path, :width => width.to_i, :photo_id => photo.id)
 end
 
 def upload_photo_file(tempfile, name)

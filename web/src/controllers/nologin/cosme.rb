@@ -36,7 +36,7 @@ class NoLogin
       genres.push Genre.create(
         :name => name,
         :level => level,
-        :cosmetic_id => @cosme.id
+        :cosmetic_id => cosme.id
       )
     end
 
@@ -60,9 +60,9 @@ class NoLogin
 
   get "/api/cosme/edit/:jancode" do
     jancode = params[:jancode]
-    @cosme = find_or_register(jancode)
+    cosme = find_or_register(jancode)
 
     content_type :json
-    @cosme.to_json
+    cosme.to_json
   end
 end
