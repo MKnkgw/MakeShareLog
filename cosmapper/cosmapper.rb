@@ -72,7 +72,7 @@ while true do
   putslog "バーコード: #{jancode}"
   puts
 
-  url = "http://hogel.org:38248/cosme/new/#{jancode}"
+  url = "http://localhost/cosme/edit/#{jancode}"
   log url
 
   system("explorer", url)

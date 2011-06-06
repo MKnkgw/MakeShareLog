@@ -15,7 +15,8 @@ class CameraServer(Thread):
     self.events = {
         "photo": Event(),
         "save": Event(),
-        "quit": Event()
+        "quit": Event(),
+        "run": Event()
     }
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -56,21 +57,22 @@ def main(port):
   camera = Camera()
   while server.isAlive():
     time.sleep(WAIT)
-    for event in camera.update():
-      if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
-          sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-          sock.connect(("localhost", port))
-          sock.send("/quit")
-          server.join()
-          sys.exit()
-        elif event.key == pygame.K_p:
-          path = "%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
-          server.event_set("save", path)
+    if server.event("run"):
+      for event in camera.update():
+        if event.type == pygame.KEYDOWN:
+          if event.key == pygame.K_ESCAPE:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect(("localhost", port))
+            sock.send("/quit")
+            server.join()
+            sys.exit()
+          elif event.key == pygame.K_p:
+            path = "%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
+            server.event_set("save", path)
 
-    if server.event("save"):
-      camera.save(server.event("save").arg)
-      server.event_clear("save")
+      if server.event("save"):
+        camera.save(server.event("save").arg)
+        server.event_clear("save")
 
 if __name__ == "__main__":
   if len(sys.argv) >= 2:
