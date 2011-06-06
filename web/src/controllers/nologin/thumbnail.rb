@@ -1,4 +1,11 @@
 class NoLogin
+  def create_thumbnail(photo, width)
+    photo_path = "#{$datadir}/#{photo.path}" 
+    thumb_path = "#$thumbdir/#{Thumbnail.last_insert_id}"
+    system("#$convert -resize #{width}x #{photo_path} #{thumb_path}")
+
+    Thumbnail.create(:path => thumb_path, :width => width.to_i, :photo_id => photo.id)
+  end
   def send_thumbnail(id, w)
     photo = Photo.get(id)
     thumb = Thumbnail.first(:width => w.to_i, :photo_id => id)
