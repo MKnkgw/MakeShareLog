@@ -12,11 +12,6 @@ def new_user(name, pass, admin, level)
   user
 end
 
-$levels = {}
-$levels["newbie"] = newbie = UserLevel.create(:name => "Newbie", :value => 0)
-$levels["middle"] = middle = UserLevel.create(:name => "Middle", :value => 1)
-$levels["expert"] = expert = UserLevel.create(:name => "Expert", :value => 2)
-
 $eye = PartType.create(:name => "Eye")
 $cheek = PartType.create(:name => "Cheek")
 $lip = PartType.create(:name => "Lip")
@@ -79,11 +74,9 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
   month = $3.to_i
   day = $4.to_i
   level_name = $5.capitalize
-  level_name = "Middle" if level_name == "Midle"
 
   time = Time.local(year, month, day)
 
-  level = UserLevel.first(:name => level_name)
   abort("unknown level name #{photoset_path}") if !level
 
   photoset = PhotoSet.new(

@@ -41,15 +41,46 @@ class User
 
   has n, :photo_sets
   has n, :user_cosmetics
-  has n, :public_settings
+  has n, :groups
+  has n, :group_users
 
-  def public?(part_type_id)
-    PublicSetting.first(
-      :user_id => id,
-      :part_type_id => part_type_id,
-      :public => true
+  def public?(user, part_type_id)
+    group_user = GroupUser.first(
+      :owner_id => id,
+      :user_id => user.id
     )
+    if group_user then
+      PublicSetting.first(
+        :group_id => group_user.group.id,
+        :part_type_id => part_type_id,
+        :public => true
+      )
+    end
   end
+end
+
+class Group
+  include DataMapper::Resource
+  extend DMUtil
+
+  property :id, Serial
+  property :forall, Boolean, :allow_nil => false, :default => false
+
+  belongs_to :owner, 'User', :key => true
+
+  has n, :group_users
+  has n, :public_settings
+end
+
+class GroupUser
+  include DataMapper::Resource
+  extend DMUtil
+
+  property :id, Serial
+
+  belongs_to :group
+  belongs_to :owner, 'User', :key => true
+  belongs_to :user
 end
 
 class PublicSetting
@@ -59,7 +90,7 @@ class PublicSetting
   property :id, Serial
   property :public, Boolean
 
-  belongs_to :user
+  belongs_to :group
   belongs_to :part_type
 end
 
