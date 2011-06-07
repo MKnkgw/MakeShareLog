@@ -1,5 +1,5 @@
 <span class="photo" style="width: <%= $face_thumb_width %>px">
-  <a href="/user/face/<%= @face.photo_set_id%>"><img src="/face/thumb/<%= @face.photo.id %>" width="<%= $face_thumb_width %>px"></a>
+  <a href="/user/face/<%= @face.photo_set_id%>"><img src="/thumb/face/<%= @face.photo.id %>" width="<%= $face_thumb_width %>px"></a>
 </span>
 <div class="explanation">
   <div class="user-name">
@@ -9,6 +9,5 @@
       <a href="/user/<%= @face.user.name %>"><%= @face.user.name %></a>
     <% end %>
   </div>
-  <div class="user-level"><%= @face.photo_set.user_level.name %></div>
   <div class="date"><%= @face.photo_set.date %></div>
 </div>

@@ -6,6 +6,7 @@ require "erb"
 require "digest/md5"
 require "json"
 require "msgpack"
+require "uuidtools"
 
 load "models.rb"
 

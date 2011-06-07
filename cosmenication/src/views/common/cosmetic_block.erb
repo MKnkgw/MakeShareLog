@@ -1,8 +1,8 @@
 <span class="photo" style="width: <%= $cosme_thumb_width %>px">
   <% if @not_search_cosme_link then %>
-    <img src="/cosme/thumb/<%= @cosme.photo.id %>">
+    <img src="/thumb/cosme/<%= @cosme.photo.id %>">
   <% else %>
-    <a href="/search/cosme/<%= @cosme.id %>"><img src="/cosme/thumb/<%= @cosme.photo.id %>"></a>
+    <a href="/search/cosme/<%= @cosme.id %>"><img src="/thumb/cosme/<%= @cosme.photo.id %>"></a>
   <% end %>
 </span>
 <div class="explanation">
@@ -14,12 +14,12 @@
     <% end %>
   </div>
   <div class="cosme-brand"><%= @cosme.brand.name %></div>
-  <div class="cosme-part"><%= @cosme.part_type.name %></div>
   <div class="cosme-color"><%= @cosme.color.name %></div>
-  <div class="cosme-url">
-    <a href="<%= @cosme.url %>">Buy now!</a>
-  </div>
-  <div class="cosme-edit">
-    <a href="/cosme/edit/<%= @cosme.jancode %>">Edit</a>
-  </div>
+  <div class="cosme-description"><%= @cosme.description.scan(/.{1,#$description_length}/)[0] + "..." %></div>
+  <span class="cosme-url">
+    <a href="<%= @cosme.url %>"><img src="/img/icon/shoppingcart_checkout.png"></a>
+  </span>
+  <span class="cosme-edit">
+    <a href="/cosme/edit/<%= @cosme.jancode %>"><img src="/img/icon/document_edit.png"></a>
+  </span>
 </div>

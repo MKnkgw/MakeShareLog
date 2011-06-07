@@ -1,17 +1,20 @@
 class NoLogin
   def create_thumbnail(photo, width)
+    uuid = UUIDTools::UUID.random_create.to_s
     photo_path = "#{$datadir}/#{photo.path}" 
-    thumb_path = "#$thumbdir/#{Thumbnail.last_insert_id}"
+    thumb_path = "#$thumbdir/#{uuid}"
     system("#$convert -resize #{width}x #{photo_path} #{thumb_path}")
 
     Thumbnail.create(:path => thumb_path, :width => width.to_i, :photo_id => photo.id)
   end
   def send_thumbnail(id, w)
     photo = Photo.get(id)
+    p photo
     thumb = Thumbnail.first(:width => w.to_i, :photo_id => id)
     unless thumb then
       thumb = create_thumbnail(photo, w)
     end
+    p thumb
     send_file thumb.path, :type => photo.content_type
   end
 

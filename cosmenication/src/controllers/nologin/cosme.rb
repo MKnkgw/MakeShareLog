@@ -65,4 +65,17 @@ class NoLogin
     content_type :json
     cosme.to_json
   end
+
+  post "/cosme/edit/:jancode" do
+    jancode = params[:jancode]
+    @cosme = first_or_register(jancode)
+
+    @cosme.name = params[:cosme_name]
+    @cosme.brand_id = Brand.first_or_create(params[:cosme_brand]).id
+    @cosme.description = params[:cosme_description]
+    @cosme.color_id = Color.first_or_create(:name => params[:cosme_color]).id
+    @cosme.url = params[:cosme_url]
+
+    erb :cosme_edit
+  end
 end

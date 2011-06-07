@@ -100,3 +100,12 @@ a:hover { text-decoration: underline; }
   float: left;
   font-size: 125%;
 }
+
+.explanation .cosme-url img {
+  width: 16px;
+  height: 16px;
+}
+.explanation .cosme-edit img {
+  width: 16px;
+  height: 16px;
+}
