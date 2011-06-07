@@ -8,12 +8,12 @@
   <div id="face-photoset">
     <div id="photoset-photo">
       <div id="photoset-mainphoto">
-        <img width="<%= $face_mainphoto_width %>" id="photoset-mainphoto-img" src="/face/thumb/<%= @photo.id %>w<%= $face_mainphoto_width %>">
+        <img width="<%= $face_mainphoto_width %>" id="photoset-mainphoto-img" src="/thumb/<%= @photo.id %>w<%= $face_mainphoto_width %>">
       </div>
       <div id="photoset-parts">
         <% @photos.each do|part| %>
           <span class="photo face-thumb-menu">
-            <img class="face-thumb-menu-img" src="/face/thumb/<%= part.photo.id %>">
+            <img class="face-thumb-menu-img" src="/thumb/<%= part.photo.id %>w<%= $face_mainphoto_width %>">
           </span>
         <% end %>
       </div>
@@ -28,7 +28,6 @@
         <% end %>
       </span>
       <span class="date"><%= @photoset.date %></span>
-      <span class="user-level"><%= @photoset.user_level.name %></span>
       <% if @you_like then %>
         <span id="photoset-like" title="いいね！を取り消す" name="unlike">いいね！を取り消す</span>
       <% else %>

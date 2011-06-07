@@ -4,6 +4,9 @@ class Core
     photo_set_id = params[:photoset_id].to_i
     like = Like.new(:user_id => me.id, :photo_set_id => photo_set_id)
     if like.save then
+      user = PhotoSet.get(photo_set_id).user
+      user.like_count += 1
+      user.save
       photo_set_id.to_s
     end
   end
@@ -14,6 +17,9 @@ class Core
     like = Like.get(photo_set_id, me.id)
     if like then
       like.destroy
+      user = PhotoSet.get(photo_set_id).user
+      user.like_count -= 1
+      user.save
       photo_set_id.to_s
     end
   end

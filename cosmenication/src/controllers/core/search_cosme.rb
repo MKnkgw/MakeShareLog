@@ -19,7 +19,6 @@ class Core
       end
     }
     @photo_list = face_list.sort_by{|face|
-      p face
       # ‘‚¨‹C‚É“ü‚ç‚ê”, B‰e“ú
       [-face.user.like_count, -1*face.photo_set.created_at.to_i]
     }

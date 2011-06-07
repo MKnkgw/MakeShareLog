@@ -41,18 +41,26 @@ class User
   has n, :owner_group_users, 'GroupUser', :childkey => :owner
   has n, :group_users
 
-  def public?(user, part_type_id)
+  def users_group(user)
     group_user = GroupUser.first(
+      :owner_id => id,
       :user_id => user.id
     )
-    if group_user then
-      group = group_user.group
-      PublicSetting.first(
-        :group_id => group.id,
-        :part_type_id => part_type_id,
-        :public => true
-      )
-    end
+    group = group_user ? group_user.group : default_group
+  end
+
+  def public?(user, part_type_id)
+    group = users_group(user)
+    PublicSetting.first(
+      :group_id => group.id,
+      :part_type_id => part_type_id,
+      :public => true
+    )
+  end
+
+  def any_public_part_type_id(user)
+    group = users_group(user)
+    group.any_public_part_type_id
   end
 
   def default_group
