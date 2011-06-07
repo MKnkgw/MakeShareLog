@@ -9,12 +9,10 @@ class NoLogin
   end
   def send_thumbnail(id, w)
     photo = Photo.get(id)
-    p photo
     thumb = Thumbnail.first(:width => w.to_i, :photo_id => id)
     unless thumb then
       thumb = create_thumbnail(photo, w)
     end
-    p thumb
     send_file thumb.path, :type => photo.content_type
   end
 

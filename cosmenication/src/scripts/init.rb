@@ -2,26 +2,20 @@ load "models.rb"
 
 $initdir = "../data/init"
 
-def new_user(name, pass, admin = false)
-  User.first_or_create(
-    :name => name,
-    :pass => Digest::MD5.hexdigest(pass),
-    :admin => admin
-  )
-end
-
 $eye = PartType.first(:name => "Eye")
 $cheek = PartType.first(:name => "Cheek")
 $lip = PartType.first(:name => "Lip")
 $face = PartType.first(:name => "Face")
 $parts = [$face, $eye, $cheek, $face]
 
-new_user("hogelog", "hogelog", true)
 accounts = File.readlines("#$initdir/account.txt")
 accounts[1...accounts.size].each{|line|
   line.chomp!
   name, *pubs = line.split(",")
-  user = new_user(name, name, false)
+  user = User.first_or_create(
+    :name => name,
+    :pass => Digest::MD5.hexdigest(name)
+  )
 
   group = Group.first_or_create(:forall => true, :user_id => user.id)
   pubs.each_with_index{|x, i|
@@ -34,6 +28,7 @@ accounts[1...accounts.size].each{|line|
 }
 
 def get(n);end
+def post(n);end
 $photodir = "../data/photo"
 require "../src/controllers/nologin/cosme"
 require "json"

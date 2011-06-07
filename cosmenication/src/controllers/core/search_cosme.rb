@@ -2,22 +2,26 @@ class Core
   get "/search/cosme/:cosme_id" do
     cosme_id = params[:cosme_id].to_i
     @cosme = Cosmetic.get(cosme_id)
-    @photo_list = CosmeticTagging.all(
+    face_list = []
+    CosmeticTagging.all(
       :cosmetic_id => cosme_id
-    ).map!{|tag| tag.photo_set}.select{|set|
-      user = User.get(set.user_id)
-      session[:user_id] == user.id || user.public_settings.any?{|pub| pub.public}
-    }.sort_by{|set|
-      [-set.user_level.value, -1*set.created_at.to_i]
-    }.map{|set|
-      user = User.get(set.user_id)
-      if user.id == session[:user_id] || user.public?($part_types[:face]) then
-        set.face
-      elsif user.public?(@cosme.part_type_id) then
-        set.photo(@cosme.part_type_id)
+    ).each{|tag|
+      set = tag.photo_set
+      owner = User.get(set.user_id)
+      user_id = session[:user_id]
+      if user_id == owner.id then
+        face_list.push(set.face)
       else
-        set.photo(user.public_settings.find{|pub| pub.public}.part_type_id)
+        guser = GroupUser.first(:owner_id => owner.id, :user_id => user_id)
+        group = guser ? guser.group : owner.default_group
+        part_type_id = group.any_public_part_type_id
+        face_list.push(set.photo(part_type_id))
       end
+    }
+    @photo_list = face_list.sort_by{|face|
+      p face
+      # ‘‚¨‹C‚É“ü‚ç‚ê”, B‰e“ú
+      [-face.user.like_count, -1*face.photo_set.created_at.to_i]
     }
     erb :search_cosme
   end

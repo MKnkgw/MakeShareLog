@@ -38,6 +38,7 @@ class User
   has n, :photo_sets
   has n, :user_cosmetics
   has n, :groups
+  has n, :owner_group_users, 'GroupUser', :childkey => :owner
   has n, :group_users
 
   def public?(user, part_type_id)
@@ -53,6 +54,10 @@ class User
       )
     end
   end
+
+  def default_group
+    Group.first(:forall => true)
+  end
 end
 
 class Group
@@ -66,6 +71,16 @@ class Group
 
   has n, :group_users
   has n, :public_settings
+
+  def any_public_part_type_id
+    [:Face, :Eye, :Cheek, :Lip].each do |part|
+      part_id = PART_TYPES[part]
+      pub = PublicSetting.first(:public => true, :part_type_id => part_id)
+      if pub then
+        return part_id
+      end
+    end
+  end
 end
 
 class GroupUser
@@ -74,6 +89,7 @@ class GroupUser
 
   property :id, Serial
 
+  belongs_to :owner, 'User'
   belongs_to :group
   belongs_to :user
 end
@@ -245,6 +261,13 @@ end
 DataMapper.auto_upgrade!
 
 class PhotoSet
+  PART_TYPES = {}
+  ["Eye", "Cheek", "Lip", "Face"].each do|name|
+    part = PartType.first_or_create(:name => name)
+    PART_TYPES[name.to_sym] = part.id
+  end
+end
+class Group
   PART_TYPES = {}
   ["Eye", "Cheek", "Lip", "Face"].each do|name|
     part = PartType.first_or_create(:name => name)
