@@ -5,14 +5,19 @@
 %>
 
 <div id="common-main">
-  <form action="/setting" method="POST">
-    <dl>
-      <dt>パスワード変更</dt>
-      <dd><input type="password" name="pass1" /></dd>
-      <dt>パスワード変更（確認）</dt>
-      <dd><input type="password" name="pass2" /></dd>
-    </dl>
-    <input type="submit" value="更新" />
-  </form>
+  <div id="common-left">
+    <form action="/setting" method="POST">
+      <dl>
+        <dt>パスワード変更</dt>
+        <dd><input type="password" name="pass1" /></dd>
+        <dt>パスワード変更（確認）</dt>
+        <dd><input type="password" name="pass2" /></dd>
+      </dl>
+      <input type="submit" value="更新" />
+    </form>
+  </div>
+  <div id="common-right">
+    公開設定とかこの辺に
+  </div>
 </div>
 <%= erb :"common/footer" %>
