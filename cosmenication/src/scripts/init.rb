@@ -1,75 +1,57 @@
 load "models.rb"
 
-def new_user(name, pass, admin, level)
-  user = User.new(
+$initdir = "../data/init"
+
+def new_user(name, pass, admin = false)
+  User.first_or_create(
     :name => name,
     :pass => Digest::MD5.hexdigest(pass),
-    :admin => admin,
-    :user_level_id => level
+    :admin => admin
   )
-  
-  abort("cannot insert #{name}") if !user.save
-  user
 end
 
-$eye = PartType.create(:name => "Eye")
-$cheek = PartType.create(:name => "Cheek")
-$lip = PartType.create(:name => "Lip")
-$face = PartType.create(:name => "Face")
+$eye = PartType.first(:name => "Eye")
+$cheek = PartType.first(:name => "Cheek")
+$lip = PartType.first(:name => "Lip")
+$face = PartType.first(:name => "Face")
+$parts = [$face, $eye, $cheek, $face]
 
-new_user("hogelog", "hogelog", true, expert.id)
-accounts = File.readlines("../data/account.txt")
+new_user("hogelog", "hogelog", true)
+accounts = File.readlines("#$initdir/account.txt")
 accounts[1...accounts.size].each{|line|
   line.chomp!
-  name, level, *pubs = line.split(",")
-  user = new_user(name, name, false, $levels[level].id)
- 
+  name, *pubs = line.split(",")
+  user = new_user(name, name, false)
+
+  group = Group.first_or_create(:forall => true, :user_id => user.id)
   pubs.each_with_index{|x, i|
-    pub = PublicSetting.new(
+    PublicSetting.first_or_create(
       :public => x == "1",
-      :user_id => user.id,
-      :part_type_id => [$face, $lip, $eye, $cheek][i].id
+      :group_id => group.id,
+      :part_type_id => $parts[i].id
     )
-    abort("cannot save public setting #{user.name}") if !pub.save
   }
 }
 
-cosmetics = File.readlines("../data/cosmetics.csv")
+def get(n);end
+$photodir = "../data/photo"
+require "../src/controllers/nologin/cosme"
+require "json"
+nologin = NoLogin.new
+cosmetics = File.readlines("#$initdir/cosmetics.csv")
+RFIDs = {}
 cosmetics[1...cosmetics.size].each{|line|
   line.chomp!
-  rfidcode, jan, partname, brandname, name, colorname, url, imgpath = line.split(",")
-  part = PartType.first(:name => partname.capitalize)
-  brand = find_or_create(Brand, :name => brandname)
-  color = find_or_create(Color, :name => colorname)
-
-  unless photo = find_or_create(Photo, :path => imgpath) then
-    abort("cannot save cosmetic photo #{imgpath}")
-  end
-
-  cosme = Cosmetic.new(
-    :jancode => jan,
-    :part_type_id => part.id,
-    :brand_id => brand.id,
-    :name => name,
-    :color_id => color.id,
-    :url => url,
-    :photo_id => photo.id
-  )
-
-  abort("cannot save cosmetic #{name}") if !cosme.save
-
-  rfid = Rfid.new(:rfid => rfidcode.to_i, :cosmetic_id => cosme.id)
-  abort("cannot save rfid #{rfid}") if !rfid.save
+  rfid, jan, partname, brandname, name, colorname, url, imgpath = line.split(",")
+  cosme = nologin.first_or_register(jan)
+  RFIDs[rfid.to_i] = cosme
 }
 
-
-
-Dir.glob("../data/photo/*/*/*").each{|photoset_path|
+Dir.glob("#$initdir/photo/*/*/*").each{|photoset_path|
   unless photoset_path =~ /\/([^\/]+)\/\d{3}\/(\d{4})(\d{2})(\d{2})-(\w+)$/ then
     abort("unknown photoset_path #{photoset_path}") 
   end
   user = User.first(:name => $1)
-  user_id = user.id
   year = $2.to_i
   month = $3.to_i
   day = $4.to_i
@@ -77,52 +59,45 @@ Dir.glob("../data/photo/*/*/*").each{|photoset_path|
 
   time = Time.local(year, month, day)
 
-  abort("unknown level name #{photoset_path}") if !level
-
-  photoset = PhotoSet.new(
+  photoset = PhotoSet.first_or_create(
     :created_at => time,
-    :user_id => user_id,
-    :user_level_id => level.id
+    :user_id => user.id
   )
-  abort("cannot save #{photoset_path}") if !photoset.save
 
   File.read("#{photoset_path}/tags").split(", ").map{|x| x.to_i}.each{|tag|
-    rfid = Rfid.first(:rfid => tag)
-    cosmetic_id = rfid.cosmetic_id
-    tagging = CosmeticTagging.new(
-      :photo_set_id => photoset.id,
-      :cosmetic_id => cosmetic_id
-    )
-    abort("cannot save cosmetic rfid #{tag}") if !tagging.save
+    cosme = RFIDs[tag]
 
-    if !OwnCosmetic.get(user_id, cosmetic_id) then
-      own = OwnCosmetic.new(
-        :user_id => user_id,
-        :cosmetic_id => cosmetic_id
-      )
-      abort("cannot save own cosmetic #{cosmetic_id}") if !own.save
-    end
+    tagging = CosmeticTagging.first_or_create(
+      :photo_set_id => photoset.id,
+      :cosmetic_id => cosme.id
+    )
+
+    ucosme = UserCosmetic.first_or_create(
+      :user_id => user.id,
+      :cosmetic_id => cosme.id
+    )
   }
 
   Dir.glob("#{photoset_path}/*.*").each{|photo_path|
     unless photo_path =~ /(\w+).\w+$/ then
       abort("unknown photo_path #{photo_path}")
     end
+    #if photo_path =~ /((?:cheek|lip|eye)\.jpg)$/ then
+    #  face = photo_path.sub(/((?:cheek|lip|eye)\.jpg)$/, "face.jpg")
+    #end
     part_name = $1.capitalize
     part = PartType.first(:name => part_name)
     abort("unknown part type #{part_name}") if !part
 
-    photo = Photo.new(
-      :path => photo_path.sub(/^..\/data\//, ""),
+    photo = Photo.first_or_create(
+      :path => photo_path,
       :created_at => time
     )
-    abort("cannot save photo #{photo_path}") if !photo.save
-    face = FacePhoto.new(
+    face = FacePhoto.first_or_create(
       :photo_id => photo.id,
       :photo_set_id => photoset.id,
       :part_type_id => part.id,
       :user_id => user.id
     )
-    abort("cannot save face photo #{photo_path}") if !face.save
   }
 }

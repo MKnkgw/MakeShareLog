@@ -14,10 +14,6 @@ DataMapper::Model.raise_on_save_failure = true
 TimeProc = proc{|r, p| Time.now }
 
 module DMUtil
-  def find_or_create(args)
-    first(args) || create(args)
-  end
-
   def last_insert_id
     last_record = last
     if last_record then
@@ -46,12 +42,12 @@ class User
 
   def public?(user, part_type_id)
     group_user = GroupUser.first(
-      :owner_id => id,
       :user_id => user.id
     )
     if group_user then
+      group = group_user.group
       PublicSetting.first(
-        :group_id => group_user.group.id,
+        :group_id => group.id,
         :part_type_id => part_type_id,
         :public => true
       )
@@ -66,7 +62,7 @@ class Group
   property :id, Serial
   property :forall, Boolean, :allow_nil => false, :default => false
 
-  belongs_to :owner, 'User', :key => true
+  belongs_to :user
 
   has n, :group_users
   has n, :public_settings
@@ -79,7 +75,6 @@ class GroupUser
   property :id, Serial
 
   belongs_to :group
-  belongs_to :owner, 'User', :key => true
   belongs_to :user
 end
 
@@ -252,9 +247,7 @@ DataMapper.auto_upgrade!
 class PhotoSet
   PART_TYPES = {}
   ["Eye", "Cheek", "Lip", "Face"].each do|name|
-    unless PartType.first(:name => name) then
-      part = PartType.create(:name => name)
-      PART_TYPES[name.to_sym] = part.id
-    end
+    part = PartType.first_or_create(:name => name)
+    PART_TYPES[name.to_sym] = part.id
   end
 end

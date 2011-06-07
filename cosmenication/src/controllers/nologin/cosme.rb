@@ -4,7 +4,7 @@ class NoLogin
     item = items[0] or halt("Not Found Item: #{jancode}")
 
     # register brand
-    brand = Brand.find_or_create(:name => item["brand"])
+    brand = Brand.first_or_create(:name => item["brand"])
 
     # register photo
     photo_url = item["image"]
@@ -15,7 +15,7 @@ class NoLogin
       :content_type => download["content_type"]
     )
 
-    nocolor = Color.find_or_create(:name => "")
+    nocolor = Color.first_or_create(:name => "")
 
     # register cosme
     cosme = Cosmetic.create(
@@ -43,7 +43,7 @@ class NoLogin
     cosme
   end
 
-  def find_or_register(jancode)
+  def first_or_register(jancode)
     if cosme = Cosmetic.first(:jancode => jancode) then
       cosme
     else
@@ -53,14 +53,14 @@ class NoLogin
 
   get "/cosme/edit/:jancode" do
     jancode = params[:jancode]
-    @cosme = find_or_register(jancode)
+    @cosme = first_or_register(jancode)
 
     erb :cosme_edit
   end
 
   get "/api/cosme/edit/:jancode" do
     jancode = params[:jancode]
-    cosme = find_or_register(jancode)
+    cosme = first_or_register(jancode)
 
     content_type :json
     cosme.to_json
