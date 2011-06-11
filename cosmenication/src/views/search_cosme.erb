@@ -11,6 +11,7 @@
       <div class="photo-block">
         <%=
           @face = face
+          @link_home = @me.id != face.user.id
           erb :"common/photo_block"
         %>
       </div>

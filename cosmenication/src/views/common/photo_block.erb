@@ -2,8 +2,12 @@
   <a href="/user/face/<%= @face.photo_set_id%>"><img src="/thumb/face/<%= @face.photo.id %>" width="<%= $face_thumb_width %>px"></a>
 </span>
 <div class="explanation">
-  <div class="user-name">
-    <%= @face.user.name %>
-  </div>
   <div class="date"><%= @face.photo_set.date %></div>
+  <div class="user-name">
+    <% if @link_home %>
+      <a href="/user/<%= @face.user.name %>"><%= @face.user.name %><img src="/img/icon/home.png" ></a>
+    <% else %>
+      <%= @face.user.name %>
+    <% end %>
+  </div>
 </div>
