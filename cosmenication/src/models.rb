@@ -65,7 +65,7 @@ class User
   end
 
   def default_group
-    Group.first(:forall => true)
+    Group.first(:user_id => id, :forall => true)
   end
 end
 
@@ -84,11 +84,12 @@ class Group
   def any_public_part_type_id
     [:Face, :Eye, :Cheek, :Lip].each do |part|
       part_id = PART_TYPES[part]
-      pub = PublicSetting.first(:public => true, :part_type_id => part_id)
+      pub = PublicSetting.first(:group_id => id, :public => true, :part_type_id => part_id)
       if pub then
         return part_id
       end
     end
+    false
   end
 end
 

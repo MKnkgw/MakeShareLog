@@ -6,7 +6,7 @@ $eye = PartType.first(:name => "Eye")
 $cheek = PartType.first(:name => "Cheek")
 $lip = PartType.first(:name => "Lip")
 $face = PartType.first(:name => "Face")
-$parts = [$face, $eye, $cheek, $face]
+$parts = [$face, $lip, $eye, $cheek]
 
 accounts = File.readlines("#$initdir/account.txt")
 accounts[1...accounts.size].each{|line|
@@ -19,14 +19,17 @@ accounts[1...accounts.size].each{|line|
 
   group = Group.first_or_create(:forall => true, :user_id => user.id)
   pubs.each_with_index{|x, i|
-    PublicSetting.first_or_create(
-      :public => x == "1",
+    publish = x == "1"
+    STDERR.puts "#{name} #{PartType.get($parts[i].id).name} #{publish}"
+    p PublicSetting.first_or_create(
+      :public => publish,
       :group_id => group.id,
       :part_type_id => $parts[i].id
     )
   }
 }
 
+exit
 def get(n);end
 def post(n);end
 $photodir = "../data/photo"

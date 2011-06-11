@@ -24,7 +24,7 @@ class Core
       end
     @photo = face.photo
 
-    @you_like = Like.get(@photoset.id, me.id)
+    @you_like = Like.get(me.id, @photoset.id)
 
     @likes = @photoset.likes.size
 
