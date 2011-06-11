@@ -17,6 +17,11 @@ $description_length = 100
 
 $convert = "c:/prg/ImageMagick-6.6.8-Q16/convert.exe"
 
+$facedetector_command_prefix = "python ../../facedetector"
+$split_eye = "#$facedetector_command_prefix/split_eye.py"
+$split_cheek = "#$facedetector_command_prefix/split_cheek.py"
+$split_mouth = "#$facedetector_command_prefix/split_mouth.py"
+
 $KCODE = "UTF8"
 
 Core.run! :port => $port
