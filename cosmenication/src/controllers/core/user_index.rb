@@ -9,8 +9,13 @@ class Core
       if me.id == owner.id then
         face_list.push(set.face)
       else
-        if part_type_id = owner.any_public_part_type_id(me) then
-          face_list.push(set.photo(part_type_id))
+        common_cosmetic = set.cosmetics.any?{|cosmetic|
+          common = UserCosmetic.get(me.id, cosmetic.id)
+        }
+        if common_cosmetic then
+          if part_type_id = owner.any_public_part_type_id(me) then
+            face_list.push(set.photo(part_type_id))
+          end
         end
       end
     }
