@@ -45,6 +45,8 @@ a:hover { text-decoration: underline; }
 #common-right { float : left ; width : 350px ; }
 #common-left { float : left ; width : 350px ; }
 
+#common-right h2 { clear: both; }
+
 /** /index **/
 .photo-list { width : 350px ; }
 .photo-block { clear: both; width : 350px ; padding: 10px;}

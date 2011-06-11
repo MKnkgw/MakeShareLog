@@ -45,9 +45,18 @@
     </div>
   </div>
   <div id="face-cosmetics">
-    <% @cosmetics.each do|cosme| %>
+    <% @cosme_have_list.each do|cosme| %>
       <div class="face-cosmetic-block">
         <%=
+          @cosme = cosme
+          erb :"common/cosmetic_block"
+        %>
+      </div>
+    <% end %>
+    <% @cosme_have_not_list.each do|cosme| %>
+      <div class="face-cosmetic-block">
+        <%=
+          @not_search_cosme_link = true
           @cosme = cosme
           erb :"common/cosmetic_block"
         %>

@@ -13,7 +13,15 @@ class Core
       end
     }.sort_by{|face| face.part_type_id }
 
-    @cosmetics = @photoset.cosmetics
+    @cosme_have_list = []
+    @cosme_have_not_list = []
+    @photoset.cosmetics.each{|cosmetic|
+      if UserCosmetic.get(me.id, cosmetic.id) then
+        @cosme_have_list.push(cosmetic)
+      else
+        @cosme_have_not_list.push(cosmetic)
+      end
+    }
 
     face =
       if user.id == me.id then

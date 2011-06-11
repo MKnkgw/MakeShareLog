@@ -20,10 +20,24 @@
 </div>
 
 <div id="common-right">
-  <div class="cosmetic-list">
-    <% @cosme_list.each do|cosme| %>
+  <h2>あなたと共通の化粧品</h2>
+  <div class="cosmetic-list you-have">
+    <% @cosme_have_list.each do|cosme| %>
       <div class="cosmetic-block">
         <%=
+          @cosme = cosme
+          erb :"common/cosmetic_block"
+        %>
+      </div>
+    <% end %>
+  </div>
+
+  <h2>他の化粧品</h2>
+  <div class="cosmetic-list you-have-not">
+    <% @cosme_have_not_list.each do|cosme| %>
+      <div class="cosmetic-block">
+        <%=
+          @not_search_cosme_link = true
           @cosme = cosme
           erb :"common/cosmetic_block"
         %>
