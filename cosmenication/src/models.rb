@@ -39,6 +39,7 @@ class User
   has n, :user_cosmetics
   has n, :groups
   has n, :owner_group_users, 'GroupUser', :childkey => :owner
+  has n, :likes, 'Like', :childkey => :owner
   has n, :group_users
 
   def users_group(user)
@@ -262,6 +263,7 @@ class Like
   include DataMapper::Resource
   extend DMUtil
 
+  belongs_to :owner, 'User'
   belongs_to :user, :key => true
   belongs_to :photo_set, :key => true
 end

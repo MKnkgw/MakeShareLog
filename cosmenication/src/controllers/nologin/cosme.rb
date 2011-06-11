@@ -22,7 +22,7 @@ class NoLogin
       :jancode => jancode,
       :name => item["name"],
       :url => item["url"],
-      :description => item["caption"],
+      :description => item["caption"] || "",
       :brand_id => brand.id,
       :photo_id => photo.id,
       :color_id => nocolor.id
@@ -71,10 +71,12 @@ class NoLogin
     @cosme = first_or_register(jancode)
 
     @cosme.name = params[:cosme_name]
-    @cosme.brand_id = Brand.first_or_create(params[:cosme_brand]).id
+    @cosme.brand_id = Brand.first_or_create(:name => params[:cosme_brand]).id
     @cosme.description = params[:cosme_description]
     @cosme.color_id = Color.first_or_create(:name => params[:cosme_color]).id
     @cosme.url = params[:cosme_url]
+
+    @cosme.save
 
     erb :cosme_edit
   end

@@ -1,5 +1,6 @@
 class Core
   get "/search/cosme/:cosme_id" do
+    user_id = session[:user_id]
     cosme_id = params[:cosme_id].to_i
     @cosme = Cosmetic.get(cosme_id)
     face_list = []
@@ -8,19 +9,20 @@ class Core
     ).each{|tag|
       set = tag.photo_set
       owner = User.get(set.user_id)
-      user_id = session[:user_id]
       if user_id == owner.id then
         face_list.push(set.face)
       else
-        guser = GroupUser.first(:owner_id => owner.id, :user_id => user_id)
-        group = guser ? guser.group : owner.default_group
+        group = owner.users_group(User.get(user_id))
         part_type_id = group.any_public_part_type_id
         face_list.push(set.photo(part_type_id))
       end
     }
     @photo_list = face_list.sort_by{|face|
-      # ‘‚¨‹C‚É“ü‚ç‚ê”, B‰e“ú
-      [-face.user.like_count, -1*face.photo_set.created_at.to_i]
+      owner = face.user
+      user_like = Like.count(:owner_id => owner.id, :user_id => user_id)
+      puts "#{owner.like_count}, #{user_like}"
+      # B‰e“ú, ©•ª‚Ì‚¨‹C‚É“ü‚è‰ñ”, ‘‚¨‹C‚É“ü‚ç‚ê”
+      [-1*face.photo_set.created_at.to_i, -user_like, -owner.like_count]
     }
     erb :search_cosme
   end

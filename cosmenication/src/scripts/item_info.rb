@@ -62,9 +62,16 @@ class RakutenSearch
     "oukastore", "jyugo", nil
   ]
   def get_caption(keyword, store)
-    items = @rakuten.item_search("2010-09-15", :keyword => keyword, :shopCode => store)["Items"]["Item"]
+    if store then
+      items = @rakuten.item_search("2010-09-15", :keyword => keyword, :shopCode => store)["Items"]["Item"]
+    else
+      items = @rakuten.item_search("2010-09-15", :keyword => keyword)["Items"]["Item"]
+    end
     if items.length > 0 then
-      items[0]["itemCaption"]
+      caption = items[0]["itemCaption"]
+      if caption && caption.length > 0 then
+        caption
+      end
     end
   end
 
@@ -91,6 +98,7 @@ class RakutenSearch
           info["caption"] = caption
           break
         rescue Rakuten::ApiError => error
+          STDERR.p error
         end
       end
     end
