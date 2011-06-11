@@ -52,7 +52,12 @@ EOM
     STDERR.puts `#$split_mouth #{face_path} #{lip_path}`
 
     midnight = Time.local(now.year, now.month, now.day)
-    unless photo_set = PhotoSet.last(:user_id => me.id, :created_at.gte => midnight) then
+    if photo_set = PhotoSet.last(:user_id => me.id, :created_at.gte => midnight) then
+      photo_set.face.photo.thumbnails.destroy
+      photo_set.eye.photo.thumbnails.destroy
+      photo_set.cheek.photo.thumbnails.destroy
+      photo_set.lip.photo.thumbnails.destroy
+    else
       photo_set = PhotoSet.create(:user_id => me.id)
       create_face(me, photo_set, face_path, PART_TYPES[:Face])
       create_face(me, photo_set, eye_path, PART_TYPES[:Eye])

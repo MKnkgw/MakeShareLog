@@ -98,7 +98,7 @@ class RakutenSearch
           info["caption"] = caption
           break
         rescue Rakuten::ApiError => error
-          STDERR.p error
+          STDERR.puts error
         end
       end
     end

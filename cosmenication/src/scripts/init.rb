@@ -17,11 +17,16 @@ accounts[1...accounts.size].each{|line|
     :pass => Digest::MD5.hexdigest(name)
   )
 
-  group = Group.first_or_create(:forall => true, :user_id => user.id)
+  group = Group.first_or_create(
+    :forall => true,
+    :user_id => user.id,
+    :name => "通常の公開範囲",
+    :description => "同じ化粧品を使っている人に対する公開設定"
+  )
   pubs.each_with_index{|x, i|
     publish = x == "1"
     STDERR.puts "#{name} #{PartType.get($parts[i].id).name} #{publish}"
-    p PublicSetting.first_or_create(
+    PublicSetting.first_or_create(
       :public => publish,
       :group_id => group.id,
       :part_type_id => $parts[i].id
@@ -29,7 +34,6 @@ accounts[1...accounts.size].each{|line|
   }
 }
 
-exit
 def get(n);end
 def post(n);end
 $photodir = "../data/photo"
