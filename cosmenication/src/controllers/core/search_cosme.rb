@@ -19,8 +19,7 @@ class Core
     }
     @photo_list = face_list.sort_by{|face|
       owner = face.user
-      user_like = Like.count(:owner_id => owner.id, :user_id => user_id)
-      puts "#{owner.like_count}, #{user_like}"
+      user_like = Like.all(:owner_id => owner.id, :user_id => user_id).length
       # B‰e“ú, ©•ª‚Ì‚¨‹C‚É“ü‚è‰ñ”, ‘‚¨‹C‚É“ü‚ç‚ê”
       [-1*face.photo_set.created_at.to_i, -user_like, -owner.like_count]
     }
