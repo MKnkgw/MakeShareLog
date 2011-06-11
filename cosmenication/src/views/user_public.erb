@@ -1,0 +1,44 @@
+<%=
+  @title = "#{@user_name}"
+  erb :"common/header"
+%>
+
+<div id="common-main">
+
+<div id="common-left">
+  <h2><%= @user_name %>さんに対する公開設定</h2>
+  <form class="each-public-setting" action="/user/public/<%= @user_name %>" method="POST">
+    <% @groups.each do|group| %>
+      <div class="group-public-setting">
+        <h3><input id="group_id-<%= group.id %>" type="radio" name="group_id" value="<%= group.id %>" <%= group.id == @user_group_id ? "checked" : "" %>/><label for="group_id-<%= group.id %>"><%= group.name %></label></h3>
+        <div class="group-part-public-setting">
+          <input type="checkbox" disabled <%= group.face ? "checked" : "" %>>
+          <label for="public_face-<%= group.id%>">顔</label>
+        </div>
+        <div class="group-part-public-setting">
+          <input type="checkbox" disabled <%= group.eye ? "checked" : "" %>>
+          <label for="public_eye-<%= group.id%>">目</label>
+        </div>
+        <div class="group-part-public-setting">
+          <input type="checkbox" disabled <%= group.cheek ? "checked" : "" %>>
+          <label for="public_cheek-<%= group.id%>">ほほ</label>
+        </div>
+        <div class="group-part-public-setting">
+          <input type="checkbox" disabled <%= group.lip ? "checked" : "" %>>
+          <label for="public_lip-<%= group.id%>">口元</label>
+        </div>
+        <div class="group-input-block">
+          <%= group.description %>
+        </div>
+      </div>
+    <% end %>
+    <input type="submit" value="変更" />
+  </form>
+</div>
+
+<div id="common-right">
+</div>
+
+</div>
+
+<%= erb :"common/footer" %>

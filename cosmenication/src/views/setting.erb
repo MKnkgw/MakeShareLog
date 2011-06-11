@@ -13,11 +13,79 @@
         <dt>パスワード変更（確認）</dt>
         <dd><input type="password" name="pass2" /></dd>
       </dl>
+      <input type="hidden" name="change" value="password" />
       <input type="submit" value="更新" />
     </form>
   </div>
   <div id="common-right">
-    公開設定とかこの辺に
+    <div class="public-setting">
+      <h2>公開設定</h2>
+      <% @groups.each do|group| %>
+        <form action="/setting" method="POST">
+          <div class="group-public-setting">
+            <h3><input type="text" name="group_name" value="<%= group.name %>" /></h3>
+            <div class="group-part-public-setting">
+              <input id="public_face-<%= group.id%>" type="checkbox" name="public_face" value="1" <%= group.face ? "checked" : "" %>>
+              <label for="public_face-<%= group.id%>">顔</label>
+            </div>
+            <div class="group-part-public-setting">
+              <input id="public_eye-<%= group.id%>" type="checkbox" name="public_eye" value="1" <%= group.eye ? "checked" : "" %>>
+              <label for="public_eye-<%= group.id%>">目</label>
+            </div>
+            <div class="group-part-public-setting">
+              <input id="public_cheek-<%= group.id%>" type="checkbox" name="public_cheek" value="1" <%= group.cheek ? "checked" : "" %>>
+              <label for="public_cheek-<%= group.id%>">ほほ</label>
+            </div>
+            <div class="group-part-public-setting">
+              <input id="public_lip-<%= group.id%>" type="checkbox" name="public_lip" value="1" <%= group.lip ? "checked" : "" %>>
+              <label for="public_lip-<%= group.id%>">口元</label>
+            </div>
+            <div class="group-input-block">
+              <label for="group-description-<%= group.id%>">説明</label>
+              <input id="group-description-<%= group.id%>" type="text" name="group_description" value="<%= group.description %>" />
+            </div>
+            <ul class="group-member-list">
+              <% group.group_users.each do|guser| %>
+                <li>
+                <a href="/user/<%= guser.user.name %>"><%= guser.user.name %><img class="small-icon" src="/img/icon/home.png" ></a>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <input type="hidden" name="group_id" value="<%= group.id %>" />
+          <input type="hidden" name="change" value="public" />
+          <input type="submit" value="公開範囲の変更" />
+        </form>
+      <% end %>
+      <form class="newgroup" action="/setting" method="POST">
+        <div class="group-public-setting">
+          <h3><input type="text" name="newgroup_name" value="新規グループ名" /></h3>
+
+          <div class="group-part-public-setting">
+            <input id="public_face-new" type="checkbox" name="public_face" value="1">
+            <label for="public_face-new">顔</label>
+          </div>
+          <div class="group-part-public-setting">
+            <input id="public_eye-new" type="checkbox" name="public_eye" value="1">
+            <label for="public_eye-new">目</label>
+          </div>
+          <div class="group-part-public-setting">
+            <input id="public_cheek-new" type="checkbox" name="public_cheek" value="1">
+            <label for="public_cheek-new">ほほ</label>
+          </div>
+          <div class="group-part-public-setting">
+            <input id="public_lip-new" type="checkbox" name="public_lip" value="1">
+            <label for="public_lip-new">口元</label>
+          </div>
+          <div class="group-input-block">
+            <label for="group-description-new">説明</label>
+            <input id="group-description-new" type="text" name="newgroup_description" />
+          </div>
+          <input type="hidden" name="change" value="newgroup" />
+          <input type="submit" value="グループ作成" />
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 <%= erb :"common/footer" %>

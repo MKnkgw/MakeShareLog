@@ -13,6 +13,8 @@ DataMapper::Model.raise_on_save_failure = true
 
 TimeProc = proc{|r, p| Time.now }
 
+PART_TYPES = {}
+
 module DMUtil
   def last_insert_id
     last_record = last
@@ -74,6 +76,8 @@ class Group
   extend DMUtil
 
   property :id, Serial
+  property :name, String, :allow_nil => false
+  property :description, String, :allow_nil => false
   property :forall, Boolean, :allow_nil => false, :default => false
 
   belongs_to :user
@@ -90,6 +94,25 @@ class Group
       end
     end
     false
+  end
+  def public?(part_type_id)
+    PublicSetting.first(
+      :group_id => id,
+      :part_type_id => part_type_id,
+      :public => true
+    )
+  end
+  def eye
+    public?(PART_TYPES[:Eye])
+  end
+  def cheek
+    public?(PART_TYPES[:Cheek])
+  end
+  def lip
+    public?(PART_TYPES[:Lip])
+  end
+  def face
+    public?(PART_TYPES[:Face])
   end
 end
 
@@ -271,17 +294,7 @@ end
 
 DataMapper.auto_upgrade!
 
-class PhotoSet
-  PART_TYPES = {}
-  ["Eye", "Cheek", "Lip", "Face"].each do|name|
-    part = PartType.first_or_create(:name => name)
-    PART_TYPES[name.to_sym] = part.id
-  end
-end
-class Group
-  PART_TYPES = {}
-  ["Eye", "Cheek", "Lip", "Face"].each do|name|
-    part = PartType.first_or_create(:name => name)
-    PART_TYPES[name.to_sym] = part.id
-  end
+["Eye", "Cheek", "Lip", "Face"].each do|name|
+  part = PartType.first_or_create(:name => name)
+  PART_TYPES[name.to_sym] = part.id
 end

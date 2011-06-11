@@ -112,3 +112,52 @@ a:hover { text-decoration: underline; }
   width: 16px;
   height: 16px;
 }
+
+.small-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.public-setting {
+}
+
+.public-setting form {
+  margin: 10px 0px;
+}
+
+
+.group-public-setting {
+  clear: both;
+  margin: 20px 5px;
+}
+
+.group-public-setting h3 {
+  width: 100%;
+}
+
+.group-public-setting h3 input[type="text"] {
+  width: 100%;
+}
+.group-part-public-setting label {
+  float: left;
+  margin-right: 1em;
+}
+
+.group-public-setting input {
+  float: left;
+}
+
+.public-setting input[type="submit"] {
+  display: block;
+  clear: both;
+}
+
+.group-input-block {
+  clear: both;
+}
+.group-input-block {
+  clear: both;
+}
+.group-input-block input[type="text"] {
+  width: 80%;
+}
