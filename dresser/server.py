@@ -79,6 +79,11 @@ def main(port):
         elif event.key == pygame.K_p:
           path = "%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
           server.event_set("save", path)
+        elif event.key == pygame.K_r:
+          if server.event("run") and server.event("run").arg == "start":
+            server.event_set("run", "stop")
+          else:
+            server.event_set("run", "start")
 
 if __name__ == "__main__":
   if len(sys.argv) >= 2:

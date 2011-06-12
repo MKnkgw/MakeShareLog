@@ -1,7 +1,7 @@
 class NoLogin
   def create_face(me, photo_set, path, part_type_id)
-    photo = Photo.create(:path => path, :content_type => "image/jpeg")
-    FacePhoto.create(
+    photo = Photo.first_or_create(:path => path, :content_type => "image/jpeg")
+    FacePhoto.first_or_create(
       :photo_id => photo.id,
       :photo_set_id => photo_set.id,
       :part_type_id => part_type_id,
@@ -29,6 +29,7 @@ EOM
     cosme1 = Cosmetic.first(:jancode => params[:jancode1])
     cosme2 = Cosmetic.first(:jancode => params[:jancode2])
     cosme3 = Cosmetic.first(:jancode => params[:jancode3])
+
     me = User.first(:name => params[:name]) or halt
     photo_file = params[:photo_file]
 
@@ -66,9 +67,14 @@ EOM
     end
 
     CosmeticTagging.all(:photo_set_id => photo_set.id).destroy
-    CosmeticTagging.create(:photo_set_id => photo_set.id, :cosmetic_id => cosme1.id)
-    CosmeticTagging.create(:photo_set_id => photo_set.id, :cosmetic_id => cosme2.id)
-    CosmeticTagging.create(:photo_set_id => photo_set.id, :cosmetic_id => cosme3.id)
+    CosmeticTagging.first_or_create(:photo_set_id => photo_set.id, :cosmetic_id => cosme1.id)
+    CosmeticTagging.first_or_create(:photo_set_id => photo_set.id, :cosmetic_id => cosme2.id)
+    CosmeticTagging.first_or_create(:photo_set_id => photo_set.id, :cosmetic_id => cosme3.id)
+
+    [cosme1, cosme2, cosme3].each do|cosme|
+      UserCosmetic.first_or_create(:user_id => me.id, :cosmetic_id => cosme.id)
+    end
+
     <<"EOM"
 <html>
 <body>

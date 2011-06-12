@@ -1,4 +1,4 @@
-COM14	19200	False
+COM15	19200	True
 True	False	True	False	1000
 True	False	False	False	False	False	False	False	
 True	True	True	False
