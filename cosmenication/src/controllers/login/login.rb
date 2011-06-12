@@ -31,15 +31,17 @@ class Login
   end
 
   post "/create" do
-    name = params[:name]
-    pass = Digest::MD5.hexdigest(params[:pass])
-    user = User.new(:name => name, :pass => pass)
-    if save = user.save then
-      redirect "/login"
-    else
-      @error = "ユーザ作成に失敗しました。"
-      erb :create
-    end
+    #name = params[:name]
+    #pass = Digest::MD5.hexdigest(params[:pass])
+    #user = User.new(:name => name, :pass => pass)
+    #if save = user.save then
+    #  redirect "/login"
+    #else
+    #  @error = "ユーザ作成に失敗しました。"
+    #  erb :create
+    #end
+    @error = "作れません"
+    erb :create
   end
 
   get "/logout" do
