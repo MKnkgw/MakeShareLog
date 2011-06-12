@@ -32,6 +32,7 @@ class Core
         @cosme_have_not_list.push(cosmetic)
       end
     }
+    @user_group = me.users_group(owner)
     erb :user_index
   end
 end

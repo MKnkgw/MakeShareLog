@@ -20,8 +20,8 @@ accounts[1...accounts.size].each{|line|
   group = Group.first_or_create(
     :forall => true,
     :user_id => user.id,
-    :name => "’Êí‚ÌŒöŠJ”ÍˆÍ",
-    :description => "“¯‚¶‰»Ï•i‚ğg‚Á‚Ä‚¢‚él‚É‘Î‚·‚éŒöŠJİ’è"
+    :name => "é€šå¸¸ã®å…¬é–‹ç¯„å›²",
+    :description => "åŒã˜åŒ–ç²§å“ã‚’ä½¿ã£ã¦ã„ã‚‹äººã«å¯¾ã™ã‚‹å…¬é–‹è¨­å®š"
   )
   pubs.each_with_index{|x, i|
     publish = x == "1"
@@ -36,6 +36,7 @@ accounts[1...accounts.size].each{|line|
 
 def get(n);end
 def post(n);end
+def halt(e);end
 $photodir = "../data/photo"
 require "../src/controllers/nologin/cosme"
 require "json"

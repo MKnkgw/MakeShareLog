@@ -21,7 +21,7 @@
 
 <div id="common-right">
   <div class="public_change" style="margin: 10px">
-    <a title="<%= @user_name %>さんへの公開設定を変更" href="/user/public/<%= @user_name %>"><%= @user_name %>さんへの公開設定<img class="small-icon" src="/img/icon/document_edit.png"></a>
+    <a title="<%= @user_name %>さんへの公開設定（<%= @user_group.name%>）を変更" href="/user/public/<%= @user_name %>"><%= @user_name %>さんへの公開設定<br />（<%= @user_group.name%>）<img class="small-icon" src="/img/icon/document_edit.png"></a>
   </div>
 
   <h2>あなたと共通の化粧品</h2>

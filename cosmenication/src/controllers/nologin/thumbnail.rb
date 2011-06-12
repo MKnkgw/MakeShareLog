@@ -2,7 +2,8 @@ class NoLogin
   def create_thumbnail(photo, width)
     uuid = UUIDTools::UUID.random_create.to_s
     photo_path = "#{$datadir}/#{photo.path}" 
-    thumb_path = "#$thumbdir/#{uuid}"
+    thumb_path = "#$thumbdir/#{photo.id}w#{width}"
+    puts("#$convert -resize #{width}x #{photo_path} #{thumb_path}")
     system("#$convert -resize #{width}x #{photo_path} #{thumb_path}")
 
     Thumbnail.create(:path => thumb_path, :width => width.to_i, :photo_id => photo.id)

@@ -2,8 +2,6 @@ class Core
   def show_user_public(me, user)
     @groups = Group.all(:user_id => me.id)
     @user_group_id = me.users_group(user).id
-    p user
-    p me.users_group(user)
     erb :user_public
   end
 
@@ -31,6 +29,6 @@ class Core
       )
     end
 
-    show_user_public(me, user)
+    redirect "/user/#{@user_name}"
   end
 end

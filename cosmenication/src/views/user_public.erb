@@ -6,7 +6,7 @@
 <div id="common-main">
 
 <div id="common-left">
-  <h2><%= @user_name %>さんに対する公開設定</h2>
+  <h2><a href="/user/<%= @user_name %>"><%= @user_name %>さん<img class="small-icon" src="/img/icon/home.png" ></a>に対する公開設定</h2>
   <form class="each-public-setting" action="/user/public/<%= @user_name %>" method="POST">
     <% @groups.each do|group| %>
       <div class="group-public-setting">

@@ -24,7 +24,7 @@
         <% if @photoset.user.id == session[:user_id] then %>
           <%= @photoset.user.name %>
         <% else %>
-          <a href="/user/<%= @photoset.user.name %>"><%= @photoset.user.name %><img src="/img/icon/home.png" ></a>
+          <a href="/user/<%= @photoset.user.name %>"><%= @photoset.user.name %><img class="small-icon" src="/img/icon/home.png" ></a>
         <% end %>
       </span>
       <span class="date"><%= @photoset.date %></span>
