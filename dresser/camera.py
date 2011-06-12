@@ -50,7 +50,7 @@ class Camera:
       return image2surface(newimage)
 
   def event(self):
-    return pygame.event.get()
+    return pygame.event.poll()
 
   def update(self, str=None):
     surface = self.retrieve()
@@ -67,12 +67,10 @@ class Camera:
     self.fps = 1 / (now - self.update_time)
     self.update_time = now
 
-    return pygame.event.get()
-
   def save(self, path):
     start = time.time()
     while True:
-      pygame.event.get()
+      pygame.event.clear()
       t = time.time()
       diff = t - start
       if diff > WAIT_TIME:
