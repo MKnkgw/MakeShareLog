@@ -4,7 +4,7 @@ import gc
 import time
 import socket
 import asyncore
-import urllib2
+import mutex
 from rfidclient import RfidClient
 
 REQUIRED_COUNT = 3
@@ -29,6 +29,7 @@ class RfidCamera(RfidClient):
     RfidClient.__init__(self, port)
     self.jancodes = []
     self.last_appear_time = time.time()
+    self.rfid_mutex = mutex.mutex()
 
   def id2jancode(self, id):
     if id in RFID_JANCODES:
@@ -68,6 +69,18 @@ class RfidCamera(RfidClient):
 
     self.jancodes = []
 
+  def next_rfid(self, rfid):
+    c = time.time()
+    if c - self.last_appear_time > WAIT_SEC:
+      self.jancodes = []
+    state, anthena, raw, id = rfid
+    jancode = self.id2jancode(id)
+    self.jancodes.append(jancode)
+    self.last_appear_time = c
+    if len(self.jancodes) == REQUIRED_COUNT:
+      self.save()
+    self.rfid_mutex.unlock()
+
   def handle_update(self, rfid):
     pass
 
@@ -75,16 +88,8 @@ class RfidCamera(RfidClient):
     pass
 
   def handle_appear(self, rfid):
-    c = time.time()
-    if c - self.last_appear_time > WAIT_SEC:
-      self.jancodes = []
-    state, anthena, raw, id = rfid
-    jancode = self.id2jancode(id)
-    print "appear %s" % jancode
-    self.jancodes.append(jancode)
-    self.last_appear_time = c
-    if len(self.jancodes) == REQUIRED_COUNT:
-      self.save()
+    self.rfid_mutex.lock(self.next_rfid, rfid)
+
 
 
 def main(port):
