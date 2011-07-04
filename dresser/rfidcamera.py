@@ -75,7 +75,8 @@ class RfidCamera(RfidClient):
       self.jancodes = []
     state, anthena, raw, id = rfid
     jancode = self.id2jancode(id)
-    self.jancodes.append(jancode)
+    if not (jancode in self.jancodes):
+      self.jancodes.append(jancode)
     self.last_appear_time = c
     if len(self.jancodes) == REQUIRED_COUNT:
       self.save()
