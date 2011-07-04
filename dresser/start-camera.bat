@@ -1,5 +1,9 @@
 @start ..\RFIDTakayaServer\RFIDTakayaServer.exe
-@sleep 1
+
+@ping localhost -n 5 > nul
+
 @start python server.py > log\camera-server.log
-@sleep 1
+
+@ping localhost -n 1 > nul
+
 @start python rfidcamera.py > log\rfid-camera.log

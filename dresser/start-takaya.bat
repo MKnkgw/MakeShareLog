@@ -1,0 +1,1 @@
+@..\RFIDTakayaServer\RFIDTakayaServer.exe

@@ -63,6 +63,7 @@ class RfidCamera(RfidClient):
       print 'Error: %s' % e
 
   def save(self):
+    self.send_camera("/run start")
     path = "data/%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
 
     self.camera(path)
@@ -70,6 +71,7 @@ class RfidCamera(RfidClient):
     self.jancodes = []
 
   def next_rfid(self, rfid):
+    print rfid
     c = time.time()
     if c - self.last_appear_time > WAIT_SEC:
       self.jancodes = []
@@ -99,6 +101,7 @@ def main(port):
   asyncore.loop()
 
 if __name__ == "__main__":
+  time.sleep(5)
   if len(sys.argv) >= 2:
     main(int(sys.argv[1]))
   else:

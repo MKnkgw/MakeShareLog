@@ -64,6 +64,7 @@ def main(port):
     if server.event("save"):
       camera.save(server.event("save").arg)
       server.event_clear("save")
+      server.event_set("run", "stop")
 
     while True:
       event = camera.event()

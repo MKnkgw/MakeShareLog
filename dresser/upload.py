@@ -1,7 +1,7 @@
 import sys
 import requests
 
-UPLOAD_URL = "http://hogel.org:38248/photo/upload/hogelog"
+UPLOAD_URL = "http://hogel.org:38248/photo/upload/MKnkgw"
 #UPLOAD_URL = "http://localhost/photo/upload/hogelog"
 
 argv = sys.argv

@@ -3,7 +3,7 @@ import pygame
 import Image
 import VideoCapture
 
-WAIT_TIME = 3
+WAIT_TIME = 5
 FONT_SIZE = 64
 
 def image2surface(image):
@@ -14,8 +14,8 @@ def image2surface(image):
   return pygame.image.fromstring(data, size, mode)
 
 class Camera:
-  PREVIEW_WIDTH = 640
-  PREVIEW_HEIGHT = 480
+  PREVIEW_WIDTH = 800
+  PREVIEW_HEIGHT = 600
   PHOTO_WIDTH = 1600
   PHOTO_HEIGHT = 1200
 
@@ -25,7 +25,7 @@ class Camera:
     pygame.init()
     pygame.font.init()
 
-    self.screen = pygame.display.set_mode(self.preview_size)
+    self.screen = pygame.display.set_mode(self.preview_size, pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 
     pygame.display.set_caption("Camera Application")
     pygame.display.set_icon(pygame.image.load("camera.png"))
