@@ -8,13 +8,9 @@ import pygame
 
 CMD_RE = re.compile("^/(\w+)(?: (.+))?$")
 
-WAIT = 0.2
-
 class CameraServer(Thread):
   def __init__(self, port):
     self.events = {
-        "photo": Event(),
-        "save": Event(),
         "quit": Event(),
         "run": Event()
     }
@@ -41,15 +37,27 @@ class CameraServer(Thread):
 
   def run(self):
     while not self.event("quit"):
-      time.sleep(WAIT)
-      connect, address = self.sock.accept()
-      line = connect.recv(8192).rstrip()
-      match = CMD_RE.search(line)
-      if match:
-        name = match.group(1)
-        arg = match.group(2)
-        self.event_set(name, arg)
-      connect.close()
+      time.sleep(GUI_UPDATE_WAIT)
+
+      run = server.event("run")
+      if run and run.arg == "start":
+        camera.update()
+
+      event = camera.event()
+
+      if event.type == pygame.NOEVENT:
+        break
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+          self.event_set("quit")
+        elif event.key == pygame.K_p:
+          path = "%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
+          self.camera.save(path)
+        elif event.key == pygame.K_r:
+          if run and run.arg == "start":
+            self.event_set("run", "stop")
+          else:
+            self.event_set("run", "start")
 
 def main(port):
   server = CameraServer(port)

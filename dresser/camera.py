@@ -5,6 +5,7 @@ import VideoCapture
 
 WAIT_TIME = 5
 FONT_SIZE = 64
+SMALL_FONT_SIZE = 20
 
 def image2surface(image):
   mode = image.mode
@@ -23,9 +24,10 @@ class Camera:
     self.preview_size = Camera.PREVIEW_WIDTH, Camera.PREVIEW_HEIGHT
 
     pygame.init()
+    pygame.fastevent.init()
     pygame.font.init()
 
-    self.screen = pygame.display.set_mode(self.preview_size, pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
+    self.screen = pygame.display.set_mode(self.preview_size, pygame.HWSURFACE|pygame.DOUBLEBUF)
 
     pygame.display.set_caption("Camera Application")
     pygame.display.set_icon(pygame.image.load("camera.png"))
@@ -40,6 +42,7 @@ class Camera:
 
     fontname = pygame.font.get_default_font()
     self.font = pygame.font.Font(fontname, FONT_SIZE)
+    self.smallfont = pygame.font.Font(fontname, SMALL_FONT_SIZE)
 
   def retrieve(self):
     image = self.camera.getImage()
@@ -50,17 +53,14 @@ class Camera:
       return image2surface(newimage)
 
   def event(self):
-    return pygame.event.poll()
+    return pygame.fastevent.poll()
 
   def update(self, str=None):
     surface = self.retrieve()
     
     self.screen.blit(surface, self.ORIGIN)
     if str:
-      text = self.font.render(str, False, (255, 255, 255))
-      x = (Camera.PREVIEW_WIDTH - text.get_width()) / 2
-      y = (Camera.PREVIEW_HEIGHT - text.get_height()) / 2
-      self.screen.blit(text, (x, y))
+      self.write(str)
     pygame.display.flip()
 
     now = time.time()
@@ -80,6 +80,16 @@ class Camera:
     self.update()
     self.camera.saveSnapshot(path)
     print("saved: %s" % path)
+
+  def fill(self, color = (0, 0, 0)):
+    self.screen.fill(color)
+
+  def write(self, str):
+    text = self.smallfont.render(str, False, (255, 255, 255))
+    x = (Camera.PREVIEW_WIDTH - text.get_width()) / 2
+    y = (Camera.PREVIEW_HEIGHT - text.get_height()) / 2
+    self.screen.blit(text, (x, y))
+    pygame.display.flip()
 
 if __name__ == "__main__":
   camera = Camera()

@@ -7,22 +7,10 @@ import asyncore
 import mutex
 from rfidclient import RfidClient
 
+ANTHENA_NUM = 1
 REQUIRED_COUNT = 3
 WAIT_SEC  = 20
-RFID_JANCODES = {
-  "4627": "4901872152407",
-  "4639": "4901301238139",
-  "4650": "4901872361786",
-  "4651": "4901872152445",
-  "4656": "4901872152452",
-  "4667": "4901301238146",
-  "4689": "4901872378975",
-  "4700": "4901301238122",
-  "4714": "4901872378968",
-  "4719": "4901301238115",
-  "4720": "4901872361564",
-  "4724": "4901872152469",
-}
+YAML_FILE = "jancodes.yaml"
 
 class RfidCamera(RfidClient):
   def __init__(self, port):
@@ -32,8 +20,9 @@ class RfidCamera(RfidClient):
     self.rfid_mutex = mutex.mutex()
 
   def id2jancode(self, id):
-    if id in RFID_JANCODES:
-      return RFID_JANCODES[id]
+    jancodes = yaml.load(open(YAML_FILE).read())
+    if id in jancodes:
+      return jancodes[id]
 
   def post_server(self, path, jancodes):
     command = "python upload.py %s %s %s %s" % (path, jancodes[0], jancodes[1], jancodes[2])
@@ -91,7 +80,9 @@ class RfidCamera(RfidClient):
     pass
 
   def handle_appear(self, rfid):
-    self.rfid_mutex.lock(self.next_rfid, rfid)
+    state, anthena, raw, id = rfid
+    if anthena == str(ANTHENA_NUM):
+      self.rfid_mutex.lock(self.next_rfid, rfid)
 
 
 
