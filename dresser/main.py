@@ -1,114 +1,35 @@
+# encoding=utf-8
+
 import sys
-import time
 import asyncore
-from threading import Thread, Event
-import pygame
 
 from rfidclient import RfidClient
 from dresser_handler import DresserHandler
 from cosmapper_handler import CosmapperHandler
 from settings import Settings
-from camera_client import CameraClient
-from camera import Camera
-
-GUI_UPDATE_WAIT = 0.4
-
-class CameraThread(Thread):
-  def __init__(self, settings):
-    self.settings = settings
-    self.events = {
-        "register-jancode": Event(),
-        "quit": Event(),
-        "run": Event()
-    }
-    Thread.__init__(self)
-
-  def event_set(self, name, arg):
-    if name in self.events and self.events[name]:
-      self.events[name].arg = arg
-      self.events[name].set()
-
-  def event_clear(self, name):
-    if name in self.events and self.events[name]:
-      self.events[name].clear()
-
-  def event(self, name):
-    if name in self.events and self.events[name].isSet():
-      return self.events[name]
-
-  def run(self):
-    self.camera = Camera()
-    while not self.event("quit"):
-      time.sleep(GUI_UPDATE_WAIT)
-
-      run = self.event("run")
-      if run and run.arg == "start":
-        self.camera.update()
-
-      if self.event("write"):
-        self.camera.write(self.event("write").arg)
-        self.event_clear("write")
-
-      if self.event("register-jancode"):
-        self.register_jancode(self.event("register-jancode").arg)
-        self.event_clear("register-jancode")
-
-      event = self.camera.event()
-
-      if event.type == pygame.NOEVENT:
-        continue
-
-      if event.type == pygame.KEYDOWN:
-        name = pygame.key.name(event.key)
-        if event.key == pygame.K_ESCAPE:
-          self.event_set("quit", True)
-        elif event.key == pygame.K_p:
-          path = "%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
-          self.camera.save(path)
-        elif event.key == pygame.K_r:
-          if run and run.arg == "start":
-            self.event_set("run", "stop")
-          else:
-            self.event_set("run", "start")
-
-  def register_jancode(self, id):
-    print("register jancode")
-    self.camera.fill()
-    self.camera.write("Unknown RFID: " + id + ". Scan JAN-CODE.")
-    jancode = self.read_jancode()
-    print("read jancode: " + jancode)
-    jancodes = self.settings.get("jancodes")
-    jancodes[id] = jancode
-    self.settings.set("jancodes", jancodes)
-    self.settings.save()
-    self.camera.fill()
-    self.camera.write("RFID: '" + id + ".    JAN-CODE: " + jancode + ".")
-    time.sleep(5)
-    self.event_set("run", "start")
-
-  def read_jancode(self):
-    jancode = ""
-    while not self.event("quit"):
-      event = self.camera.event()
-      if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_RETURN:
-          return jancode
-        name = pygame.key.name(event.key)
-        jancode += name
-        self.camera.fill()
-        self.camera.write(jancode)
 
 def main(port):
+  # yaml形式の設定ファイルの読み込み
   settings = Settings("settings.yaml")
+
+  # JANCODEテーブルがなかったら初期化
   if not settings.get("jancodes"):
     settings.set("jancodes", {})
 
-  camera = CameraThread(settings)
+  # カメラ画面の初期化
+  camera = CameraWindow(settings)
+  # カメラ画面の表示
   camera.start()
+  # カメラ画面の更新処理を開始
   camera.event_set("run", "start")
+
+  # ローカルホストのRFIDサーバへport番号を指定して接続
   client = RfidClient(port)
+  # RFIDサーバの信号をCosmapperHandlerに投げるよう設定
   client.add_handler(CosmapperHandler(settings, camera))
-  #client.add_handler(DresserHandler(settings, camera))
+  # RFIDサーバの信号をDresserHandlerに投げるよう設定
+  client.add_handler(DresserHandler(settings, camera))
+  # RFIDサーバの信号の処理を開始
   asyncore.loop()
 
 if __name__ == "__main__":
