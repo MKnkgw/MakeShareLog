@@ -1,5 +1,6 @@
 # encoding=utf-8
 
+import os
 import time
 import mutex
 from rfidclient import RfidHandler
@@ -48,11 +49,32 @@ class DresserHandler(RfidHandler):
 
     # 読み込んだJANコードの数が規定数に達したら写真を取る
     if len(self.jancodes) == REQUIRED_COUNT:
-      # TODO 写真を取る処理を書く。
-      #self.save()
+      # 写真を取る処理
+      self.shutter()
 
   # RFIDからJANCODEへの変換を試みる
   def id2jancode(self, id):
     jancodes = settings.get("jancodes")
     if id in jancodes:
       return jancodes[id]
+
+  def shutter(self):
+    path = "data/%s.jpg" % time.strftime("%Y%m%d-%H%M%S")
+
+    # カメラに写真を取るように指示
+    self.camera.event_set("shutter", path)
+    # 写真が保存されるまでループ
+    while True:
+      if os.path.isfile(path):
+        break
+      time.sleep(0.1)
+    # 写真が保存されたら写真をアップロード
+    self.upload(path)
+    self.jancodes = []
+
+  # 与えられたパスの画像をアップロード
+  def upload(self, path):
+    command = "python upload.py %s %s %s %s" % (path, self.jancodes[0], selfjancodes[1], self.jancodes[2])
+    print command
+    os.system(command)
+

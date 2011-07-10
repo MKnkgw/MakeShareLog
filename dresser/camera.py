@@ -67,7 +67,7 @@ class Camera:
     self.fps = 1 / (now - self.update_time)
     self.update_time = now
 
-  def save(self, path):
+  def shutter(self, path):
     start = time.time()
     while True:
       pygame.event.clear()
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         sys.exit()
       elif event.type == pygame.KEYDOWN:
         if (event.key == pygame.K_p):
-          camera.save("photo.jpg")
+          camera.shutter("photo.jpg")
     camera.update()
     print("fps: %.2f" % camera.fps)
 

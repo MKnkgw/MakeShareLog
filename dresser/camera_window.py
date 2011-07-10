@@ -10,6 +10,7 @@ class CameraWindow(Thread):
   def __init__(self, settings):
     self.settings = settings
     self.events = {
+        "shutter": Event(),
         "register-jancode": Event(),
         "quit": Event(),
         "run": Event()
@@ -24,6 +25,12 @@ class CameraWindow(Thread):
       run = self.event("run")
       if run and run.arg == "start":
         self.camera.update()
+
+      if self.event("shutter"):
+        self.event_clear("shutter")
+        self.event_set("run", "start")
+        self.camera.shutter(self.event("shutter").arg)
+        self.event_set("run", "stop")
 
       if self.event("write"):
         self.camera.write(self.event("write").arg)

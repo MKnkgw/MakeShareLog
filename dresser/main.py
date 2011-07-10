@@ -6,6 +6,7 @@ import asyncore
 from rfidclient import RfidClient
 from dresser_handler import DresserHandler
 from cosmapper_handler import CosmapperHandler
+from camera_window import CameraWindow
 from settings import Settings
 
 def main(port):
