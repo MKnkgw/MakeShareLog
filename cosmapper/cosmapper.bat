@@ -1,2 +1,0 @@
-@ruby cosmapper.rb
-@pause

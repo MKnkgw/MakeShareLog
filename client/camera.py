@@ -60,7 +60,7 @@ class Camera:
     
     self.screen.blit(surface, self.ORIGIN)
     if str:
-      self.write(str)
+      self.write(str, True)
     pygame.display.flip()
 
     now = time.time()
@@ -84,8 +84,11 @@ class Camera:
   def fill(self, color = (0, 0, 0)):
     self.screen.fill(color)
 
-  def write(self, str):
-    text = self.smallfont.render(str, False, (255, 255, 255))
+  def write(self, str, big=False):
+    if big:
+      text = self.font.render(str, False, (255, 255, 255))
+    else:
+      text = self.smallfont.render(str, False, (255, 255, 255))
     x = (Camera.PREVIEW_WIDTH - text.get_width()) / 2
     y = (Camera.PREVIEW_HEIGHT - text.get_height()) / 2
     self.screen.blit(text, (x, y))

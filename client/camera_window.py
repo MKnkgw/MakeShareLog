@@ -27,9 +27,10 @@ class CameraWindow(Thread):
         self.camera.update()
 
       if self.event("shutter"):
+        path = self.event("shutter").arg
         self.event_clear("shutter")
         self.event_set("run", "start")
-        self.camera.shutter(self.event("shutter").arg)
+        self.camera.shutter(path)
         self.event_set("run", "stop")
 
       if self.event("write"):

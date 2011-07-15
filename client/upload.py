@@ -12,10 +12,10 @@ path = argv[1]
 jancode1 = argv[2]
 jancode2 = argv[3]
 jancode3 = argv[4]
-print path, jancode1, jancode2, jancode3
+#print path, jancode1, jancode2, jancode3
 
 with open(path, "rb") as photo:
-  print photo
+  #print photo
   req = requests.post(UPLOAD_URL, data = {
     "jancode1": jancode1,
     "jancode2": jancode2,
@@ -23,3 +23,5 @@ with open(path, "rb") as photo:
   }, files = {
     "photo_file": photo
   })
+
+print("sent: %s" % path)
