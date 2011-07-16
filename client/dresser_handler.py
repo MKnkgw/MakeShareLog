@@ -17,15 +17,28 @@ class DresserHandler(RfidHandler):
 
     self.jancodes = []
     self.last_appear_time = time.time()
+    self.shuttered = False
 
   # RFIDの信号が現れた時の処理
   def handle_appear(self, rfid):
     # 同時に一つの処理だけがhandle_rfidを実行
-    self.mutex.lock(self.handle_lock_appear, rfid)
+    self.mutex.lock(self.handle_lock_rfid, rfid)
     self.mutex.unlock()
 
-  def handle_lock_appear(self, rfid):
-    #print("Dresser: " + str(rfid))
+  # RFIDの信号が継続している時の処理
+  def handle_update(self, rfid):
+    # 同時に一つの処理だけがhandle_rfidを実行
+    self.mutex.lock(self.handle_lock_rfid, rfid)
+    self.mutex.unlock()
+
+  # RFIDの信号が無くなった時の処理
+  def handle_disappear(self, rfid):
+    # 同時に一つの処理だけがhandle_disappearを実行
+    self.mutex.lock(self.handle_lock_disappear, rfid)
+    self.mutex.unlock()
+
+  def handle_lock_rfid(self, rfid):
+    print("start handle_lock: " + str(rfid))
 
     c = time.time()
     if c - self.last_appear_time > AVAILABLE_WAIT_SEC:
@@ -43,21 +56,17 @@ class DresserHandler(RfidHandler):
       self.jancodes.append(jancode)
     self.last_appear_time = c
 
-
-  # RFIDの信号が継続している時の処理
-  def handle_update(self, rfid):
-    # 同時に一つの処理だけがhandle_rfidを実行
-    self.mutex.lock(self.handle_lock_update, rfid)
-    self.mutex.unlock()
-
+    print(self.jancodes)
     # 読み込んだJANコードの数が規定数に達したら写真を取る
-    if len(self.jancodes) == REQUIRED_COUNT:
+    if not(self.shuttered) and len(self.jancodes) == REQUIRED_COUNT:
       # 写真を取る処理
       self.shutter()
+    print("end handle_lock")
 
-  def handle_lock_update(self, rfid):
-    c = time.time()
-    self.last_appear_time = c
+  def handle_lock_disappear(self, rfid):
+    if self.shuttered:
+      self.jancodes = []
+      self.shuttered = False
 
   # RFIDからJANCODEへの変換を試みる
   def id2jancode(self, id):
@@ -77,7 +86,7 @@ class DresserHandler(RfidHandler):
       time.sleep(0.1)
     ## 写真が保存されたら写真をアップロード
     self.upload(path)
-    self.jancodes = []
+    self.shuttered = True
 
   # 与えられたパスの画像をアップロード
   def upload(self, path):

@@ -44,13 +44,14 @@ class RfidClient(asyncore.dispatcher):
 
   def handle_read(self):
     status = self.recv(8192)
-    match = self.re_status.match(status)
-    if match:
-      state = match.group(1)
-      anthena = match.group(2)
-      raw = match.group(3)
-      id = raw[-4:]
-      self.handle_rfid((state, anthena, raw, id))
+    for line in status.split("\n"):
+      match = self.re_status.match(line)
+      if match:
+        state = match.group(1)
+        anthena = match.group(2)
+        raw = match.group(3)
+        id = raw[-4:]
+        self.handle_rfid((state, anthena, raw, id))
 
   def writable(self):
     return False

@@ -27,8 +27,6 @@ class Camera:
     pygame.fastevent.init()
     pygame.font.init()
 
-    self.screen = pygame.display.set_mode(self.preview_size, pygame.HWSURFACE|pygame.DOUBLEBUF)
-
     pygame.display.set_caption("Camera Application")
     pygame.display.set_icon(pygame.image.load("camera.png"))
 
@@ -44,6 +42,8 @@ class Camera:
     self.font = pygame.font.Font(fontname, FONT_SIZE)
     self.smallfont = pygame.font.Font(fontname, SMALL_FONT_SIZE)
 
+    self.screen = pygame.display.set_mode(self.preview_size, pygame.HWSURFACE|pygame.DOUBLEBUF)
+
   def retrieve(self):
     image = self.camera.getImage()
     if image:
@@ -56,16 +56,17 @@ class Camera:
     return pygame.fastevent.poll()
 
   def update(self, str=None):
-    surface = self.retrieve()
-    
-    self.screen.blit(surface, self.ORIGIN)
-    if str:
-      self.write(str, True)
-    pygame.display.flip()
+    if hasattr(self, "screen"):
+      surface = self.retrieve()
+      
+      self.screen.blit(surface, self.ORIGIN)
+      if str:
+        self.write(str, True)
+      pygame.display.flip()
 
-    now = time.time()
-    self.fps = 1 / (now - self.update_time)
-    self.update_time = now
+      now = time.time()
+      self.fps = 1 / (now - self.update_time)
+      self.update_time = now
 
   def shutter(self, path):
     start = time.time()
@@ -82,17 +83,19 @@ class Camera:
     print("saved: %s" % path)
 
   def fill(self, color = (0, 0, 0)):
-    self.screen.fill(color)
+    if hasattr(self, "screen"):
+      self.screen.fill(color)
 
   def write(self, str, big=False):
-    if big:
-      text = self.font.render(str, False, (255, 255, 255))
-    else:
-      text = self.smallfont.render(str, False, (255, 255, 255))
-    x = (Camera.PREVIEW_WIDTH - text.get_width()) / 2
-    y = (Camera.PREVIEW_HEIGHT - text.get_height()) / 2
-    self.screen.blit(text, (x, y))
-    pygame.display.flip()
+    if hasattr(self, "screen"):
+      if big:
+        text = self.font.render(str, False, (255, 255, 255))
+      else:
+        text = self.smallfont.render(str, False, (255, 255, 255))
+      x = (Camera.PREVIEW_WIDTH - text.get_width()) / 2
+      y = (Camera.PREVIEW_HEIGHT - text.get_height()) / 2
+      self.screen.blit(text, (x, y))
+      pygame.display.flip()
 
 if __name__ == "__main__":
   camera = Camera()

@@ -11,16 +11,19 @@ class CosmapperHandler(RfidHandler):
   # RFIDの信号が現れた時の処理
   def handle_appear(self, rfid):
     state, anthena, raw, id = rfid
-    #print("Cosmapper: " + str(rfid))
 
-    # 読み込んだRFIDに対応するJANコードが取れなかったら登録処理に
-    if not self.id2jancode(id):
+    # register_jancodeの処理が同時に複数行われないようにmutexでロック
+    self.mutex.lock(self.register_jancode, id)
+    # 処理が終わったのでロックを解除
+    self.mutex.unlock()
 
-      # register_jancodeの処理が同時に複数行われないようにmutexでロック
-      self.mutex.lock(self.register_jancode, id)
+  def handle_update(self, rfid):
+    state, anthena, raw, id = rfid
 
-      # 処理が終わったのでロックを解除
-      self.mutex.unlock()
+    # register_jancodeの処理が同時に複数行われないようにmutexでロック
+    self.mutex.lock(self.register_jancode, id)
+    # 処理が終わったのでロックを解除
+    self.mutex.unlock()
 
   # RFIDからJANCODEへの変換を試みる
   def id2jancode(self, id):
@@ -29,8 +32,10 @@ class CosmapperHandler(RfidHandler):
       return jancodes[id]
 
   def register_jancode(self, id):
-    # カメラ画像更新処理を止めるよう指示
-    self.camera.event_set("run", "stop")
+    # 読み込んだRFIDに対応するJANコードが取れなかったら登録処理
+    if not self.id2jancode(id):
+      # カメラ画像更新処理を止めるよう指示
+      self.camera.event_set("run", "stop")
 
-    # RFIDに対応するJANコードを登録するようカメラ画面に指示
-    self.camera.event_set("register-jancode", id)
+      # RFIDに対応するJANコードを登録するようカメラ画面に指示
+      self.camera.event_set("register-jancode", id)
