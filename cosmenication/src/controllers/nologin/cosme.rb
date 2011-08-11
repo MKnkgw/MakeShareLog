@@ -1,7 +1,18 @@
 class NoLogin
   def register_cosme(jancode)
     items = JSON.parse `ruby scripts/item_info.rb #{jancode}`
-    item = items[0] or halt("Not Found Item: #{jancode}")
+    if items[0] then
+      item = items[0]
+    else
+      item = {
+        "brand" => "ブランド名",
+        "name" => "化粧品名",
+        "url" => "http://",
+        "caption" => "説明文",
+        "image" => "http://hogel.org/noimage.gif",
+        "genres" => [],
+      }
+    end
 
     # register brand
     brand = Brand.first_or_create(:name => item["brand"])
@@ -9,7 +20,7 @@ class NoLogin
     # register photo
     photo_url = item["image"]
     photo_path = "#{$photodir}/#{Photo.last_insert_id}"
-    download = JSON.parse `ruby scripts/download.rb #{photo_url} #{photo_path}`
+    download = JSON.parse `ruby scripts/download.rb "#{photo_url}" #{photo_path}`
     photo = Photo.create(
       :path => photo_path,
       :content_type => download["content_type"]
