@@ -29,11 +29,12 @@ class NoLogin
     nocolor = Color.first_or_create(:name => "")
 
     # register cosme
+    STDERR.puts item.inspect
     cosme = Cosmetic.create(
       :jancode => jancode,
-      :name => item["name"],
-      :url => item["url"],
-      :description => item["caption"] || "",
+      :name => item["name"] || "化粧品名",
+      :url => item["url"] || "http://",
+      :description => item["caption"] || "説明文",
       :brand_id => brand.id,
       :photo_id => photo.id,
       :color_id => nocolor.id
