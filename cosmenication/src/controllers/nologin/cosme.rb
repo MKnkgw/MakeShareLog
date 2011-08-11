@@ -87,6 +87,18 @@ class NoLogin
     @cosme.color_id = Color.first_or_create(:name => params[:cosme_color]).id
     @cosme.url = params[:cosme_url]
 
+    if photo_file = params[:cosme_photo_file] then
+      photo_path = "#{$photodir}/#{Photo.last_insert_id}"
+      File.open(photo_path, "wb"){|out|
+        out.write photo_file[:tempfile].read
+      }
+      photo = Photo.create(
+        :path => photo_path,
+        :content_type => photo_file[:type]
+      )
+      @cosme.photo_id = photo.id
+    end
+
     @cosme.save
 
     erb :cosme_edit
