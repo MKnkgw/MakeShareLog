@@ -26,9 +26,10 @@ EOM
   end
 
   post "/photo/upload/:name" do
-    cosme1 = Cosmetic.first(:jancode => params[:jancode1])
-    cosme2 = Cosmetic.first(:jancode => params[:jancode2])
-    cosme3 = Cosmetic.first(:jancode => params[:jancode3])
+    STDERR.puts params.inspect
+    cosme1 = first_or_register(params[:jancode1])
+    cosme2 = first_or_register(params[:jancode2])
+    cosme3 = first_or_register(params[:jancode3])
 
     me = User.first(:name => params[:name]) or halt
     photo_file = params[:photo_file]
