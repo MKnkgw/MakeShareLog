@@ -45,8 +45,9 @@ class CameraWindow(Thread):
 
       if event.type == pygame.NOEVENT:
         continue
-
-      if event.type == pygame.KEYDOWN:
+      elif event.type == pygame.QUIT:
+        self.event_set("quit", True)
+      elif event.type == pygame.KEYDOWN:
         name = pygame.key.name(event.key)
         if event.key == pygame.K_ESCAPE:
           self.event_set("quit", True)
