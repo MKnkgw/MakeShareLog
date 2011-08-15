@@ -1,3 +1,7 @@
+require "logger"
+
+LOG = Logger.new(STDERR)
+
 class MakeupBase < Sinatra::Base
   def self.controller_path
     "controllers/#{self.to_s.downcase}/*.rb"
@@ -39,6 +43,8 @@ class Core < MakeupBase
       session[:goto] = request.url
       redirect "/login"
       halt
+    else
+      LOG.info("GET user: #{session[:user_name]}, access: #{request.path}")
     end
   end
 end
